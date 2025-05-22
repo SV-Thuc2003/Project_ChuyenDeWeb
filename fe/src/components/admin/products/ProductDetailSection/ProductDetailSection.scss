@@ -1,0 +1,26 @@
+@use "sass:map";
+@import "../../theme";
+@import "../../responsive";
+
+.product-detail {
+  padding: 20px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #fafafa;
+
+  h3 {
+    margin-bottom: 10px;
+    color: map.get($theme-colors, "main");
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: map.get($theme-colors, "normal-text");
+    }
+  }
+}

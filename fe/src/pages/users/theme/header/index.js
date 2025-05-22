@@ -1,6 +1,6 @@
-import {memo, useState} from "react"
+import {memo, useEffect, useState} from "react"
 import "./style.scss"
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import {CiInstagram, CiLinkedin, CiTwitter, CiUser} from "react-icons/ci";
 import {CgMail} from "react-icons/cg";
 import {BiUser} from "react-icons/bi"
@@ -16,10 +16,19 @@ import {
 import {formatter} from "../../../../utils/fomater";
 import {ROUTERS} from "../../../../utils/router";
 
+export const categories = [
+    "Máy lọc nước",
+    "Máy lọc nước điện giải",
+    "Máy lọc nước RO Hydrogen",
+    "Lõi máy lọc nước",
+    "Lọc nước không điện"
+];
 const Header = () => {
-    const [isShowCategories, setShowCategories] = useState(false);
+    const location = useLocation();
     const [isShowHumberger, setShowHumberger] = useState(false);
-
+    const [isHome, setIsHome] = useState(location.pathname.length <= 1);
+    const [isShowCategories, setShowCategories] = useState(isHome);
+    // const [isShowCategories, setIsShowCategories] = useState(isHome);
     const [menus, setMenus] = useState([
         {
             name: "Trang chủ",
@@ -56,8 +65,15 @@ const Header = () => {
             name: "Liên hệ",
             path: "",
         },
-
     ]);
+
+
+    useEffect(() => {
+        const isHome = location.pathname.length <= 1;
+        setIsHome(isHome);
+        setShowCategories(isHome);
+    }, [location]);
+
 
     return (
         <>
@@ -69,6 +85,7 @@ const Header = () => {
             <div className={`humberger__menu__wrapper ${isShowHumberger ? "show" : ""}`}>
                 <div className="header__logo">
                     <h1>Water Purifier shop</h1>
+                    {/*<img src="assets/users/images/logo/logo1.png" alt=""/>*/}
                 </div>
                 <div className="humberger__menu__cart">
                     <ul>
@@ -92,7 +109,8 @@ const Header = () => {
                 <div className="humberger__menu__nav">
                     <ul>
                         {menus.map((menu, menuKey) => (
-                            <li key={menuKey} to={menu.path}>
+                            // to={menu.path}
+                            <li key={menuKey}>
                                 <Link to={menu.path} onClick={() => {
                                     const newMenus = [...menus];
                                     newMenus[menuKey].isShowSubmenus = !newMenus[menuKey].isShowSubmenus;
@@ -135,6 +153,7 @@ const Header = () => {
                     <Link to={""}>
                         <CiLinkedin/>
                     </Link>
+
 
                     <Link to={""}>
                         <CiTwitter/>
@@ -207,10 +226,10 @@ const Header = () => {
                     <div className="col-xl-3 ">
                         <div className="header__logo">
                             <h1>Water Purifier shop</h1>
+                            {/*<img src="assets/users/images/logo/logo1.png" />*/}
                         </div>
                     </div>
                     <div className="col-xl-6 ">
-
                         <nav className="header__menu">
                             <ul>
                                 {
@@ -223,7 +242,7 @@ const Header = () => {
                                                         {
                                                             menu.child.map((childItem, childKey) => (
                                                                 <li key={`${menuKey}-${childKey}`}>
-                                                                    <Link to={childItem.paht}>{childItem.name}</Link>
+                                                                    <Link to={childItem.path}>{childItem.name}</Link>
                                                                 </li>
                                                             ))
                                                         }
@@ -234,14 +253,7 @@ const Header = () => {
                                         </li>
                                     ))
                                 }
-                                {/*<li>*/}
 
-                                {/*    <ul>*/}
-                                {/*        <li>Máy Lọc A</li>*/}
-                                {/*        <li>Máy Lọc B</li>*/}
-                                {/*        <li>Máy Lọc C</li>*/}
-                                {/*    </ul>*/}
-                                {/*</li>*/}
                             </ul>
 
                         </nav>
@@ -255,7 +267,7 @@ const Header = () => {
                             </div>
                             <ul>
                                 <li>
-                                    <Link to="#">
+                                    <Link to={ ROUTERS.USER.SHOPPING_CART}>
                                         <AiOutlineShoppingCart/> <span>5</span>
                                     </Link>
                                 </li>
@@ -277,21 +289,13 @@ const Header = () => {
                             Danh sách sản phẩm
                         </div>
                         <ul className={isShowCategories ? "" : "hidden"}>
-                            <li>
-                                <Link to={"#"}>Máy lọc A</Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}>Máy lọc B</Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}>Máy lọc C</Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}>Máy lọc D</Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}>Máy lọc E</Link>
-                            </li>
+                            {
+                                categories.map((category, key) => (
+                                    <li key={key}>
+                                        <Link to={ROUTERS.USER.PRODUCTS}>{category}</Link>
+                                    </li>
+
+                                ))}
                         </ul>
 
                     </div>
@@ -314,21 +318,22 @@ const Header = () => {
 
                             </div>
                         </div>
-
-                        <div className="hero__item">
-                            <div className="hero__text">
-                                <span>Máy lọc nước</span>
-                                <h2>
-                                    Diệt vi khuẩn <br/>
-                                    Sạch 100%
-                                </h2>
-                                <p>Miễn phí giao hàng tận nơi</p>
-                                <Link to="" className="primary-btn">
-                                    Mua ngay
-                                </Link>
-                            </div>
-
-                        </div>
+                        {
+                            isHome && (
+                                <div className="hero__item">
+                                    <div className="hero__text">
+                                        <span>Máy lọc nước</span>
+                                        <h2>
+                                            Diệt vi khuẩn <br/>
+                                            Sạch 100%
+                                        </h2>
+                                        <p>Miễn phí giao hàng tận nơi</p>
+                                        <Link to="" className="primary-btn">
+                                            Mua ngay
+                                        </Link>
+                                    </div>
+                                </div>
+                            )}
                     </div>
                 </div>
             </div>
