@@ -1,0 +1,546 @@
+@use "sass:map";
+//@use "header";
+@import "styles/pages/all";
+
+$pannerImg: "/assets/users/images/hero/banner1.jpg";
+
+// xử lý scss header top
+.header__top {
+  background: #f5f5f5;
+}
+
+.header__top_left {
+  ul {
+    display: flex;
+    align-items: center;
+    padding: 10px 0 13px;
+    list-style: none;
+    column-gap: 10px;
+
+    li {
+      font-size: 14px;
+      color: map.get($theme-colors, "normal-text");
+      display: flex;
+      align-items: center;
+      column-gap: 2px;
+    }
+
+    li:first-child {
+      position: relative;
+
+      &:after {
+        position: absolute;
+        right: -6px;
+        top: 1px;
+        height: 20px;
+        width: 1px;
+        background: #000000;
+        opacity: 0.1;
+        content: "";
+      }
+    }
+  }
+}
+
+.header__top_right {
+  //display: grid;
+  //justify-content: center;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 0 13px;
+
+  ul {
+    display: flex;
+    column-gap: 5px;
+    list-style: none;
+
+    a {
+      font-size: 14px;
+      display: inline-block;
+      color: map.get($theme-colors, "normal-text");
+    }
+
+    li:last-child {
+      cursor: pointer;
+      margin-left: 10px;
+
+      span {
+        font-size: 14px;
+        margin-left: 2px;
+      }
+    }
+  }
+}
+
+// xử lý headerTop
+.header__main {
+  //background: #2575fc;
+
+  .header__logo {
+    padding: 15px 0;
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-start;
+    height: 54px; /* Chiều cao tính toán: 15px (padding-top) + 24px (height ảnh cũ) + 15px (padding-bottom) */
+    img {
+      max-height: 100%;
+      width: auto;
+      display: block;
+    }
+    .header__brand {
+      h4 {
+        margin: 0; /* Loại bỏ margin mặc định của h4 */
+        color: map.get($theme-colors, "bold-text"); /* Sử dụng màu chữ hiện tại */
+        font-size: 1.2em; /* Điều chỉnh kích thước chữ nếu cần */
+        font-weight: bold;
+      }
+    }
+  }
+
+
+
+
+  .header__menu {
+    padding: 24px 0;
+
+    ul {
+      display: flex;
+      justify-content: space-between;
+
+      li {
+        list-style: none;
+        position: relative;
+
+        a {
+          text-decoration: none;
+          font-size: 14px;
+          color: map.get($theme-colors, "bold-text");
+          text-transform: uppercase;
+          font-weight: bold;
+          letter-spacing: 2px;
+          transition: all 0.3s;
+          padding: 5px 0;
+          display: block;
+        }
+      }
+
+      li:hover .header__menu__dropdown {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .active a {
+        color: map.get($theme-colors, "main");
+      }
+
+      .header__menu__dropdown {
+        background: #222222;
+        display: block;
+        position: absolute;
+        width: 180px;
+        z-index: 9;
+        padding: 5px 0;
+        transition: all, 0.3s;
+        opacity: 0;
+        visibility: hidden;
+
+        li {
+          a {
+            text-transform: capitalize;
+            color: #ffffff;
+            font-weight: 400;
+            padding: 5px 15px;
+          }
+
+          :hover {
+            color: map.get($theme-colors, "main");
+          }
+        }
+      }
+
+    }
+  }
+
+  .header__cart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 0;
+
+    ul {
+      display: flex;
+      margin-right: 25px;
+
+      li {
+        list-style: none;
+        position: relative;
+        margin-left: 20px;
+
+        svg {
+          font-size: 25px;
+          color: map.get($theme-colors, "normal-text");
+        }
+
+        span {
+          color: white;
+          background: map.get($theme-colors, "main");
+          position: absolute;
+          height: 20px;
+          width: 20px;
+          border-radius: 50%;
+          display: inline-block;
+          text-align: center;
+          line-height: 20px;
+          font-size: 13px;
+          font-weight: 500;
+          left: 15px;
+          top: -6px;
+        }
+      }
+    }
+  }
+}
+
+//xử lý headerSearch
+.hero__search_container {
+
+  .hero__search__form {
+    width: 820px;
+    height: 50px;
+    float: left;
+    padding-left: 15px;
+    margin-bottom: 30px;
+
+    form {
+      display: flex;
+      align-items: center;
+      border-radius: 7px; /* Bo tròn khung form */
+      overflow: hidden; /* Ẩn các phần tử con bị tràn ra ngoài border-radius */
+      border: 1px solid #ebebeb; /* Thêm border để rõ ràng hơn nếu cần */
+    }
+
+    input {
+      flex-grow: 1;
+      border: none;
+      height: 48px;
+      font-size: 16px;
+      color: #b2b2b2;
+      padding-left: 20px;
+      border: 1px solid #ebebeb;
+      //width: 70%;
+
+      :focus {
+        outline: none;
+        border: none;
+      }
+    }
+
+    button {
+      font-size: 14px;
+      color: #ffffff;
+      font-weight: 800;
+      text-transform: uppercase;
+      display: inline-block;
+      padding: 16px 30px 17px;
+      background: map.get($theme-colors, "main");
+      border: none;
+      height: 100%;
+      white-space: nowrap;
+    }
+  }
+
+  .hero__search__phone {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+
+    .hero__search__phone__icon {
+      font-size: 25px;
+      padding: 10px;
+      background: #f5f5f5;
+      line-height: 50px;
+      text-align: center;
+      border-radius: 50%;
+      float: left;
+      margin-right: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: map.get($theme-colors, "main");
+    }
+
+    .hero__search__phone__text {
+      display: inline-block;
+
+      p {
+        color: map.get($theme-colors, "normal-text");
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      span {
+        color: #6f6f6f;
+        font-size: 14px;
+
+      }
+    }
+  }
+}
+
+
+//
+//.hero__categories {
+//  position: relative;
+//
+//  .hero__categories__all {
+//    background: map.get($theme-colors, "main");
+//    padding: 15px 25px 15px 40px;
+//    display: flex;
+//    align-items: center;
+//    cursor: pointer;
+//    color: #ffffff;
+//    font-weight: 700;
+//
+//    svg,
+//    span {
+//      font-size: 16px;
+//
+//      margin-right: 5px;
+//
+//
+//    }
+//
+//    svg {
+//      font-size: 20px;
+//      font-weight: bold;
+//    }
+//  }
+//
+//  ul {
+//    position: absolute;
+//    opacity: 1;
+//    border: 1px solid #ebebeb;
+//
+//    opacity: 1;
+//    width: 99%;
+//    background: #ffffff;
+//    transition: all, 0.2s;
+//
+//    li {
+//      list-style: none;
+//
+//      a {
+//        text-decoration: none;
+//        background-color: transparent;
+//        font-size: 16px;
+//        color: map.get($theme-colors, "normal-text");
+//        line-height: 39px;
+//        display: block;
+//        padding-left: 40px;
+//      }
+//
+//      &:hover {
+//        background: #f7ffff;
+//
+//        a {
+//          color: map.get($theme-colors, "main");
+//        }
+//      }
+//    }
+//
+//    &.hidden {
+//      opacity: 0;
+//    }
+//  }
+//}
+//
+//.hero__search_container {
+//
+//  .hero__search__form {
+//    width: 610px;
+//    height: 50px;
+//    float: left;
+//    padding-left: 15px;
+//    margin-bottom: 30px;
+//
+//    form {
+//      display: flex;
+//      align-items: center;
+//    }
+//
+//    input {
+//      border: none;
+//      height: 48px;
+//      font-size: 16px;
+//      color: #b2b2b2;
+//      padding-left: 20px;
+//      border: 1px solid #ebebeb;
+//      width: 70%;
+//
+//      :focus {
+//        outline: none;
+//        border: none;
+//      }
+//    }
+//
+//    button {
+//      font-size: 14px;
+//      color: #ffffff;
+//      font-weight: 800;
+//      text-transform: uppercase;
+//      display: inline-block;
+//      padding: 16px 30px 17px;
+//      background: map.get($theme-colors, "main");
+//      border: none;
+//      height: 100%;
+//    }
+//  }
+//
+//  .hero__search__phone {
+//    display: flex;
+//    align-items: center;
+//
+//    .hero__search__phone__icon {
+//      font-size: 25px;
+//      padding: 10px;
+//      background: #f5f5f5;
+//      line-height: 50px;
+//      text-align: center;
+//      border-radius: 50%;
+//      float: left;
+//      margin-right: 20px;
+//      display: flex;
+//      justify-content: center;
+//      align-items: center;
+//      color: map.get($theme-colors, "main");
+//    }
+//
+//    .hero__search__phone__text {
+//      display: inline-block;
+//
+//      p {
+//        color: map.get($theme-colors, "normal-text");
+//        font-weight: bold;
+//        margin-bottom: 5px;
+//      }
+//
+//      span {
+//        color: #6f6f6f;
+//        font-size: 14px;
+//
+//      }
+//    }
+//  }
+//
+//  .hero__item {
+//    margin-left: 15px;
+//    background-image: url($pannerImg);
+//    background-size: cover;
+//    height: 410px;
+//    display: flex;
+//    align-items: center;
+//    width: 100%;
+//    //padding-left: 75px;
+//
+//    .hero__text {
+//      padding-left: 25px;
+//
+//      span {
+//        font-size: 14px;
+//        text-transform: uppercase;
+//        font-weight: 700;
+//        letter-spacing: 4px;
+//        color: map.get($theme-colors, "main");
+//      }
+//
+//      h2 {
+//        font-size: 45px;
+//        text-transform: uppercase;
+//        font-weight: 700;
+//        line-height: 52px;
+//        color: map.get($theme-colors, "bold-text");
+//        margin: 10px 0;
+//      }
+//
+//      p {
+//        font-size: 16px;
+//        color: #6f6f6f;
+//        font-weight: 400;
+//        line-height: 26px;
+//        margin: 0 0 15px 0;
+//      }
+//
+//      a {
+//        display: inline-block;
+//        font-size: 14px;
+//        padding: 10px 20px 10px;
+//        color: #ffffff;
+//        text-transform: uppercase;
+//        background: map.get($theme-colors, "main");
+//        letter-spacing: 2px;
+//        text-decoration: none;
+//      }
+//    }
+//  }
+//}
+//
+//.humberger__menu__wrapper, .humberger__open{
+//  display: none;
+//}
+//
+//@include Responsive($MEDIUM_DEVICE) {
+//  .hero__search__form {
+//    width: 540px !important;
+//  }
+//  .hero__search__form {
+//    padding-left: unset !important;
+//    width: 530px !important;
+//  }
+//
+//}
+////
+////@include Responsive($TABLET_DEVICE) {
+////  @include header.header-small-device
+////}
+////
+////@include Responsive($WIDE_MOBILE) {
+////  @include header.header-small-device;
+////
+////  .hero__search {
+////    display: grid;
+////  }
+////  .header__logo {
+////    width: min-content;
+////  }
+////
+////  .hero__search__form {
+////    width: 565px !important;
+////  }
+////
+////  .hero__search__phone {
+////    margin-bottom: 30px;
+////  }
+////
+////  .hero__item {
+////    margin-left: unset !important;
+////  }
+////}
+//
+//@include Responsive($WIDE_MOBILE) {
+//  .hero__search__form {
+//    width: 550px !important;
+//  }
+//}
+//
+//@include Responsive($SMALL_DEVICES) {
+//  .hero__search__form {
+//    width: 350px !important;
+//
+//    button {
+//      width: 150px;
+//      height: 50px !important;
+//    }
+//  }
+//}

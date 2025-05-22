@@ -1,0 +1,51 @@
+@use "sass:map";
+@import "theme";
+
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+
+  h3 {
+    color: map.get($theme-colors, "bold-text");
+    margin: 0;
+  }
+
+  .close-button {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: map.get($theme-colors, "main");
+  }
+}
+
+.modal-content {
+  font-size: 1rem;
+  color: map.get($theme-colors, "normal-text");
+}
+
+// Optional animation
+@keyframes fadeIn {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
