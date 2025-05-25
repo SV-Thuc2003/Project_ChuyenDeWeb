@@ -3,3 +3,4 @@ public enum RoleName {
     USER,
     ADMIN
 }
+
