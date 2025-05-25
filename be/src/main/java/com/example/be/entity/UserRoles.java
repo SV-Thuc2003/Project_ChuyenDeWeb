@@ -4,17 +4,16 @@ import com.example.be.enums.RoleName;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Entity
 @Table(name = "user_roles")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User_Roles {
+public class UserRoles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
