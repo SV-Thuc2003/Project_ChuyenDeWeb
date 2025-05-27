@@ -4,15 +4,21 @@ export interface LoginCredentials {
     // rememberMe: boolean;
 }
 
+// export interface LoginResponse {
+//     success: boolean;
+//     token?: string;
+//     user?: {
+//         id: string;
+//         name: string;
+//         email: string;
+//         role: string;
+//     };
+//     error?: string;
+// }
 export interface LoginResponse {
-    success: boolean;
-    token?: string;
-    user?: {
-        id: string;
-        name: string;
-        email: string;
-        role: string;
-    };
+    token: string;
+    username: string;
+    role: string;
     error?: string;
 }
 

@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
           <div>
             <div className="flex items-center">
               <img src={logo} alt="Water Purifier Shop" className="h-[50px] mb-4" />
-              <h3 className="text-xl font-bold mb-4">NLU Pet Shop</h3>
+              <h3 className="text-xl font-bold mb-4">Water Purifier Shop</h3>
             </div>
             <p className="text-lg mb-6">
               Mang đến nguồn nước sạch,

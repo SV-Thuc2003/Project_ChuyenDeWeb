@@ -16,6 +16,7 @@ import AboutUs from "./page/about";
 import ProfilePage from "./page/profile";
 import Order from "./page/order";
 import CartCheckOut from "./page/cart";
+import ForgotPassword from "./features/auth/forgotPassword/ForgotPassword";
 
 
 const AppRoutes: React.FC = () => {
@@ -36,6 +37,7 @@ const AppRoutes: React.FC = () => {
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/orders" element={<Order />} />
                 <Route path="/cartcheckout" element={<CartCheckOut />} />
+                <Route path="/forepw" element={<ForgotPassword />} />
                 <Route path="/" element={<Navigate to="/login" replace />} /> {/* Default redirect */}
             </Routes>
         </Router>

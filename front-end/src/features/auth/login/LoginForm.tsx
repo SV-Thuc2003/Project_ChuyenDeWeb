@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";  // <-- import useNavigate
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../contexts/AuthContext";
 import InputField from "../../../components/ui/InputField.tsx";
 import Button from "../../../components/ui/Button.tsx";
 import Checkbox from "../../../components/ui/Checkbox.tsx";
@@ -13,6 +14,9 @@ const LoginForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  // const [showForgotPassword, setShowForgotPassword] = useState(false);
+
+  const { login: contextLogin } = useAuth();
   const navigate = useNavigate(); // <-- khởi tạo useNavigate
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,14 +27,16 @@ const LoginForm: React.FC = () => {
     const credentials: LoginCredentials = {
       username,
       password,
-      // rememberMe không gửi lên backend nếu backend không hỗ trợ
     };
 
     try {
       const response = await login(credentials);
+      console.log("Login response:", response);
 
-      if (response.token) {
+      if (response.token && response.username && response.role) {
         localStorage.setItem("token", response.token);
+        localStorage.setItem("username", response.username);
+        localStorage.setItem("role", response.role);
 
         if (rememberMe) {
           localStorage.setItem("rememberMe", "true");
@@ -38,9 +44,9 @@ const LoginForm: React.FC = () => {
           localStorage.removeItem("rememberMe");
         }
 
-        console.log("Login successful:", response.user);
+       contextLogin(response.username, response.token, response.role);
+        console.log("Login successful:", response.username);
 
-        // Redirect về trang home
         navigate("/");
       } else {
         setErrorMessage(response.error || "Đăng nhập thất bại");
