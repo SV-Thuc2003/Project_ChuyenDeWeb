@@ -72,10 +72,34 @@ export const forgotPassword = async (email: string): Promise<string> => {
     return response.data;
 };
 
-export const resetPassword = async (email: string, otp: string, newPassword: string): Promise<string> => {
+interface VerifyOtpResetPasswordParams {
+  email: string;
+  otpCode: string;
+}
+
+// Hàm xác thực OTP cho reset password
+export const verifyOtpResetPassword = async ({
+  email,
+  otpCode,
+}: VerifyOtpResetPasswordParams): Promise<string> => {
+  try {
+    const response = await axios.post<string>(
+      `${API_URL}/verify-otp-reset-password`,
+      { email, otpCode }
+    );
+    return response.data;  // Ví dụ response trả về String thông báo
+  } catch (error: unknown) {
+    const err = error as AxiosError<{ message?: string }>;
+    console.error("Lỗi verify OTP reset password:", err);
+    const message = err.response?.data?.message || "Xác thực OTP thất bại";
+    throw new Error(message);
+  }
+};
+
+export const resetPassword = async (email: string, otpCode: string, newPassword: string): Promise<string> => {
     const response = await axios.post(`${API_URL}/reset-password`, {
         email,
-        otp,
+        otpCode,
         newPassword,
     });
     return response.data;

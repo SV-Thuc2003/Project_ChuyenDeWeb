@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from '../../components/layout/header/header';
 import Footer from '../../components/layout/footer/footer';
-
+// { useState }
 import CategorySection from './CategorySection';
 import PromoSection from './PromoSection';
 import BestsellersSection from './BestsellersSection';

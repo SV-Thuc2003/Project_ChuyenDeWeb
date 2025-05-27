@@ -1,10 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import  logologin from "../../assets/logologin.jpg";
 import Header from "../../components/common/Header";
 import LoginForm from "../../features/auth/login/LoginForm.tsx";
 import SocialLogin from "../../features/auth/login/SocialLogin.tsx";
 
 const LoginPage: React.FC = () => {
+
+    const navigate = useNavigate();
+
     return (
         <div className="flex min-h-screen bg-white">
             <div className="w-full md:w-1/2 flex items-center justify-center">
@@ -29,7 +33,7 @@ const LoginPage: React.FC = () => {
                             Bạn chưa có tài khoản?{" "}
                             <button
                                 className="text-[#3a5b22] hover:underline"
-                                onClick={() => console.log("Register clicked")}
+                                onClick={() => navigate("/register")}
                             >
                                 Đăng kí
                             </button>
