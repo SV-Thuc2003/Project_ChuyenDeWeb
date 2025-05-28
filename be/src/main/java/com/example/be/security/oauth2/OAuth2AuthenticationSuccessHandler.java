@@ -40,6 +40,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         // Kiểm tra xem đối tượng principal có đúng kiểu CustomOAuth2User hay không
         if (principal instanceof CustomOAuth2User customUser) {
             String email = customUser.getEmail();
+            String username = customUser.getName();        // sửa thành getUsername() nếu bạn có
+            String role = customUser.getAuthorities().iterator().next().getAuthority();
             // Tạo JWT dựa trên email người dùng
             String token = jwtService.generateToken(email);
             // Log token một phần để tiện debug (không log toàn bộ vì lý do bảo mật)
@@ -57,9 +59,13 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             String redirectUrl = UriComponentsBuilder
                     .fromUriString(appProperties.getOauth2().getRedirectUri()) // http://localhost:5173/oauth2/redirect
                     .queryParam("token", token)
+                    .queryParam("username", username)
+                    .queryParam("role", role)
+                    .encode()
                     .build().toUriString();
 
             response.sendRedirect(redirectUrl);
+            System.out.println("Redirect URL with token: " + redirectUrl);
 
         } else {
             // Trường hợp lỗi: principal không phải kiểu mong đợi

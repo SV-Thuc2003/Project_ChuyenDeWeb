@@ -6,6 +6,7 @@ import com.example.be.entity.User;
 
 import com.example.be.service.AuthService;
 
+import com.example.be.service.JwtService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+    private final JwtService jwtService;
 
     @PostMapping("/register")
     public String register(@RequestBody @Valid RegisterRequest request){
@@ -47,6 +49,12 @@ public class AuthController {
     public ResponseEntity<String> forgotPassword(@RequestParam String email) {
         String response = authService.forgotPassword(email);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/verify-otp-reset-password")
+    public ResponseEntity<String> verifyOtpResetPassword(@RequestBody OtpVerificationRequest request) {
+        String result = authService.verifyOtpForResetPassword(request);
+        return ResponseEntity.ok(result);
     }
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
