@@ -1,5 +1,8 @@
 package com.example.be.entity;
 
+import com.example.be.enums.ProductStatus;
+import com.example.be.enums.ProductType;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,7 +32,13 @@ public class Product {
 
     private BigDecimal price;
 
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+
     private String brand;
+
 
     @Column(columnDefinition = "TEXT")
     private String feature;
@@ -43,6 +52,34 @@ public class Product {
 
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "product_type")
+    private ProductType productType;
+
+//    @ManyToMany
+//    @JoinTable(name = "category_mapping",
+//    joinColumns = @JoinColumn(name = "product_id"),
+//    inverseJoinColumns = @JoinColumn(name = "category_id"))
+//    private Set<Category> categories = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "category_mapping",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories = new HashSet<>();
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private WaterPurifierDetail waterPurifierDetail;
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private FilterCartridgeDetail filterCartridgeDetail;
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private NonElectricPurifierDetail nonElectricPurifierDetail;
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PrefilterHousingDetail prefilterHousingDetail;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Review> reviews;
 
@@ -50,6 +87,7 @@ public class Product {
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
 
     public enum ProductStatus {
         AVAILABLE,
