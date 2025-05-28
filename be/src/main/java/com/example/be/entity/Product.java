@@ -1,5 +1,6 @@
 package com.example.be.entity;
 import com.example.be.enums.ProductStatus;
+import com.example.be.enums.ProductType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -32,7 +33,10 @@ public class Product {
     private String description;
     @Column(nullable = false)
     private BigDecimal price;
-    private String brand;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
     @Column(columnDefinition = "TEXT")
     private String feature;
     @Column(nullable = false)
@@ -46,14 +50,32 @@ public class Product {
     @UpdateTimestamp
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @ManyToMany
+    @Enumerated(EnumType.STRING)
+    @Column(name = "product_type")
+    private ProductType productType;
+
+//    @ManyToMany
+//    @JoinTable(name = "category_mapping",
+//    joinColumns = @JoinColumn(name = "product_id"),
+//    inverseJoinColumns = @JoinColumn(name = "category_id"))
+//    private Set<Category> categories = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "category_mapping",
-    joinColumns = @JoinColumn(name = "product_id"),
-    inverseJoinColumns = @JoinColumn(name = "category_id"))
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ProductDetail productDetail;
+    private WaterPurifierDetail waterPurifierDetail;
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private FilterCartridgeDetail filterCartridgeDetail;
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private NonElectricPurifierDetail nonElectricPurifierDetail;
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PrefilterHousingDetail prefilterHousingDetail;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
