@@ -1,15 +1,14 @@
 package com.example.be.exception;
 
 import com.example.be.enums.exception.ErrorCode;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.Getter;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Setter
 @Getter
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AppException extends RuntimeException {
-    private ErrorCode errorCode;
-}
+    private final ErrorCode errorCode;
 
+    public AppException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
+    }
+}

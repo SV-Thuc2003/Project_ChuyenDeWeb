@@ -1,24 +1,29 @@
 package com.example.be.enums.exception;
 
-import com.example.be.dto.response.ErrorResponse;
+import com.example.be.enums.exception.ErrorCode;
 import com.example.be.exception.AppException;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-//    @ExceptionHandler(AppException.class)
-//    public ResponseEntity<ErrorResponse> handleAppException(AppException ex) {
-//        ErrorCode errorCode = ex.getErrorCode();
-//        ErrorResponse response = new ErrorResponse(
-//                errorCode.getCode(),
-//                errorCode.getMessage(),
-//                LocalDateTime.now()
-//        );
-//        return new ResponseEntity<>(response, errorCode.get)
-//    }
-}
 
+    @ExceptionHandler(AppException.class)
+    public ResponseEntity<ErrorResponse> handleAppException(AppException ex) {
+        ErrorCode error = ex.getErrorCode();
+        return ResponseEntity
+                .status(error.getHttpStatusCode())
+                .body(new ErrorResponse(error.name(), error.getMessage(), error.getCode()));
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class ErrorResponse {
+        private String error;
+        private String message;
+        private int code;
+    }
+}
