@@ -36,8 +36,12 @@ public class WaterPurifierDetail {
     private String voltage;
     private String origin;
     private String warranty;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String suitableUses;
     private String material;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String additionalInfo;
 
     @CreationTimestamp
