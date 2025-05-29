@@ -4,36 +4,31 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "reviews")
+@Table(name = "daily_status")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Review {
+public class DailyStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
-    private User user;
+    private LocalDate statDate;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    private Integer totalOrders;
 
-    private Integer rating;
+    private BigDecimal totalRevenue;
 
-    @Column(columnDefinition = "TEXT")
-    private String comment;
+    private Integer newUsers;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-
-    private String ipAddress;
 }
