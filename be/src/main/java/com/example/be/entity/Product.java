@@ -54,11 +54,6 @@ public class Product {
     @Column(name = "product_type")
     private ProductType productType;
 
-//    @ManyToMany
-//    @JoinTable(name = "category_mapping",
-//    joinColumns = @JoinColumn(name = "product_id"),
-//    inverseJoinColumns = @JoinColumn(name = "category_id"))
-//    private Set<Category> categories = new HashSet<>();
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "category_mapping",
             joinColumns = @JoinColumn(name = "product_id"),
