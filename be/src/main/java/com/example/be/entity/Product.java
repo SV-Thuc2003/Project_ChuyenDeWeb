@@ -1,54 +1,57 @@
 package com.example.be.entity;
+
 import com.example.be.enums.ProductStatus;
 import com.example.be.enums.ProductType;
+
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
-@Table(name ="products")
+@Table(name = "products")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Product {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
-    @Column(nullable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String name;
 
-    @Column(unique = true)
     private String slug;
+
     @Column(columnDefinition = "TEXT")
     private String description;
-    @Column(nullable = false)
+
     private BigDecimal price;
+
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    private String brand;
+
+
     @Column(columnDefinition = "TEXT")
     private String feature;
-    @Column(nullable = false)
-    private Integer stock;
+
+    private int stock;
 
     @Enumerated(EnumType.STRING)
-    private ProductStatus status = ProductStatus.AVAILABLE;
+    private ProductStatus status;
 
-    @CreationTimestamp
     private LocalDateTime createdAt = LocalDateTime.now();
-    @UpdateTimestamp
+
     private LocalDateTime updatedAt = LocalDateTime.now();
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "product_type")
@@ -72,6 +75,18 @@ public class Product {
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private PrefilterHousingDetail prefilterHousingDetail;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductImage> images = new ArrayList<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Review> reviews;
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+
+    public enum ProductStatus {
+        AVAILABLE,
+        OUT_OF_STOCK,
+        DISCONTINUED
+    }
 }
