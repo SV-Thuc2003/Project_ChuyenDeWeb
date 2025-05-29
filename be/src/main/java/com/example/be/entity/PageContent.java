@@ -3,37 +3,34 @@ package com.example.be.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "reviews")
+@Table(name = "page_content")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Review {
+public class PageContent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(unique = true)
+    private String slug;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    private Integer rating;
+    private String title;
 
     @Column(columnDefinition = "TEXT")
-    private String comment;
+    private String content;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    private String ipAddress;
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
