@@ -6,9 +6,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
-//    Collection<Ca> findAllById(List<Integer> categoryIds);
+    Optional<Category> findBySlug(String slug);
+
+    List<Category> findByParentId(Integer parentId);
 }
 
