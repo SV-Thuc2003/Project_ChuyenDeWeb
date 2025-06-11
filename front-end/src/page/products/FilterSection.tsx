@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { FilterCategory, Brand, PetTag, PriceRange } from '../../types/Product';
+import { FilterCategory, Brand, WaterTag, PriceRange } from '../../types/Product';
 import Button from '../../components/ui/Button';
 
 interface FilterSectionProps {
   categories: FilterCategory[];
   brands: Brand[];
-  tags: PetTag[];
+  tags: WaterTag[];
   priceRange: PriceRange;
   onCategoryChange: (id: number) => void;
   onBrandChange: (id: number) => void;

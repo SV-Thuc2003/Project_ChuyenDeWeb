@@ -44,7 +44,7 @@ const LoginForm: React.FC = () => {
           localStorage.removeItem("rememberMe");
         }
 
-       contextLogin(response.username, response.token, response.role);
+        contextLogin(response.username, response.token, response.role);
         console.log("Login successful:", response.username);
 
         navigate("/");
@@ -90,13 +90,16 @@ const LoginForm: React.FC = () => {
           name="rememberMe"
         />
 
-        <Button
-          type="button"
-          className="text-[10px] font-medium text-[#0c2991] hover:underline"
-          onClick={() => console.log("Forgot password clicked")}
+        <a
+          href="#"
+          className="text-[15px] font-medium text-[#3b63f3] hover:underline cursor-pointer"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/forgot-password");
+          }}
         >
           Quên mật khẩu
-        </Button>
+        </a>
       </div>
 
       {errorMessage && (

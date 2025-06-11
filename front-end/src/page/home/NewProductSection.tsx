@@ -1,13 +1,12 @@
 import React from "react";
+import { useNewProducts } from "../../hooks/products/useNewProducts"; // đảm bảo đường dẫn đúng
+import { Product } from "../../types/Product";
+import Card from "../../components/common/Card";
 import logo from "../../assets/logo.png";
 import banner from "../../assets/banner1.jpg";
-import Card from "../../components/common/Card";
-import { Product } from "../../types/Product";
-import { useBestSellingProducts } from "../../hooks/products/useBestSellingProducts";
 
-const BestsellersSection: React.FC= () => {
-  const { products, loading, error } = useBestSellingProducts();
-
+const NewProductSection: React.FC= () => {
+  const { products, loading, error } = useNewProducts();
   return (
     <section className="py-12">
       <div className="container mx-auto px-4">
@@ -16,7 +15,7 @@ const BestsellersSection: React.FC= () => {
             <div className="flex items-center px-14 py-3 bg-gradient-to-r from-[#007bff] to-[#00aaff] rounded-r-full rounded-tl-[90px] shadow-md border border-white w-[1504px]">
               <img src={logo} alt="Water drop" className="w-5 h-5 mr-2" />
               <h2 className="text-white font-bold text-lg uppercase">
-                Sản bán chạy nhất
+                Sản phẩm mới
               </h2>
             </div>
           </div>
@@ -30,13 +29,12 @@ const BestsellersSection: React.FC= () => {
           />
         </div>
 
-        {/* Loading và lỗi */}
-        {loading && <p>Đang tải sản phẩm bán chạy...</p>}
+        {/* Hiển thị sản phẩm mới */}
+        {loading && <p>Đang tải sản phẩm mới...</p>}
         {error && <p className="text-red-500">{error}</p>}
 
-        {/* Danh sách sản phẩm */}
         {!loading && !error && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
             {products.map((product: Product) => (
               <Card
                 key={product.id}
@@ -57,4 +55,4 @@ const BestsellersSection: React.FC= () => {
   );
 };
 
-export default BestsellersSection;
+export default NewProductSection;

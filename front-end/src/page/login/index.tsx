@@ -32,7 +32,7 @@ const LoginPage: React.FC = () => {
                         <p className="text-lg font-medium">
                             Bạn chưa có tài khoản?{" "}
                             <button
-                                className="text-[#3a5b22] hover:underline"
+                                className="text-[#3b63f3] hover:underline"
                                 onClick={() => navigate("/register")}
                             >
                                 Đăng kí

@@ -13,12 +13,19 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer>, JpaSpecificationExecutor<Product> {
     Page<Product> findByStatusAndNameContainingIgnoreCase(ProductStatus status, String keyword, Pageable pageable);
 
+    // Lấy sản phẩm mới nhất (trạng thái ACTIVE, sắp xếp theo createdAt)
     Page<Product> findByStatusOrderByCreatedAtDesc(ProductStatus status, Pageable pageable);
-    Page<Product> findByStatusOrderBySoldQuantityDesc(ProductStatus status, Pageable pageable);
+    // Lấy sản phẩm nổi bật (featured) theo trạng thái
+    Page<Product> findByIsFeaturedTrueAndStatus(ProductStatus status, Pageable pageable);
+
+    Optional<Product> findByIdAndStatus(Integer id, ProductStatus status);
+
 
     Page<Product> findByStatus(ProductStatus status, Pageable pageable);
 
@@ -29,11 +36,19 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, JpaS
             Pageable pageable
     );
 
-    @Query("SELECT DISTINCT p FROM Product p JOIN p.categories c WHERE c.id IN :categoryIds")
-    Page<Product> findByCategoryIds(@Param("categoryIds") List<Integer> categoryIds, Pageable pageable);
+    @Query("SELECT p FROM Product p JOIN p.categories c WHERE c.id = :categoryId")
+    Page<Product> findByCategoryId(@Param("categoryId") Integer categoryId, Pageable pageable);
 
-    @Query("SELECT DISTINCT p FROM Product p JOIN p.categories c WHERE c.id IN :categoryIds AND p.productType = :productType")
-    Page<Product> findByCategoryIdsAndProductType(@Param("categoryIds") List<Integer> categoryIds,
-                                                  @Param("productType") ProductType productType,
-                                                  Pageable pageable);
+    // Hoặc thêm điều kiện trạng thái nếu muốn
+    @Query("SELECT p FROM Product p JOIN p.categories c WHERE c.id = :categoryId AND p.status = :status")
+    Page<Product> findByCategoryIdAndStatus(@Param("categoryId") Integer categoryId,
+                                            @Param("status") ProductStatus status,
+                                            Pageable pageable);
 }
+
+
+//    @Query("SELECT p FROM Product p JOIN CategoryMapping cm ON p.id = cm.product.id WHERE cm.category.id = :categoryId")
+//    List<Product> findAllByCategoryId(@Param("categoryId") Integer categoryId);
+
+//    @Query("SELECT p FROM Product p JOIN CategoryMapping cm ON p.id = cm.product.id JOIN Category c ON cm.category.id = c.id WHERE c.slug = :slug")
+//    List<Product> findAllByCategorySlug(@Param("slug") String slug);

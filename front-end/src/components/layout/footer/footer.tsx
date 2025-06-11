@@ -79,12 +79,12 @@ const Footer: React.FC = () => {
               TP.Thủ Đức, TP.HCM
             </p>
             <p className="text-base font-medium mb-6">+84 33 645 709</p>
-            <p className="text-base font-medium">petshop@gmail.com</p>
+            <p className="text-base font-medium">WaterPurifierShop@gmail.com</p>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-gray-500">@ 2025 NLU Pet Shop. Tp.HCM</p>
+          <p className="text-sm text-gray-500">@ 2025 Water Purifier Shop. Tp.HCM</p>
           <div className="mt-4 md:mt-0">
             <img src="/images/img_paymenticons_1.svg" alt="Payment Methods" className="h-6" />
           </div>

@@ -1,3 +1,4 @@
+// ProductGrid.tsx
 import React from 'react';
 import { Product } from '../../types/Product';
 import Card from '../../components/common/Card';
@@ -10,6 +11,7 @@ interface ProductGridProps {
   totalResults: number;
   currentPage: number;
   totalPages: number;
+  pageSize: number; // ✅ thêm dòng này để tính đúng "from - to"
   onPageChange: (page: number) => void;
   onSortChange: (value: string) => void;
   onFavoriteToggle: (id: number) => void;
@@ -20,6 +22,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   totalResults,
   currentPage,
   totalPages,
+  pageSize,
   onPageChange,
   onSortChange,
   onFavoriteToggle
@@ -32,11 +35,14 @@ const ProductGrid: React.FC<ProductGridProps> = ({
     { value: 'name-desc', label: 'Tên: Z-A' },
   ];
 
+  const from = (currentPage - 1) * pageSize + 1;
+  const to = Math.min(currentPage * pageSize, totalResults);
+
   return (
     <div className="w-full">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <p className="text-xl text-gray-500">
-          Hiển thị kết quả từ 12 đến 12 trong số {totalResults} kết quả
+          Hiển thị kết quả từ {from} đến {to} trong số {totalResults} kết quả
         </p>
         <Dropdown
           options={sortOptions}

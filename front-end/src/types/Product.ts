@@ -1,8 +1,10 @@
-export interface PetCategory {
+export interface WaterCategory {
   id: number;
   name: string;
   image: string;
   vectorImage: string;
+  productType?: string;
+  slug?: string;
 }
 
 export interface FilterCategory {
@@ -19,7 +21,7 @@ export interface Brand {
   checked: boolean;
 }
 
-export interface PetTag {
+export interface WaterTag {
   id: number;
   name: string;
   selected: boolean;
@@ -37,3 +39,5 @@ export interface PriceRange {
   min: number;
   max: number;
 }
+
+  

@@ -45,6 +45,9 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductStatus status = ProductStatus.AVAILABLE;
 
+    @Column(name = "is_featured")
+    private Boolean isFeatured = false;
+
     @CreationTimestamp
     private LocalDateTime createdAt = LocalDateTime.now();
     @UpdateTimestamp
@@ -54,10 +57,19 @@ public class Product {
     @Column(name = "product_type")
     private ProductType productType;
 
-    @ManyToMany(fetch = FetchType.LAZY) //EAGER
-    @JoinTable(name = "category_mapping",
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+//    @JoinTable(
+//            name = "category_mapping",
+//            joinColumns = @JoinColumn(name = "product_id"),
+//            inverseJoinColumns = @JoinColumn(name = "category_id")
+//    )
+//    private Set<Category> categories = new HashSet<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "category_mapping",
             joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
     private Set<Category> categories = new HashSet<>();
 
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -28,16 +28,22 @@ const AppRoutes: React.FC = () => {
                 <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
                 <Route path="/" element={<HomePage />} />
                 <Route path="/products" element={<Products />} />
+                {/* <Route path="/category/:slug" element={<Products />} /> */}
+                <Route path="/category/:categoryId" element={<Products />} />
+                <Route path="/productdetail/:id" element={<ProductDetailPage />} />
+
+                {/* <Route path="/productdetail" element={<ProductDetailPage />} />
+                <Route path="/productdetail/:id" element={<ProductDetailPage />} /> */}
+
                 <Route path="/forum" element={<Forum />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/cartpage" element={<CartPage />} />
-                <Route path="/productdetail" element={<ProductDetailPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/orders" element={<Order />} />
                 <Route path="/cartcheckout" element={<CartCheckOut />} />
-                <Route path="/forepw" element={<ForgotPassword />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/" element={<Navigate to="/login" replace />} /> {/* Default redirect */}
             </Routes>
         </Router>

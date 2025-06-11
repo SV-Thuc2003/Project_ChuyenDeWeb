@@ -28,7 +28,7 @@ public class Category {
     private String description;
 
     // Phân cấp parent-child
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")
     @JsonBackReference
     private Category parent;
