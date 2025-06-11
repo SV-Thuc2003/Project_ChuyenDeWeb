@@ -7,33 +7,31 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "reviews")
+@Table(name = "contact")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Review {
+public class Contact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    private String name;
 
-    private Integer rating;
+    private String email;
+
+    private String title;
 
     @Column(columnDefinition = "TEXT")
-    private String comment;
+    private String message;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-
-    private String ipAddress;
 }

@@ -1,22 +1,24 @@
 package com.example.be.entity;
 
+import com.example.be.enums.FilterType;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "order_statuses")
+@Table(name = "product_filters")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderStatus {
+public class ProductFilter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true, nullable = false)
-    private String statusName;
-}
+    private String filterName;
 
+    @Enumerated(EnumType.STRING)
+    private FilterType filterType;
+}
