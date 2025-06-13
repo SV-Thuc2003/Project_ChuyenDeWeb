@@ -28,13 +28,14 @@ const StepEmail: React.FC<Props> = ({ email, setEmail, onSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="w-full space-y-4">
       <InputField
         label="Email"
         placeholder="Nhập email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
+        
       />
       <Button type="submit" className="w-full" disabled={loading}>
         {loading ? "Đang gửi..." : "Gửi OTP"}

@@ -23,5 +23,6 @@ public class ProductRequest {
     private ProductDetailRequest detail;  // Base class/interface cho các loại detail
     private List<String> imageUrls;
     private String thumbnailUrl;
+    private Boolean isFeatured;
 }
 

@@ -26,5 +26,6 @@ public class ProductResponse {
     private List<String> imageUrls;
     private String thumbnailUrl;
     private ProductDetailResponse detail;
+    private Boolean isFeatured;
 }
 

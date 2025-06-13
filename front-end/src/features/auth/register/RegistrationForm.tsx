@@ -199,7 +199,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
             <div className="mt-6 text-center">
                 <p className="text-lg text-black">
                     Nếu bạn đã có tài khoản?{" "}
-                    <Link to="/login" className="text-[#3a5b22] hover:underline">
+                    <Link to="/login" className="text-[#3b63f3] hover:underline">
                         Chuyển tới trang đăng nhập
                     </Link>
                 </p>

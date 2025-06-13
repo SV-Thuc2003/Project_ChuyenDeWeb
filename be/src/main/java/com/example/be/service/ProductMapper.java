@@ -16,7 +16,6 @@
 //
 //@Mapper(componentModel = "spring")
 //public interface ProductMapper {
-////    mapping cơ bản8
 //    @Mapping(target = "id", ignore = true)
 //    @Mapping(target = "categories", ignore = true) //xử lý riêng
 //    @Mapping(target = "images", ignore = true) // xử lý riêng

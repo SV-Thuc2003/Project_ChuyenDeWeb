@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../../../contexts/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation  } from "react-router-dom";
 import InputField from "../../ui/InputField";
 import Dropdown from "../../ui/Dropdown";
 import logo from "../../../assets/logo.png";
@@ -13,6 +13,8 @@ import { FaUserCircle } from "react-icons/fa";
 const Header: React.FC = () => {
   const { username, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const handleDropdownChange = (value: string) => {
     if (value === "logout") {
@@ -22,9 +24,16 @@ const Header: React.FC = () => {
       navigate("/profile");
     }
   };
-  //   const handleLoginClick = () => {
-  //     navigate("/login");
-  //   };
+  
+  const navLinks = [
+    { path: "/", label: "Trang chủ" },
+    { path: "/products", label: "Sản phẩm" },
+    { path: "/forum", label: "Giới Thiệu" },
+    { path: "/posts", label: "Dịch vụ" },
+    { path: "/about", label: "Tin tức" },
+    { path: "/contact", label: "Liên hệ" },
+  ];
+
   return (
     <header className="bg-white">
       <div className="bg-[#f8f9fa] py-6">
@@ -60,43 +69,20 @@ const Header: React.FC = () => {
           <span className="ml-2 text-xl font-bold">Water Purifier Shop</span>
         </div>
 
-        <nav className="flex items-center space-x-8">
-          <Link
-            to="/"
-            className="text-xl font-semibold text-[#fd7e14] border-b border-[#fd7e14] pb-1"
-          >
-            Trang chủ
-          </Link>
-          <Link
-            to="/products"
-            className="text-xl font-medium text-black hover:text-[#fd7e14]"
-          >
-            Sản phẩm
-          </Link>
-          <Link
-            to="/forum"
-            className="text-xl font-medium text-black hover:text-[#fd7e14]"
-          >
-            Giới Thiệu
-          </Link>
-          <Link
-            to="/posts"
-            className="text-xl font-medium text-black hover:text-[#fd7e14]"
-          >
-            Dịch vụ
-          </Link>
-          <Link
-            to="/about"
-            className="text-xl font-medium text-black hover:text-[#fd7e14]"
-          >
-            Tin tức
-          </Link>
-          <Link
-            to="/contact"
-            className="text-xl font-medium text-black hover:text-[#fd7e14]"
-          >
-            Liên hệ
-          </Link>
+        <nav className="flex items-center space-x-8 mt-1">
+          {navLinks.map(({ path, label }) => (
+            <Link
+              key={path}
+              to={path}
+              className={`text-xl font-semibold   pb-1 ${
+                currentPath === path
+                  ? "text-[#5290f3] border-b-2 border-[#2d77ee]"
+                  : "text-black hover:text-[#5290f3]"
+              }`}
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
 
         <div className="flex items-center space-x-4">
@@ -110,7 +96,7 @@ const Header: React.FC = () => {
                 onChange={handleDropdownChange}
                 icon={
                   <FaUserCircle
-                    className="text-[#fd7e14] w-6 h-6 cursor-pointer"
+                    className="text-[#5290f3] w-6 h-6 cursor-pointer"
                     title="Tài khoản"
                   />
                 }
@@ -118,8 +104,8 @@ const Header: React.FC = () => {
               />
             ) : (
               <button
-                onClick={() => navigate("/login")}
-                className="text-xl font-medium text-black hover:text-[#fd7e14]"
+                onClick={() => navigate("/login")} 
+                className="text-xl font-medium text-black hover:text-[#5290f3] cursor-pointer"
               >
                 Đăng nhập
               </button>
@@ -138,14 +124,14 @@ const Header: React.FC = () => {
 
           <div className="relative">
             <CiHeart className="w-7 h-7" />
-            <div className="absolute -top-2 -right-2 bg-[#fd7e14] text-white text-[10px] w-3 h-3 rounded-full flex items-center justify-center">
+            <div className="absolute -top-2 -right-2 bg-[#5290f3] text-white text-[10px] w-3 h-3 rounded-full flex items-center justify-center cursor-pointer">
               0
             </div>
           </div>
 
           <div className="relative ml-4">
             <CiShoppingCart className="w-7 h-7" />
-            <div className="absolute -top-2 -right-2 bg-[#fd7e14] text-white text-[10px] w-3 h-3 rounded-full flex items-center justify-center">
+            <div className="absolute -top-2 -right-2 bg-[#5290f3] text-white text-[10px] w-3 h-3 rounded-full flex items-center justify-center cursor-pointer">
               0
             </div>
           </div>

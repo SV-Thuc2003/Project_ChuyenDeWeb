@@ -22,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({
                                          fullWidth = false,
                                        }) => {
   console.log("Type of `type` prop:", type);
-  const baseStyles = "text-xl font-medium rounded-lg flex items-center justify-center";
+  const baseStyles = "text-xl font-medium rounded-lg flex items-center justify-center cursor-pointer";
 
   const variantStyles = {
     primary: "bg-blue-400 text-white border border-blue-400 font-bold",
