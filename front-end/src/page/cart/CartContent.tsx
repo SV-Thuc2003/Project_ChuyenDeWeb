@@ -1,7 +1,7 @@
 // // components/cart/CartContent.tsx
 // import React from 'react';
 // import Card from '../../components/common/Card';
-
+//
 // const CartContent = () => {
 //   const products = [
 //     {
@@ -12,7 +12,7 @@
 //     },
 //     // Add more items if needed
 //   ];
-
+//
 //   return (
 //     <div className="w-full lg:w-3/5 px-4">
 //       <h2 className="text-xl font-semibold mb-4">Sản phẩm</h2>
@@ -38,5 +38,5 @@
 //     </div>
 //   );
 // };
-
+//
 // export default CartContent;

@@ -154,7 +154,7 @@ public class AuthService {
         // Tạo JWT token
         String token = jwtService.generateToken(user.getEmail());
 
-        return new LoginResponse(token, user.getUsername(), role);
+        return new LoginResponse(token, user.getUsername(), role, user.getId()); // 👈 thêm user.getId()
     }
 
     /**

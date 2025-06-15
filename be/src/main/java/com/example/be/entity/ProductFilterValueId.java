@@ -14,7 +14,7 @@ import java.util.Objects;
 public class ProductFilterValueId implements Serializable {
     private Integer productId;
     private Integer filterId;
-    private String value;
+//    private String value;
 
     @Override
     public boolean equals(Object o) {
@@ -22,12 +22,11 @@ public class ProductFilterValueId implements Serializable {
         if (!(o instanceof ProductFilterValueId)) return false;
         ProductFilterValueId that = (ProductFilterValueId) o;
         return Objects.equals(productId, that.productId) &&
-                Objects.equals(filterId, that.filterId) &&
-                Objects.equals(value, that.value);
+                Objects.equals(filterId, that.filterId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, filterId, value);
+        return Objects.hash(productId, filterId);
     }
 }

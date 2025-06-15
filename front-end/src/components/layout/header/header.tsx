@@ -9,11 +9,15 @@ import { MdOutlineEmail } from "react-icons/md";
 import { CiLocationOn, CiHeart, CiShoppingCart } from "react-icons/ci";
 import { IoSearchCircle } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
+import { useCart } from "../../../contexts/CartContext";
+
 
 const Header: React.FC = () => {
   const { username, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { cartItems } = useCart();
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   const currentPath = location.pathname;
 
   const handleDropdownChange = (value: string) => {
@@ -129,12 +133,13 @@ const Header: React.FC = () => {
             </div>
           </div>
 
-          <div className="relative ml-4">
+          <div className="relative ml-4 cursor-pointer" onClick={() => navigate("/cart")}>
             <CiShoppingCart className="w-7 h-7" />
-            <div className="absolute -top-2 -right-2 bg-[#5290f3] text-white text-[10px] w-3 h-3 rounded-full flex items-center justify-center cursor-pointer">
-              0
+            <div className="absolute -top-2 -right-2 bg-[#5290f3] text-white text-[10px] w-3 h-3 rounded-full flex items-center justify-center">
+              {cartCount}
             </div>
           </div>
+
         </div>
       </div>
     </header>

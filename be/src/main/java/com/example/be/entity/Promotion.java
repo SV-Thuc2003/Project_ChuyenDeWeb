@@ -1,5 +1,6 @@
 package com.example.be.entity;
 
+import com.example.be.enums.DiscountType;
 import com.example.be.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
