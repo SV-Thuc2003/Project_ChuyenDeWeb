@@ -7,9 +7,14 @@ export interface PersonalInfo {
 
 export interface ShippingAddress {
   address: string;
+  ward: string;       // Thêm dòng này
+  district: string;   // Thêm dòng này
   city: string;
-  postalCode: string;
-  country: string;
+
+  // ✅ THÊM CÁC FIELD BÊN DƯỚI NẾU CHƯA CÓ
+  provinceId: string;
+  districtId: string;
+  wardCode: string;
 }
 
 export interface CheckoutState {

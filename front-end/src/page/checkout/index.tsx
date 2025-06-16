@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/layout/header/header";
 import Footer from "../../components/layout/footer/footer";
 import PersonalInfoForm from "../checkout/PersonalInfoForm";
@@ -11,20 +11,65 @@ import {
   PersonalInfo,
   ShippingAddress,
 } from "../../types/ChechOut";
+import { CartItem } from "../../types/Cart";
+import axios from "axios";
 
 const Checkout: React.FC = () => {
-  // State with the types defined in checkout.ts
   const [checkoutState, setCheckoutState] = useState<CheckoutState>({
     personalInfo: { name: "", email: "", phone: "" },
-    shippingAddress: { address: "", city: "", postalCode: "", country: "" },
+    shippingAddress: {
+      address: "",
+      ward: "",
+      wardCode: "",
+      district: "",
+      districtId: "",
+      city: "",
+      provinceId: ""
+    },
     discountCode: "",
     paymentMethod: "",
   });
 
-  // Handle personal info change
+  const [products, setProducts] = useState<CartItem[]>([]);
+  const [shippingFee, setShippingFee] = useState<number>(0);
+
+
+  // 🚚 Lấy giỏ hàng từ backend
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
+
+    if (!userId || !token) {
+      console.error("❌ Không có user đăng nhập.");
+      return;
+    }
+
+    axios.get(`/api/cart/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    })
+        .then(res => {
+          setProducts(res.data);
+        })
+        .catch(err => {
+          console.error("❌ Lỗi lấy giỏ hàng:", err);
+        });
+  }, []);
+
+
+  // Tính tổng giá sản phẩm
+  const subtotal = products.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+  );
+
+  const discount = checkoutState.discountCode ? 50000 : 0;
+
   const handlePersonalInfoChange = (
-    field: keyof PersonalInfo,
-    value: string
+      field: keyof PersonalInfo,
+      value: string
   ) => {
     setCheckoutState((prev) => ({
       ...prev,
@@ -32,10 +77,9 @@ const Checkout: React.FC = () => {
     }));
   };
 
-  // Handle shipping address change
   const handleShippingAddressChange = (
-    field: keyof ShippingAddress,
-    value: string
+      field: keyof ShippingAddress,
+      value: string
   ) => {
     setCheckoutState((prev) => ({
       ...prev,
@@ -43,7 +87,6 @@ const Checkout: React.FC = () => {
     }));
   };
 
-  // Handle discount code change
   const handleDiscountCodeChange = (value: string) => {
     setCheckoutState((prev) => ({
       ...prev,
@@ -51,7 +94,6 @@ const Checkout: React.FC = () => {
     }));
   };
 
-  // Handle payment method change
   const handlePaymentMethodChange = (value: string) => {
     setCheckoutState((prev) => ({
       ...prev,
@@ -59,78 +101,74 @@ const Checkout: React.FC = () => {
     }));
   };
 
-  // Handle apply discount code
   const handleApplyDiscountCode = () => {
-    console.log("Discount code applied:", checkoutState.discountCode);
-    // Logic to apply discount would go here
+    console.log("🎟️ Mã giảm giá:", checkoutState.discountCode);
   };
 
-  // Handle place order
   const handlePlaceOrder = () => {
-    console.log("Placing order...");
-    // Logic for placing order would go here
+    const data = {
+      ...checkoutState,
+      products,
+      shippingFee,
+      subtotal,
+      discount,
+      total: subtotal - discount + shippingFee,
+    };
+    console.log("✅ Đặt hàng:", data);
+    alert("Đặt hàng thành công!");
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+      <div className="min-h-screen flex flex-col">
+        <Header />
 
-      <main className="flex-grow">
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              {/* Personal Info Form */}
-              <PersonalInfoForm
-                personalInfo={checkoutState.personalInfo}
-                onPersonalInfoChange={handlePersonalInfoChange}
-              />
+        <main className="flex-grow">
+          <div className="container mx-auto px-4 py-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-6">
+                <PersonalInfoForm
+                    personalInfo={checkoutState.personalInfo}
+                    onPersonalInfoChange={handlePersonalInfoChange}
+                />
 
-              {/* Shipping Address Form */}
-              <ShippingAddressForm
-                shippingAddress={checkoutState.shippingAddress}
-                onShippingAddressChange={handleShippingAddressChange}
-              />
+                <ShippingAddressForm
+                    shippingAddress={checkoutState.shippingAddress}
+                    onShippingAddressChange={handleShippingAddressChange}
+                    onShippingFeeChange={setShippingFee}
+                />
 
-              {/* Discount Code Form */}
-              <DiscountCodeForm
-                discountCode={checkoutState.discountCode}
-                onDiscountCodeChange={handleDiscountCodeChange}
-                onApplyDiscountCode={handleApplyDiscountCode}
-              />
+                <DiscountCodeForm
+                    discountCode={checkoutState.discountCode}
+                    onDiscountCodeChange={handleDiscountCodeChange}
+                    onApplyDiscountCode={handleApplyDiscountCode}
+                />
 
-              {/* Payment Method Form */}
-              <PaymentMethodForm
-                paymentMethod={checkoutState.paymentMethod}
-                onPaymentMethodChange={handlePaymentMethodChange}
-                onApplyDiscountCode={handleApplyDiscountCode}
-              />
-            </div>
+                <PaymentMethodForm
+                    paymentMethod={checkoutState.paymentMethod}
+                    onPaymentMethodChange={handlePaymentMethodChange}
+                    onApplyDiscountCode={handleApplyDiscountCode}
+                />
+              </div>
 
-            <div className="lg:col-span-1">
-              {/* Order Summary */}
-              <OrderSummary
-                personalInfo={checkoutState.personalInfo}
-                shippingAddress={checkoutState.shippingAddress}
-                discountCode={checkoutState.discountCode}
-                paymentMethod={checkoutState.paymentMethod}
-                product={{
-                  name: "Sản phẩm demo",
-                  price: 200000,
-                  quantity: 1,
-                  image: "",
-                }}
-                subtotal={200000}
-                discount={checkoutState.discountCode ? 50000 : 0}
-                shippingFee={30000}
-                onPlaceOrder={handlePlaceOrder}
-              />
+              <div className="lg:col-span-1">
+                <OrderSummary
+                    personalInfo={checkoutState.personalInfo}
+                    shippingAddress={checkoutState.shippingAddress}
+                    discountCode={checkoutState.discountCode}
+                    paymentMethod={checkoutState.paymentMethod}
+                    products={products ?? []}
+                    subtotal={subtotal}
+                    discount={discount}
+                    shippingFee={shippingFee}
+                    onPlaceOrder={handlePlaceOrder}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
   );
 };
 

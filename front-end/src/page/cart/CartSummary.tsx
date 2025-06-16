@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import Button from '../../components/ui/Button';
-import InputField from '../../components/ui/InputField';
+// import InputField from '../../components/ui/InputField';
 
 interface CartSummaryProps {
   subtotal: number;
@@ -12,16 +12,16 @@ interface CartSummaryProps {
 const CartSummary: React.FC<CartSummaryProps> = ({
   subtotal,
   total,
-  onApplyPromoCode,
+  // onApplyPromoCode,
   onProceedToCheckout
 }) => {
-  const [promoCode, setPromoCode] = useState('');
-
-  const handleApplyPromoCode = () => {
-    if (promoCode.trim()) {
-      onApplyPromoCode(promoCode);
-    }
-  };
+  // const [promoCode, setPromoCode] = useState('');
+  //
+  // const handleApplyPromoCode = () => {
+  //   if (promoCode.trim()) {
+  //     onApplyPromoCode(promoCode);
+  //   }
+  // };
 
   return (
     <div className="border border-[#a48c8ca8]">
@@ -49,26 +49,24 @@ const CartSummary: React.FC<CartSummaryProps> = ({
           Tiến hành thanh toán
         </Button>
         
-        <div className="mt-6">
-          <div className="flex items-center mb-2">
-            <img src="/images/img_vector_gray_600.svg" alt="Promo" className="w-[18px] h-[18px] mr-2" />
-            <h3 className="text-lg font-bold text-[#757575]">Mã ưu đãi</h3>
-          </div>
-          
-          <InputField
-            value={promoCode}
-            onChange={(e) => setPromoCode(e.target.value)}
-            placeholder="Mã ưu đãi"
-            className="border border-[#dddddd] shadow-sm py-3"
-          />
-          
-          <button 
-            onClick={handleApplyPromoCode}
-            className="w-full mt-4 py-2 bg-[#f9f9f9] border border-[#dddddd] text-[#666666] text-xl hover:bg-[#f0f0f0] transition-colors"
-          >
-            Áp dụng
-          </button>
-        </div>
+        {/*<div className="mt-6">*/}
+        {/*  <div className="flex items-center mb-2">*/}
+        {/*    <img src="/images/img_vector_gray_600.svg" alt="Promo" className="w-[18px] h-[18px] mr-2" />*/}
+        {/*    <h3 className="text-lg font-bold text-[#757575]">Mã ưu đãi</h3>*/}
+        {/*  </div>*/}
+        {/*  <InputField*/}
+        {/*    value={promoCode}*/}
+        {/*    onChange={(e) => setPromoCode(e.target.value)}*/}
+        {/*    placeholder="Mã ưu đãi"*/}
+        {/*    className="border border-[#dddddd] shadow-sm py-3"*/}
+        {/*  />*/}
+        {/*  <button */}
+        {/*    onClick={handleApplyPromoCode}*/}
+        {/*    className="w-full mt-4 py-2 bg-[#f9f9f9] border border-[#dddddd] text-[#666666] text-xl hover:bg-[#f0f0f0] transition-colors"*/}
+        {/*  >*/}
+        {/*    Áp dụng*/}
+        {/*  </button>*/}
+        {/*</div>*/}
       </div>
     </div>
   );

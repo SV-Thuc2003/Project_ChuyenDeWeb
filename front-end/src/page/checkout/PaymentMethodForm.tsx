@@ -30,6 +30,19 @@ const PaymentMethodForm: React.FC<PaymentMethodFormProps> = ({
             <span>Thanh toán khi nhận hàng</span>
           </label>
 
+
+          <label className="flex items-center space-x-2">
+            <input
+                type="radio"
+                name="paymentMethod"
+                value="vnpay"
+                checked={paymentMethod === 'vnpay'}
+                onChange={() => onPaymentMethodChange('vnpay')}
+                className="accent-orange-500"
+            />
+            <span>Thanh toán qua VNPAY QR</span>
+          </label>
+
           <label className="flex items-center space-x-2">
             <input
               type="radio"

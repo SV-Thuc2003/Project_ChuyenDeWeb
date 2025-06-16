@@ -126,8 +126,9 @@ const CartCheckOut: React.FC = () => {
   };
 
   const handleProceedToCheckout = () => {
-    alert('Đang chuyển đến trang thanh toán...');
+    navigate("/checkout");
   };
+
 
   return (
       <div className="min-h-screen flex flex-col">

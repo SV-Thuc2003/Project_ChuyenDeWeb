@@ -67,6 +67,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**", "/oauth2/**").permitAll()
                         .requestMatchers("/api/products/**").permitAll()
                         .requestMatchers("/api/cart/**").authenticated()
+                        .requestMatchers("/api/shipping/fee").permitAll() // ✅ Cho phép public endpoint tính phí GH
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth -> oauth
