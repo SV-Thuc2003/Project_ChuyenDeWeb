@@ -25,9 +25,10 @@ public class JwtService {
      * @param email đại chỉ email sẽ lưu vào token
      * @return chuỗi JWT đã ký
      */
-    public String generateToken(String email) {
+    public String generateToken(String email,Integer userId) {
         return Jwts.builder()
                 .setSubject(email) // subject là email người dùng
+                .claim("userId", userId)
                 .setIssuedAt(new Date()) // thời điểm phát hành token
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // hết hạn sau 1 day
                 .signWith(key, SignatureAlgorithm.HS256) // ký bằng khóa bí mật
@@ -88,6 +89,11 @@ public class JwtService {
         Date expiration = claims.getExpiration();
         return expiration.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
     }
+    public Integer getUserIdFromToken(String token) {
+        Claims claims = parseClaims(token).getBody();
+        return claims.get("userId", Integer.class);
+    }
+
 }
 
 

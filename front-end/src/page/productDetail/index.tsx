@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/layout/header/header";
 import Footer from "../../components/layout/footer/footer";
-import { getProductById } from "../../Services/products"; // Đường dẫn tùy theo dự án
+import { getProductById } from "../../Service/products"; // Đường dẫn tùy theo dự án
 import { ProductDetail } from "../../types/ProductDetail";
 import ProductImages from "./ProductImages";
-import ProductDetailRight from "./ProductDetailRight"
+import ProductDetailRight from "./ProductDetailRight";
 import PolicyList from "./PolicyList";
 // import ProductTypeDetailDisplay from "./ProductTypeDetailDisplay";
 import ProductDetailTabs from "./ProductDetailTabs";
@@ -18,23 +18,23 @@ const ProductDetailPage: React.FC = () => {
     if (id) {
       getProductById(Number(id))
         .then((data) => {
-          console.log("Product:", data); // 👈 kiểm tra ở đây
+          console.log("Product:", data); // kiểm tra ở đây
           setProduct(data);
         })
         .catch((err) => console.error("Lỗi lấy sản phẩm:", err));
     }
   }, [id]);
-  const handleReviewSubmit = (rating: number, comment: string) => {
-    const review = {
-      username: "Nguyen Van A", // hoặc lấy từ context/login info
-      rating,
-      comment,
-      createdAt: new Date().toISOString(),
-    };
+  // const handleReviewSubmit = (rating: number, comment: string) => {
+  //   const review = {
+  //     username: "Nguyen Van A", // hoặc lấy từ context/login info
+  //     rating,
+  //     comment,
+  //     createdAt: new Date().toISOString(),
+  //   };
 
-    console.log("Đánh giá mới:", review);
-    // TODO: gọi API POST review ở đây
-  };
+  //   console.log("Đánh giá mới:", review);
+  //   // TODO: gọi API POST review ở đây
+  // };
 
   if (!product) {
     return <div>Đang tải sản phẩm...</div>;
@@ -56,10 +56,10 @@ const ProductDetailPage: React.FC = () => {
 
           <PolicyList />
           <ProductDetailTabs
+            productId={product.id}
             productType={product.productType}
             detail={product.detail}
-            reviews={product.reviews ?? []}
-            onSubmitReview={handleReviewSubmit}
+            // onSubmitReview={handleReviewSubmit}
           />
 
           {/* <ProductTypeDetailDisplay
@@ -69,8 +69,7 @@ const ProductDetailPage: React.FC = () => {
         </div>
 
         {/* Right side: thông tin chi tiết */}
-          <ProductDetailRight product={product} />
-       
+        <ProductDetailRight product={product} />
       </main>
 
       <Footer />

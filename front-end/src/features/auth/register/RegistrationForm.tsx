@@ -4,7 +4,7 @@ import InputField from "../../../components/ui/InputField.tsx";
 import Button from "../../../components/ui/Button.tsx";
 import Checkbox from "../../../components/ui/Checkbox.tsx";
 import { RegisterFormData, RegisterFormErrors } from "../../../types/Register.ts";
-import { register } from "../../../Services/authService.ts";
+import { register } from "../../../Service/authService.ts";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

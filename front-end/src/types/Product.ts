@@ -19,6 +19,7 @@ export interface Brand {
   name: string;
   count: number;
   checked: boolean;
+  image:string;
 }
 
 export interface WaterTag {
@@ -30,14 +31,14 @@ export interface WaterTag {
 export interface Product {
   id: number;
   name: string;
-  price: string;
+  price: number;
   image: string;
   isFavorite: boolean;
 }
 
-export interface PriceRange {
+export type PriceRange = {
   min: number;
   max: number;
-}
+};
 
   

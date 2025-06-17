@@ -10,6 +10,8 @@ interface CardProps {
     title?: string;
     price?: string;
     onAddToWishlist?: (id?: number) => void;
+    isFavorite?: boolean;
+    onFavoriteToggle?: (id: number) => void;
     className?: string;
 }
 
@@ -19,6 +21,8 @@ const Card: React.FC<CardProps> = ({
                                        title,
                                        price,
                                        onAddToWishlist = () => {},
+                                       isFavorite = false,
+  onFavoriteToggle,
                                        className = '',
                                    }) => {
     const navigate = useNavigate();
@@ -33,9 +37,16 @@ const Card: React.FC<CardProps> = ({
     };
 
     const handleWishlistClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        onAddToWishlist(id);
-    };
+    e.stopPropagation();
+
+    // Nếu có prop `onFavoriteToggle` thì gọi nó
+    if (onFavoriteToggle && id !== undefined) {
+      onFavoriteToggle(id);
+    } else {
+      // fallback gọi hàm cũ nếu chưa cập nhật hook
+      onAddToWishlist(id);
+    }
+  };
 
     const handleAddToCart = async (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -57,43 +68,88 @@ const Card: React.FC<CardProps> = ({
 
     return (
         <div
-            onClick={handleCardClick}
-            className={`border border-[#e0e0e0] rounded-[20px] overflow-hidden cursor-pointer transition hover:shadow-md ${className}`}
-        >
-            <div className="w-full h-[360px] relative overflow-hidden">
-                <img src={image} alt={title} className="w-full h-full object-cover" />
+  onClick={handleCardClick}
+  className={`group border border-[#e0e0e0] rounded-[20px] overflow-hidden cursor-pointer transition hover:shadow-md relative ${className}`}
+>
+  <div className="w-full h-[360px] relative overflow-hidden">
+    <img src={image} alt={title} className="w-full h-full object-cover" />
 
-                {quantityInCart > 0 && (
-                    <div className="absolute top-2 left-2 bg-[#5290f3] text-white text-xs font-semibold px-2 py-1 rounded-full">
-                        {quantityInCart} trong giỏ
-                    </div>
-                )}
-            </div>
+    {quantityInCart > 0 && (
+      <div className="absolute top-2 left-2 bg-[#5290f3] text-white text-xs font-semibold px-2 py-1 rounded-full">
+        {quantityInCart} trong giỏ
+      </div>
+    )}
+  </div>
 
-            <div className="p-5 relative">
-                <h3 className="text-xl font-semibold text-black mb-2">{title}</h3>
-                <p className="text-base text-black">{price}</p>
+  <div className="p-5">
+    <h3 className="text-xl font-semibold text-black mb-2">{title}</h3>
+    <p className="text-base text-black">{price}</p>
+  </div>
 
-                <div className="absolute right-5 top-5 flex flex-col space-y-2">
-                    <button
-                        onClick={handleWishlistClick}
-                        className="bg-[#f8f9fa] w-8 h-8 rounded-full flex items-center justify-center"
-                        title="Yêu thích"
-                    >
-                        <CiHeart className="w-[24px] h-[24px]" />
-                    </button>
+  {/* Các nút hiển thị khi hover */}
+  <div
+    className="absolute bottom-5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex space-x-3"
+    onClick={(e) => e.stopPropagation()} // Ngăn click lan ra card
+  >
+     <button
+                    onClick={handleWishlistClick}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center shadow hover:bg-gray-100 
+                        ${isFavorite ? "bg-red-100 text-red-500" : "bg-gray-200 text-gray-600"}`}
+                    title="Yêu thích"
+                >
+      <CiHeart className="w-[24px] h-[24px]" />
+    </button>
 
-                    <button
-                        onClick={handleAddToCart}
-                        className="bg-[#f8f9fa] w-8 h-8 rounded-full flex items-center justify-center"
-                        title="Thêm vào giỏ"
-                    >
-                        <CiShoppingCart className="w-[24px] h-[24px]" />
-                    </button>
-                </div>
-            </div>
-        </div>
+    <button
+      onClick={handleAddToCart}
+      className="bg-[#f8f9fa] w-10 h-10 rounded-full flex items-center justify-center shadow hover:bg-gray-100"
+      title="Thêm vào giỏ"
+    >
+      <CiShoppingCart className="w-[24px] h-[24px]" />
+    </button>
+  </div>
+</div>
+
     );
 };
 
 export default Card;
+
+
+// <div
+//             onClick={handleCardClick}
+//             className={`border border-[#e0e0e0] rounded-[20px] overflow-hidden cursor-pointer transition hover:shadow-md ${className}`}
+//         >
+//             <div className="w-full h-[360px] relative overflow-hidden">
+//                 <img src={image} alt={title} className="w-full h-full object-cover" />
+
+//                 {quantityInCart > 0 && (
+//                     <div className="absolute top-2 left-2 bg-[#5290f3] text-white text-xs font-semibold px-2 py-1 rounded-full">
+//                         {quantityInCart} trong giỏ
+//                     </div>
+//                 )}
+//             </div>
+
+//             <div className="p-5 relative">
+//                 <h3 className="text-xl font-semibold text-black mb-2">{title}</h3>
+//                 <p className="text-base text-black">{price}</p>
+
+//                 <div className="absolute right-5 top-5 flex flex-col space-y-2">
+//                     <button
+//                         onClick={handleWishlistClick}
+//                         className="bg-[#f8f9fa] w-8 h-8 rounded-full flex items-center justify-center"
+//                         title="Yêu thích"
+//                     >
+//                         <CiHeart className="w-[24px] h-[24px]" />
+//                     </button>
+
+//                     <button
+//                         onClick={handleAddToCart}
+//                         className="bg-[#f8f9fa] w-8 h-8 rounded-full flex items-center justify-center"
+//                         title="Thêm vào giỏ"
+//                     >
+//                         <CiShoppingCart className="w-[24px] h-[24px]" />
+//                     </button>
+//                 </div>
+//             </div>
+//         </div>

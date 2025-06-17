@@ -14,15 +14,16 @@ import java.util.Objects;
 public class ProductFilterValueId implements Serializable {
     private Integer productId;
     private Integer filterId;
-//    private String value;
+    private String value;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ProductFilterValueId)) return false;
-        ProductFilterValueId that = (ProductFilterValueId) o;
+        if (!(o instanceof ProductFilterValueId that )) return false;
+//        ProductFilterValueId that = (ProductFilterValueId) o;
         return Objects.equals(productId, that.productId) &&
-                Objects.equals(filterId, that.filterId);
+                Objects.equals(filterId, that.filterId); //&&
+//                Objects.equals(value, that.value);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.be.controller;
 
+import com.example.be.dto.request.ProductFilterRequest;
 import com.example.be.dto.request.ProductRequest;
 import com.example.be.dto.response.ProductResponse;
 import com.example.be.service.ProductService;
@@ -9,8 +10,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.apache.commons.lang3.tuple.Pair;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
@@ -26,14 +32,14 @@ public class ProductController {
     }
 
 
-//    @GetMapping
-//    public ResponseEntity<Page<ProductResponse>> getAllProducts(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "12") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<ProductResponse> products = productService.getAllProducts(pageable);
-//        return ResponseEntity.ok(products);
-//    }
+    @GetMapping
+    public ResponseEntity<Page<ProductResponse>> getAllProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductResponse> products = productService.getAllProducts(pageable);
+        return ResponseEntity.ok(products);
+    }
 
     @GetMapping("/new")
     public ResponseEntity<List<ProductResponse>> getNewProducts() {
@@ -62,77 +68,50 @@ public class ProductController {
         ProductResponse response = productService.getProductById(id);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/sorted")
+    public ResponseEntity<Page<ProductResponse>> getSortedProducts(
+            @RequestParam(defaultValue = "newest") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ){
+        Page<ProductResponse> products = productService.getSortedProducts(sortBy, page, size);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/price-range/{categoryId}")
+    public ResponseEntity<Map<String, BigDecimal>> getPriceRangeByCategory(@PathVariable Integer categoryId) {
+        Pair<BigDecimal, BigDecimal> range = productService.getPriceRangeByCategory(categoryId);
+
+        Map<String, BigDecimal> response = new HashMap<>();
+        response.put("minPrice", range.getLeft());
+        response.put("maxPrice", range.getRight());
+
+        return ResponseEntity.ok(response);
+    }
+
+    // lọc sản phẩm
+    @PostMapping("/filter")
+    public ResponseEntity<Page<ProductResponse>> filterProducts(@RequestBody ProductFilterRequest request) {
+        Page<ProductResponse> products = productService.filterProducts(request);
+        return ResponseEntity.ok(products);
+    }
+    // tìm kiếm sản phẩm
+    @GetMapping("/search")
+    public ResponseEntity<Page<ProductResponse>> searchProducts(
+            @RequestParam String keyword,
+//            @RequestParam(defaultValue = "vi") String lang,   // vi, en, ja…
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<ProductResponse> result = productService.searchProducts(keyword, page, size);
+        return ResponseEntity.ok(result);
+    }
+
+//    @GetMapping("/api/test")
+//    public ResponseEntity<String> testLocale(Locale locale) {
+//        String message = messageSource.getMessage("product.not_found", null, locale);
+//        return ResponseEntity.ok(message);
+//    }
+
 }
-
-//    @GetMapping("/category/{slug}")
-//    public ResponseEntity<List<Product>> getProductsByCategorySlug(@PathVariable String slug) {
-//        List<Product> products = productService.getProductsByCategorySlug(slug);
-//        if (products.isEmpty()) {
-//            return ResponseEntity.noContent().build();
-//        }
-//        return ResponseEntity.ok(products);
-//    }
-
-
-//    /**
-//     * Lấy tất cả sản phẩm (mặc định là trạng thái AVAILABLE)
-//     * Có phân trang
-//     */
-//    @GetMapping
-//    public ResponseEntity<Page<ProductResponse>> getAllProducts(
-//            @PageableDefault(size = 20) Pageable pageable
-//    ) {
-//        Page<ProductResponse> products = productService.getAllProducts(pageable);
-//        return ResponseEntity.ok(products);
-//    }
-//
-//    /**
-//     * Lấy sản phẩm theo category slug (và danh mục con)
-//     */
-//    @GetMapping("/category/{slug}")
-//    public ResponseEntity<Page<ProductResponse>> getProductsByCategory(
-//            @PathVariable String slug,
-//            @PageableDefault(size = 20) Pageable pageable
-//    ) {
-//        Page<ProductResponse> products = productService.getProductsByCategorySlug(slug, pageable);
-//        return ResponseEntity.ok(products);
-//    }
-//
-//    /**
-//     * Lấy sản phẩm theo category slug + productType
-//     */
-//    @GetMapping("/category/{slug}/type")
-//    public ResponseEntity<Page<ProductResponse>> getProductsByCategoryAndType(
-//            @PathVariable String slug,
-//            @RequestParam(required = false) String productType,
-//            @PageableDefault(size = 20) Pageable pageable
-//    ) {
-//        Page<ProductResponse> products = productService.getProductsByCategoryAndType(slug, productType, pageable);
-//        return ResponseEntity.ok(products);
-//    }
-//
-//    /**
-//     * Tìm kiếm sản phẩm theo trạng thái và keyword tên sản phẩm
-//     */
-//    @GetMapping("/search")
-//    public ResponseEntity<Page<ProductResponse>> searchProducts(
-//            @RequestParam ProductStatus status,
-//            @RequestParam String keyword,
-//            @PageableDefault(size = 20) Pageable pageable
-//    ) {
-//        Page<ProductResponse> products = productService.getProductsByStatusAndKeyword(status, keyword, pageable);
-//        return ResponseEntity.ok(products);
-//    }
-//
-//    /**
-//     * Lấy sản phẩm theo trạng thái và loại sản phẩm
-//     */
-//    @GetMapping("/filter")
-//    public ResponseEntity<Page<ProductResponse>> filterProductsByStatusAndType(
-//            @RequestParam ProductStatus status,
-//            @RequestParam(required = false) String productType,
-//            @PageableDefault(size = 20) Pageable pageable
-//    ) {
-//        Page<ProductResponse> products = productService.getProductsByStatusAndType(status, productType, pageable);
-//        return ResponseEntity.ok(products);
-//    }

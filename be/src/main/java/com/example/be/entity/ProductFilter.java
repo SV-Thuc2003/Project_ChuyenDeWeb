@@ -17,6 +17,7 @@ public class ProductFilter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "filter_name", nullable = false, length = 100)
     private String filterName;
 
     @Enumerated(EnumType.STRING)

@@ -14,7 +14,9 @@ import ContactPage from "./page/contact";
 import AboutUs from "./page/about";
 import ProfilePage from "./page/profile";
 import Order from "./page/order";
+import FavoriteList from "./page/favorite/FavoriteProductsPage";
 import CartCheckOut from "./page/cart";
+import SearchPage  from "./page/SearchPage";
 import ForgotPassword from "./features/auth/forgotPassword/ForgotPassword";
 import OrderSuccess from "./page/order/OrderSuccess.tsx";
 
@@ -28,6 +30,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/products" element={<Products />} />
             <Route path="/category/:categoryId" element={<Products />} />
             <Route path="/productdetail/:id" element={<ProductDetailPage />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/cartpage" element={<CartPage />} />
@@ -35,6 +38,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/about" element={<AboutUs />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/orders" element={<Order />} />
+            <Route path="/favorites" element={<FavoriteList userId={parseInt(localStorage.getItem('userId') || '0')} />} />
             <Route path="/cart" element={<CartCheckOut />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/order-success" element={<OrderSuccess />} />
@@ -44,33 +48,3 @@ const AppRoutes: React.FC = () => {
 };
 
 export default AppRoutes;
-
-// import { Routes, Route } from "react-router-dom";
-// import { ROUTERS } from "./utils/router";
-// import LoginForm from "./page/login/LoginForm.tsx";
-// import MasterLayout from "./layout/MasterLayout"; // Đảm bảo import MasterLayout
-//
-// const renderUserRouter = () => {
-//     const userRouters = [
-//         {
-//             path: ROUTERS.USER.LOGIN,
-//             component: <LoginForm />,
-//         },
-//     ];
-//
-//     return (
-//         <MasterLayout>
-//             <Routes>
-//                 {userRouters.map((item, key) => (
-//                     <Route key={key} path={item.path} element={item.component} />
-//                 ))}
-//             </Routes>
-//         </MasterLayout>
-//     );
-// };
-//
-// const RouterCustom: React.FC = () => {
-//     return renderUserRouter();
-// };
-//
-// export default RouterCustom;

@@ -10,6 +10,7 @@ interface InputFieldProps {
   name?: string;
   className?: string;
   error?: string;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   options?: { value: string; label: string }[];
 }
 
@@ -23,7 +24,8 @@ const InputField: React.FC<InputFieldProps> = ({
   name,
   className = "",
   error,
-  options = [],
+  onKeyDown,
+  // options = [],
 }) => {
   return (
     <div className={`flex flex-col gap-y-1 ${className}`}>
@@ -42,6 +44,7 @@ const InputField: React.FC<InputFieldProps> = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         name={name}
         required={required}
         className={`w-full h-[40px] px-3 py-2 text-lg text-black border ${

@@ -29,6 +29,30 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, JpaS
 
     Page<Product> findByStatus(ProductStatus status, Pageable pageable);
 
+    @Query(value = """
+    SELECT * FROM product 
+    WHERE status = 'AVAILABLE'
+    ORDER BY 
+        CASE 
+            WHEN product_type = 'MAY_LOC_NUOC' THEN 0 
+            ELSE 1 
+        END,
+        created_at DESC
+    LIMIT :limit
+    """, nativeQuery = true)
+    List<Product> findNewestProductsPrioritizeWaterFilter(@Param("limit") int limit);
+
+
+    // Tìm giá nhỏ nhất theo categoryId
+    @Query("SELECT MIN(p.price) FROM Product p JOIN p.categories c WHERE c.id = :categoryId AND p.status = :status")
+    BigDecimal findMinPriceByCategoryId(@Param("categoryId") Integer categoryId,
+                                        @Param("status") ProductStatus status);
+
+    // Tìm giá lớn nhất theo categoryId
+    @Query("SELECT MAX(p.price) FROM Product p JOIN p.categories c WHERE c.id = :categoryId AND p.status = :status")
+    BigDecimal findMaxPriceByCategoryId(@Param("categoryId") Integer categoryId,
+                                        @Param("status") ProductStatus status);
+
     @Query("SELECT p FROM Product p WHERE p.status = :status AND p.productType = :productType")
     Page<Product> findByStatusAndProductType(
             @Param("status") ProductStatus status,
@@ -45,10 +69,3 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, JpaS
                                             @Param("status") ProductStatus status,
                                             Pageable pageable);
 }
-
-
-//    @Query("SELECT p FROM Product p JOIN CategoryMapping cm ON p.id = cm.product.id WHERE cm.category.id = :categoryId")
-//    List<Product> findAllByCategoryId(@Param("categoryId") Integer categoryId);
-
-//    @Query("SELECT p FROM Product p JOIN CategoryMapping cm ON p.id = cm.product.id JOIN Category c ON cm.category.id = c.id WHERE c.slug = :slug")
-//    List<Product> findAllByCategorySlug(@Param("slug") String slug);

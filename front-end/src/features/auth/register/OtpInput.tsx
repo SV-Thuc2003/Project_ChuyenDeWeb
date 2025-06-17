@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../../../components/ui/InputField.tsx";
 import Button from "../../../components/ui/Button.tsx";
-import { verifyOtp, resendOtp } from "../../../Services/authService.ts";
+import { verifyOtp, resendOtp } from "../../../Service/authService.ts";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

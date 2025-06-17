@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class FilterCartridgeDetailRequest implements ProductDetailRequest {
+    private String usedFor;
     private Integer stageNumber;
     private String type;
     private String material;
@@ -13,6 +14,8 @@ public class FilterCartridgeDetailRequest implements ProductDetailRequest {
     private String functions;
     private String brandOrigin;
     private String manufactureOrigin;
+    private String manufacturer;
     private String warranty;
     private String additionalInfo;
 }
+

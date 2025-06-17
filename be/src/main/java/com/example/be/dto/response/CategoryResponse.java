@@ -14,6 +14,7 @@ public class CategoryResponse {
     private String name;
     private String slug;
     private String description;
+    private String imageUrl;
     private Integer parentId; // Chỉ trả về id của parent
 
     private List<CategoryResponse> children; // Danh sách các danh mục con (nếu cần)
