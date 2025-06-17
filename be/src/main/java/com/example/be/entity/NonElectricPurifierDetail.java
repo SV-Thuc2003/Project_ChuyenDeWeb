@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class NonElectricPurifierDetail {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,17 +24,22 @@ public class NonElectricPurifierDetail {
     @JoinColumn(name = "product_id", nullable = false, unique = true)
     private Product product;
 
-    private Integer filtrationStages;
-
-    private Integer filterLevels;
-
-    @Column(name = "filter_lifespan_months")
-    private Integer filterLifespanMonths;
+    @Column(name = "product_type")
+    private String productType;
 
     private String technology;
 
     @Column(columnDefinition = "TEXT")
     private String functions;
+
+    @Column(name = "filtration_stages")
+    private Integer filtrationStages;
+
+    @Column(name = "filter_levels")
+    private Integer filterLevels;
+
+    @Column(name = "filter_lifespan_months")
+    private Integer filterLifespanMonths;
 
     @Column(name = "working_pressure_mpa")
     private String workingPressureMpa;
@@ -41,22 +47,16 @@ public class NonElectricPurifierDetail {
     @Column(name = "flow_rate_l_per_min", precision = 5, scale = 2)
     private BigDecimal flowRateLPerMin;
 
-    @Column(name = "tank_capacity")
-    private String tankCapacity;
-
     @Column(name = "capacity_l_per_hour")
     private Integer capacityLPerHour;
-
-    @Column(columnDefinition = "TEXT")
-    private String features;
 
     private String material;
 
     @Column(columnDefinition = "TEXT")
-    private String dimensions;
+    private String features;
 
-    @Column(name = "weight_kg", precision = 5, scale = 2)
-    private BigDecimal weightKg;
+    @Column(name = "dimension_weight", columnDefinition = "TEXT")
+    private String dimensionWeight;
 
     @Column(name = "brand_origin")
     private String brandOrigin;
@@ -64,14 +64,10 @@ public class NonElectricPurifierDetail {
     @Column(name = "manufacture_origin")
     private String manufactureOrigin;
 
+    private String manufacturer;
+
     @Column(name = "launch_year")
     private Integer launchYear;
-
-    @Column(columnDefinition = "TEXT")
-    private String warranty;
-
-    @Column(columnDefinition = "TEXT")
-    private String additionalInfo;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

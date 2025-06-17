@@ -23,21 +23,25 @@ public class FilterCartridgeDetail {
     @JoinColumn(name = "product_id", nullable = false, unique = true)
     private Product product;
 
-    private Integer stageNumber;
+    @Column(columnDefinition = "TEXT")
+    private String usedFor;
 
     private String type;
 
+    @Column(name = "stage_number") // since SQL uses VARCHAR for this field
+    private String stageNumber;
+
+    @Column(columnDefinition = "TEXT")
     private String material;
+
+    @Column(name = "filter_functions", columnDefinition = "TEXT")
+    private String functions;
 
     @Column(name = "filter_size_micron")
     private String filterSizeMicron;
 
-    private Integer lifespanLiters;
-
+    @Column(name = "lifespan_months")
     private Integer lifespanMonths;
-
-    @Column(columnDefinition = "TEXT")
-    private String functions;
 
     @Column(name = "brand_origin")
     private String brandOrigin;
@@ -45,12 +49,9 @@ public class FilterCartridgeDetail {
     @Column(name = "manufacture_origin")
     private String manufactureOrigin;
 
-    @Column(columnDefinition = "TEXT")
-    private String warranty;
-
-    @Column(columnDefinition = "TEXT")
-    private String additionalInfo;
+    private String manufacturer;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 }
+

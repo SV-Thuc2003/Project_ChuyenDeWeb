@@ -26,5 +26,8 @@ public class Brand {
 
     @OneToMany(mappedBy = "brand")
     private Set<Product> products = new HashSet<>();
+
+    @Column(name = "logo_url")
+    private String logoUrl;
 }
 

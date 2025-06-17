@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,6 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class PrefilterHousingDetail {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,64 +23,38 @@ public class PrefilterHousingDetail {
     @JoinColumn(name = "product_id", nullable = false, unique = true)
     private Product product;
 
-    @Column(name = "cup_count")
-    private String cupCount;
+    @Column(name = "filter_quantity")
+    private Integer filterQuantity;                      // Số lượng cốc lọc
 
-    @Column(name = "filter_materials", columnDefinition = "TEXT")
-    private String filterMaterials;
+    @Column(name = "filter_material", columnDefinition = "TEXT")
+    private String filterMaterial;                        // Chất liệu lõi lọc
 
-    @Column(name = "housing_material", columnDefinition = "TEXT")
-    private String housingMaterial;
+    @Column(name = "housing_material", length = 100)
+    private String housingMaterial;                       // Chất liệu thân cốc lọc
 
-    @Column(name = "filter_capacity", columnDefinition = "TEXT")
-    private String filterCapacity;
+    @Column(name = "filter_capacity_litres")
+    private Integer filterCapacityLitres;                 // Số lít nước lọc tối đa
 
-    @Column(columnDefinition = "TEXT")
-    private String functions;
+    @Column(name = "prefilter_function", columnDefinition = "TEXT")
+    private String prefilterFunction;                     // Công dụng
 
-    @Column(name = "filter_lifespan")
-    private String filterLifespan;
+    @Column(name = "replacement_cycle", length = 100)
+    private String replacementCycle;                       // Thời gian thay lõi
 
-    @Column(name = "filtration_stages")
-    private Integer filtrationStages;
+    @Column(name = "dimension_weight", columnDefinition = "TEXT")
+    private String dimensionWeight;                        // Kích thước & khối lượng
 
-    @Column(name = "filter_count")
-    private Integer filterCount;
+    @Column(name = "brand_origin", length = 100)
+    private String brandOrigin;                            // Xuất xứ thương hiệu
 
-    private String technology;
+    @Column(name = "manufacture_origin", length = 100)
+    private String manufactureOrigin;                      // Nơi sản xuất
 
-    @Column(name = "working_pressure_mpa")
-    private String workingPressureMpa;
+    @Column(length = 100)
+    private String manufacturer;                           // Tên hãng sản xuất
 
-    @Column(name = "flow_rate_l_per_min", precision = 5, scale = 2)
-    private BigDecimal flowRateLPerMin;
-
-    @Column(name = "capacity_l_per_hour")
-    private Integer capacityLPerHour;
-
-    @Column(columnDefinition = "TEXT")
-    private String features;
-
-    @Column(columnDefinition = "TEXT", nullable = false)
-    private String dimensions;
-
-    @Column(name = "weight_kg", precision = 5, scale = 2)
-    private BigDecimal weightKg;
-
-    @Column(name = "brand_origin")
-    private String brandOrigin;
-
-    @Column(name = "manufacture_origin")
-    private String manufactureOrigin;
-
-    @Column(name = "launch_year")
-    private Integer launchYear;
-
-    @Column(columnDefinition = "TEXT")
-    private String warranty;
-
-    @Column(name = "additional_info", columnDefinition = "TEXT")
-    private String additionalInfo;
+    @Column(name = "release_year")
+    private Integer releaseYear;                           // Năm ra mắt
 
     @CreationTimestamp
     private LocalDateTime createdAt;

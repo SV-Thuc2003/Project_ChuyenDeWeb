@@ -152,7 +152,7 @@ public class AuthService {
                 .map(r -> r.getRoleName().name())
                 .orElse("USER");
         // Tạo JWT token
-        String token = jwtService.generateToken(user.getEmail());
+        String token = jwtService.generateToken(user.getEmail(), user.getId());
 
         return new LoginResponse(token, user.getUsername(), role);
     }

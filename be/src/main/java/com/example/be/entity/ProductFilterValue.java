@@ -15,15 +15,17 @@ public class ProductFilterValue {
     @EmbeddedId
     private ProductFilterValueId id;
 
-    @ManyToOne
     @MapsId("productId")
-    @JoinColumn(name = "product_id")
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @ManyToOne
     @MapsId("filterId")
-    @JoinColumn(name = "filter_id")
+    @ManyToOne
+    @JoinColumn(name = "filter_id", nullable = false)
     private ProductFilter filter;
 
+    @Column(name = "value", insertable = false, updatable = false)
     private String value;
+
 }

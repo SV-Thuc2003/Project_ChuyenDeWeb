@@ -1,6 +1,7 @@
 package com.example.be.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -20,15 +21,19 @@ public class Review {
     private Integer id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Min(1)
+    @Max(5)
+    @NotNull
     private Integer rating;
 
+    @Size(max = 1000)
     @Column(columnDefinition = "TEXT")
     private String comment;
 
