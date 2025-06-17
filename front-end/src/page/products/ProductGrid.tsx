@@ -1,9 +1,9 @@
 // ProductGrid.tsx
-import React from 'react';
-import { Product } from '../../types/Product';
-import Card from '../../components/common/Card';
-import Dropdown from '../../components/ui/Dropdown';
-import Pagination from '../../components/ui/Pagination';
+import React from "react";
+import { Product } from "../../types/Product";
+import FavoriteCard from "../../components/common/FavoriteCard";
+import Dropdown from "../../components/ui/Dropdown";
+import Pagination from "../../components/ui/Pagination";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 interface ProductGridProps {
@@ -11,10 +11,11 @@ interface ProductGridProps {
   totalResults: number;
   currentPage: number;
   totalPages: number;
-  pageSize: number; // ✅ thêm dòng này để tính đúng "from - to"
+  pageSize: number;
   onPageChange: (page: number) => void;
   onSortChange: (value: string) => void;
   onFavoriteToggle: (id: number) => void;
+  // userId: number;
 }
 
 const ProductGrid: React.FC<ProductGridProps> = ({
@@ -25,18 +26,20 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   pageSize,
   onPageChange,
   onSortChange,
-  onFavoriteToggle
+  // onFavoriteToggle,
 }) => {
   const sortOptions = [
-    { value: 'newest', label: 'Sắp xếp theo mới nhất' },
-    { value: 'price-asc', label: 'Giá: Thấp đến cao' },
-    { value: 'price-desc', label: 'Giá: Cao đến thấp' },
-    { value: 'name-asc', label: 'Tên: A-Z' },
-    { value: 'name-desc', label: 'Tên: Z-A' },
+    { value: "newest", label: "Sắp xếp theo mới nhất" },
+    { value: "price-asc", label: "Giá: Thấp đến cao" },
+    { value: "price-desc", label: "Giá: Cao đến thấp" },
+    { value: "name-asc", label: "Tên: A-Z" },
+    { value: "name-desc", label: "Tên: Z-A" },
   ];
 
   const from = (currentPage - 1) * pageSize + 1;
   const to = Math.min(currentPage * pageSize, totalResults);
+
+  const userId = Number(localStorage.getItem("userId")); // hoặc user._id nếu bạn dùng object
 
   return (
     <div className="w-full">
@@ -55,14 +58,13 @@ const ProductGrid: React.FC<ProductGridProps> = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
-          <Card
+          <FavoriteCard
             key={product.id}
             id={product.id}
             image={product.image}
             title={product.name}
             price={product.price}
-            isFavorite={product.isFavorite}
-            onFavoriteToggle={onFavoriteToggle}
+            userId={userId}
           />
         ))}
       </div>

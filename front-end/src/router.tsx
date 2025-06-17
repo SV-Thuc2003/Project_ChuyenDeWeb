@@ -15,7 +15,9 @@ import ContactPage from "./page/contact";
 import AboutUs from "./page/about";
 import ProfilePage from "./page/profile";
 import Order from "./page/order";
+import FavoriteList from "./page/favorite/FavoriteProductsPage";
 import CartCheckOut from "./page/cart";
+import SearchPage  from "./page/SearchPage";
 import ForgotPassword from "./features/auth/forgotPassword/ForgotPassword";
 
 
@@ -35,6 +37,7 @@ const AppRoutes: React.FC = () => {
                 {/* <Route path="/productdetail" element={<ProductDetailPage />} />
                 <Route path="/productdetail/:id" element={<ProductDetailPage />} /> */}
 
+                <Route path="/search" element={<SearchPage />} />
                 <Route path="/forum" element={<Forum />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/cartpage" element={<CartPage />} />
@@ -42,6 +45,7 @@ const AppRoutes: React.FC = () => {
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/orders" element={<Order />} />
+                <Route path="/favorites" element={<FavoriteList userId={parseInt(localStorage.getItem('userId') || '0')} />} />
                 <Route path="/cartcheckout" element={<CartCheckOut />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/" element={<Navigate to="/login" replace />} /> {/* Default redirect */}

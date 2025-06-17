@@ -1,6 +1,6 @@
 // src/hooks/useBestSellingProducts.ts
 import { useEffect, useState } from 'react';
-import { fetchBestSellingProducts } from '../../Services/products';
+import { fetchBestSellingProducts } from '../../Service/products';
 import { Product } from '../../types/Product';
 
 export const useBestSellingProducts = () => {

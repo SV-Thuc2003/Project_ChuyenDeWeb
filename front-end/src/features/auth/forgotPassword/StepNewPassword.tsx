@@ -3,7 +3,7 @@ import InputField from "../../../components/ui/InputField";
 import Button from "../../../components/ui/Button";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom"; // 
-import { resetPassword } from "../../../Services/authService"; 
+import { resetPassword } from "../../../Service/authService"; 
 
 interface Props {
   email: string;

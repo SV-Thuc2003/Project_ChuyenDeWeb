@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import InputField from "../../../components/ui/InputField";
 import Button from "../../../components/ui/Button";
 import { toast } from "react-toastify";
-import { verifyOtpResetPassword } from "../../../Services/authService";
+import { verifyOtpResetPassword } from "../../../Service/authService";
 
 interface Props {
   email: string;

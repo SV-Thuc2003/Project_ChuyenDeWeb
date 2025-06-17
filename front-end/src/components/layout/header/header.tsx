@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../../../contexts/AuthContext";
-import { Link, useNavigate, useLocation  } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import InputField from "../../ui/InputField";
 import Dropdown from "../../ui/Dropdown";
 import logo from "../../../assets/logo.png";
@@ -16,6 +16,13 @@ const Header: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname;
 
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      navigate(`/search?keyword=${encodeURIComponent(searchTerm.trim())}`);
+    }
+  };
   const handleDropdownChange = (value: string) => {
     if (value === "logout") {
       logout();
@@ -24,7 +31,7 @@ const Header: React.FC = () => {
       navigate("/profile");
     }
   };
-  
+
   const navLinks = [
     { path: "/", label: "Trang chủ" },
     { path: "/products", label: "Sản phẩm" },
@@ -46,7 +53,7 @@ const Header: React.FC = () => {
             <div className="flex items-center ml-6">
               <MdOutlineEmail className="w-6 h-6" />
               <span className="ml-2 text-base font-medium">
-                nhom12@gmail.com
+                nhom@gmail.com
               </span>
             </div>
           </div>
@@ -104,7 +111,7 @@ const Header: React.FC = () => {
               />
             ) : (
               <button
-                onClick={() => navigate("/login")} 
+                onClick={() => navigate("/login")}
                 className="text-xl font-medium text-black hover:text-[#5290f3] cursor-pointer"
               >
                 Đăng nhập
@@ -112,13 +119,23 @@ const Header: React.FC = () => {
             )}
           </div>
 
-          <div className="relative ">
+          <div className="relative">
             <InputField
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
               placeholder="Tìm kiếm sản phẩm..."
               className="bg-[#f8f9fa] rounded-[20px] w-[280px] h-10 pl-4 pr-1"
             />
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-              <IoSearchCircle className="w-7 h-7 rounded-full" />
+            <div
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              onClick={handleSearch}
+            >
+              <IoSearchCircle className="w-7 h-7 rounded-full text-[#5290f3]" />
             </div>
           </div>
 

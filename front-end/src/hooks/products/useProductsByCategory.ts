@@ -1,7 +1,7 @@
 // hooks/useProductsByCategory.ts
 import { useEffect, useState } from 'react';
 import { Product } from '../../types/Product';
-import { fetchProductsByCategory } from '../../Services/products';
+import { fetchProductsByCategory } from '../../Service/products';
 
 export const useProductsByCategory = (
   categoryId: number,

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import InputField from "../../../components/ui/InputField";
 import Button from "../../../components/ui/Button";
 import { toast } from "react-toastify";
-import { forgotPassword } from "../../../Services/authService"; // import hàm dùng chung
+import { forgotPassword } from "../../../Service/authService"; // import hàm dùng chung
 
 interface Props {
   email: string;

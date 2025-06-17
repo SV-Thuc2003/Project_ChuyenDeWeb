@@ -1,77 +1,349 @@
-// src/hooks/useProductFilters.ts
-import { useState } from 'react';
-import { Brand, FilterCategory, WaterCategory, WaterTag, PriceRange} from '../types/Product';
-//, Product 
-export const useProductFilters = () => {
-  const [categories] = useState<WaterCategory[]>([
-    { id: 1, name: 'Máy lọc nước', image: 'https://cdn.tgdd.vn/Category//3385/may-loc-nuoc-kangaroo-kg10a3-1-1-120x120.png', vectorImage: 'https://cdn.tgdd.vn/Category//3385/may-loc-nuoc-kangaroo-kg10a3-1-1-120x120.png' },
-    { id: 2, name: 'Máy lọc điện giải', image: 'https://cdnv2.tgdd.vn/mwg-static/common/Category/13518/04/b8/04b889ca325147bf60e95e97266a5034.png', vectorImage: 'https://cdnv2.tgdd.vn/mwg-static/common/Category/13518/04/b8/04b889ca325147bf60e95e97266a5034.png'},
-    { id: 3, name: 'Máy lọc nước RO Hydrogen', image: 'https://cdnv2.tgdd.vn/mwg-static/common/Category/13519/d2/7c/d27c8b3d1d73c059095a608444b6ce0a.png', vectorImage: 'https://cdnv2.tgdd.vn/mwg-static/common/Category/13519/d2/7c/d27c8b3d1d73c059095a608444b6ce0a.png' },
-    { id: 4, name: 'Lõi máy lọc nước', image: 'https://cdn.tgdd.vn/Category//5105/loi-may-loc-nuoc-120-120x120.png', vectorImage: 'https://cdn.tgdd.vn/Category//5105/loi-may-loc-nuoc-120-120x120.png' },
-    { id: 5, name: 'Lọc nước không điện', image: 'https://cdn.tgdd.vn/Category//9678/tren-bon-rua-cleansui-et101-120x120-120x120.png', vectorImage: 'https://cdn.tgdd.vn/Category//9678/tren-bon-rua-cleansui-et101-120x120-120x120.png' },
-    { id: 6, name: 'Cốc lọc nước đầu nguồn', image: 'https://cdn.tgdd.vn/Category//8579/Coc-loc-nuoc-120-120x120.png', vectorImage: 'https://cdn.tgdd.vn/Category//8579/Coc-loc-nuoc-120-120x120.png' },
-  ]);
+// import { useCallback, useEffect, useState } from 'react';
+// import { fetchAllCategories, fetchAllBrands, fetchPriceRangeByCategory } from '../Services/products';
+// import { ProductFilterRequest } from '../Services/FilteredProductsService';
+// import { Brand, FilterCategory, WaterCategory, WaterTag, PriceRange } from '../types/Product';
 
+// export const useProductFilters = (categoryId?: number) => {
+//   const [categories, setCategories] = useState<WaterCategory[]>([]);
+//   const [brands, setBrands] = useState<Brand[]>([]);
+//   const [filterCategories, setFilterCategories] = useState<FilterCategory[]>([
+//     { id: 1, name: 'Máy lọc RO', count: 10, checked: false },
+//     { id: 2, name: 'Máy lọc Nano', count: 5, checked: false },
+//     { id: 3, name: 'Có điện', count: 20, checked: false },
+//     { id: 4, name: 'Không điện', count: 8, checked: false },
+//     { id: 5, name: 'Có tủ', count: 6, checked: false },
+//     { id: 6, name: 'Không tủ', count: 14, checked: false },
+//   ]);
+
+//   const [tags, setTags] = useState<WaterTag[]>([
+//     { id: 1, name: 'Hydrogen', selected: false },
+//     { id: 2, name: 'Điện giải', selected: false },
+//     { id: 3, name: 'Nóng lạnh', selected: false },
+//     { id: 4, name: 'Không tủ', selected: false },
+//     { id: 5, name: 'Lõi lọc', selected: false },
+//   ]);
+
+//   const [priceRange, setPriceRange] = useState<PriceRange | null>(null);
+//   const [priceChanged, setPriceChanged] = useState(false);
+
+//   useEffect(() => {
+//     const fetchFilters = async () => {
+//       try {
+//         const [categoryData, brandData] = await Promise.all([
+//           fetchAllCategories(),
+//           fetchAllBrands(),
+//         ]);
+
+//         setCategories(
+//           categoryData.map((c: any) => ({
+//             id: c.id,
+//             name: c.name,
+//             image: c.imageUrl || '',
+//             vectorImage: c.imageUrl || '',
+//           }))
+//         );
+
+//         setBrands(
+//           brandData.map((b: any) => ({
+//             id: b.id,
+//             name: b.name,
+//             image: b.logoUrl || '',
+//             count: 0,
+//             checked: false,
+//           }))
+//         );
+//       } catch (err) {
+//         console.error('Lỗi khi tải filters:', err);
+//       }
+//     };
+
+//     fetchFilters();
+//   }, []);
+
+//   // Lấy priceRange dựa vào categoryId truyền vào hoặc filterCategories
+//   useEffect(() => {
+//   const selectedCategoryId = filterCategories.find(fc => fc.checked)?.id 
+//                           ?? (typeof categoryId === 'number' ? categoryId : null);
+
+//   if (!selectedCategoryId) {
+//     setPriceRange(null);
+//     return;
+//   }
+
+//   fetchPriceRangeByCategory(selectedCategoryId)
+//     .then(range => {
+//       setPriceRange(range);
+//       setPriceChanged(false);
+//     })
+//     .catch(err => {
+//       console.error('Lỗi khi lấy khoảng giá:', err);
+//       setPriceRange(null);
+//       setPriceChanged(false);
+//     });
+// }, [filterCategories]); // ⚠️ Chỉ phụ thuộc vào category thay đổi
+
+
+//   const handleBrandChange = (id: number) => {
+//     setBrands(prev =>
+//       prev.map(brand => (brand.id === id ? { ...brand, checked: !brand.checked } : brand))
+//     );
+//   };
+
+//   const handleTagSelect = (id: number) => {
+//     setTags(prev =>
+//       prev.map(tag => (tag.id === id ? { ...tag, selected: !tag.selected } : tag))
+//     );
+//   };
+
+//   const handlePriceRangeChange = (range: PriceRange) => {
+//     setPriceRange(range);
+//     setPriceChanged(true);
+//   };
+
+//   const resetFilters = () => {
+//     setFilterCategories(prev => prev.map(item => ({ ...item, checked: false })));
+//     setBrands(prev => prev.map(item => ({ ...item, checked: false })));
+//     setTags(prev => prev.map(item => ({ ...item, selected: false })));
+//     setPriceRange(null);
+//     setPriceChanged(false);
+//   };
+
+//   const getFilterRequest = useCallback(
+//   (
+//     page: number = 0,
+//     size: number = 12,
+//     externalCategoryId?: number
+//   ): ProductFilterRequest => {
+//     const selectedBrandIds = brands.filter(b => b.checked).map(b => b.id);
+//     const selectedCategory = filterCategories.find(fc => fc.checked);
+//     const selectedCategoryId =
+//       selectedCategory ? selectedCategory.id : (externalCategoryId ?? categoryId);
+
+//     const filterPairs: Record<string, string> = {};
+//     tags.forEach(tag => {
+//       if (tag.selected) filterPairs[tag.name] = 'true';
+//     });
+
+//     return {
+//       categoryId: selectedCategoryId,
+//       brandIds: selectedBrandIds.length ? selectedBrandIds : undefined,
+//       minPrice: priceChanged && priceRange ? priceRange.min : undefined,
+//       maxPrice: priceChanged && priceRange ? priceRange.max : undefined,
+//       filterPairs: Object.keys(filterPairs).length ? filterPairs : undefined,
+//       sort: 'price,asc',
+//       page,
+//       size,
+//     };
+//   },
+//   [
+//     brands,               // đổi khi tick/untick brand
+//     filterCategories,     // đổi khi chọn category con
+//     tags,                 // đổi khi chọn tag
+//     priceChanged, priceRange,
+//     categoryId            // khi URL category đổi
+//   ]
+// );
+
+//   return {
+//     categories,
+//     filterCategories,
+//     setFilterCategories,
+//     brands,
+//     tags,
+//     priceRange,
+//     handleBrandChange,
+//     handleTagSelect,
+//     handlePriceRangeChange,
+//     resetFilters,
+//     getFilterRequest,
+//   };
+// };
+
+
+import { useCallback, useEffect, useState } from 'react';
+import {
+  fetchAllCategories,
+  fetchAllBrands,
+  fetchPriceRangeByCategory,
+} from '../Service/products';
+import { ProductFilterRequest } from '../Service/FilteredProductsService';
+import {
+  Brand,
+  FilterCategory,
+  WaterCategory,
+  WaterTag,
+  PriceRange,
+} from '../types/Product';
+
+export const useProductFilters = (categoryId?: number) => {
+  const [categories, setCategories] = useState<WaterCategory[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
   const [filterCategories, setFilterCategories] = useState<FilterCategory[]>([
-    { id: 1, name: 'Nội thất', count: 21, checked: false },
-    { id: 2, name: 'Khay thức ăn', count: 28, checked: false },
-    { id: 3, name: 'Đồ thú cưng', count: 12, checked: false },
-    { id: 4, name: 'Thức ăn', count: 80, checked: false },
-    { id: 5, name: 'Đồ chơi', count: 90, checked: false },
-    { id: 6, name: 'Khuyễn mãi', count: 24, checked: false },
-  ]);
-
-  const [brands, setBrands] = useState<Brand[]>([
-    { id: 1, name: 'Perflast', count: 28, checked: false },
-    { id: 2, name: 'Pet care', count: 18, checked: false },
-    { id: 3, name: 'Petmate', count: 16, checked: false },
-    { id: 4, name: 'Hagen', count: 40, checked: false },
-    { id: 5, name: 'PetSafe', count: 28, checked: false },
-    { id: 6, name: 'CATS LOVE', count: 18, checked: false },
+    { id: 1, name: 'Máy lọc RO', count: 10, checked: false },
+    { id: 2, name: 'Máy lọc Nano', count: 5, checked: false },
+    { id: 3, name: 'Có điện', count: 20, checked: false },
+    { id: 4, name: 'Không điện', count: 8, checked: false },
+    { id: 5, name: 'Có tủ', count: 6, checked: false },
+    { id: 6, name: 'Không tủ', count: 14, checked: false },
   ]);
 
   const [tags, setTags] = useState<WaterTag[]>([
-    { id: 1, name: 'Chó', selected: false },
-    { id: 2, name: 'Mèo', selected: false },
-    { id: 3, name: 'Tự nhiên', selected: false },
-    { id: 4, name: 'Vẹt', selected: false },
-    { id: 5, name: 'Cún con', selected: false },
-    { id: 6, name: 'Mèo con', selected: false },
+    { id: 1, name: 'Hydrogen', selected: false },
+    { id: 2, name: 'Điện giải', selected: false },
+    { id: 3, name: 'Nóng lạnh', selected: false },
+    { id: 4, name: 'Không tủ', selected: false },
+    { id: 5, name: 'Lõi lọc', selected: false },
   ]);
 
-  const [priceRange, setPriceRange] = useState<PriceRange>({ min: 200000, max: 10000000 });
+  const [priceRange, setPriceRange] = useState<PriceRange | null>(null);
+  const [priceChanged, setPriceChanged] = useState(false);
 
-  const handleCategoryChange = (id: number) => {
-    setFilterCategories(prev =>
-      prev.map(cat => cat.id === id ? { ...cat, checked: !cat.checked } : cat)
-    );
-  };
+  // ✅ Tách category dùng để lấy khoảng giá riêng ra
+  const [priceCategoryId, setPriceCategoryId] = useState<number | undefined>(
+    categoryId
+  );
+
+  // Fetch filters ban đầu
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const [categoryData, brandData] = await Promise.all([
+          fetchAllCategories(),
+          fetchAllBrands(),
+        ]);
+
+        setCategories(
+          categoryData.map((c: any) => ({
+            id: c.id,
+            name: c.name,
+            image: c.imageUrl || '',
+            vectorImage: c.imageUrl || '',
+          }))
+        );
+
+        setBrands(
+          brandData.map((b: any) => ({
+            id: b.id,
+            name: b.name,
+            image: b.logoUrl || '',
+            count: 0,
+            checked: false,
+          }))
+        );
+      } catch (err) {
+        console.error('Lỗi khi tải filters:', err);
+      }
+    };
+
+    fetchFilters();
+  }, []);
+
+  // ✅ Theo dõi categoryId đầu vào thay đổi → cập nhật lại
+  useEffect(() => {
+    setPriceCategoryId(categoryId);
+  }, [categoryId]);
+
+  // ✅ Gọi API lấy priceRange khi priceCategoryId thay đổi
+  useEffect(() => {
+    if (!priceCategoryId) {
+      setPriceRange(null);
+      return;
+    }
+
+    fetchPriceRangeByCategory(priceCategoryId)
+      .then(range => {
+        setPriceRange(range);
+        setPriceChanged(false);
+      })
+      .catch(err => {
+        console.error('Lỗi khi lấy khoảng giá:', err);
+        setPriceRange(null);
+        setPriceChanged(false);
+      });
+  }, [priceCategoryId]);
 
   const handleBrandChange = (id: number) => {
     setBrands(prev =>
-      prev.map(brand => brand.id === id ? { ...brand, checked: !brand.checked } : brand)
+      prev.map(brand =>
+        brand.id === id ? { ...brand, checked: !brand.checked } : brand
+      )
     );
   };
 
   const handleTagSelect = (id: number) => {
     setTags(prev =>
-      prev.map(tag => tag.id === id ? { ...tag, selected: !tag.selected } : tag)
+      prev.map(tag =>
+        tag.id === id ? { ...tag, selected: !tag.selected } : tag
+      )
     );
   };
 
   const handlePriceRangeChange = (range: PriceRange) => {
     setPriceRange(range);
+    setPriceChanged(true);
   };
+
+  const resetFilters = () => {
+    setFilterCategories(prev => prev.map(item => ({ ...item, checked: false })));
+    setBrands(prev => prev.map(item => ({ ...item, checked: false })));
+    setTags(prev => prev.map(item => ({ ...item, selected: false })));
+    setPriceRange(null);
+    setPriceChanged(false);
+    setPriceCategoryId(categoryId);
+  };
+
+  const getFilterRequest = useCallback(
+    (
+      page: number = 0,
+      size: number = 12,
+      externalCategoryId?: number
+    ): ProductFilterRequest => {
+      const selectedBrandIds = brands.filter(b => b.checked).map(b => b.id);
+      const selectedCheckboxCategory = filterCategories.find(fc => fc.checked);
+
+      const selectedCategoryId =
+        typeof externalCategoryId === 'number'
+          ? externalCategoryId
+          : selectedCheckboxCategory?.id ?? categoryId;
+
+      // ✅ cập nhật categoryId dùng để fetch price range nếu thay đổi
+      if (
+        selectedCategoryId &&
+        selectedCategoryId !== priceCategoryId
+      ) {
+        setPriceCategoryId(selectedCategoryId);
+      }
+
+      const filterPairs: Record<string, string> = {};
+      tags.forEach(tag => {
+        if (tag.selected) filterPairs[tag.name] = 'true';
+      });
+
+      return {
+        categoryId: selectedCategoryId,
+        brandIds: selectedBrandIds.length ? selectedBrandIds : undefined,
+        minPrice: priceChanged && priceRange ? priceRange.min : undefined,
+        maxPrice: priceChanged && priceRange ? priceRange.max : undefined,
+        filterPairs: Object.keys(filterPairs).length ? filterPairs : undefined,
+        sort: 'price,asc',
+        page,
+        size,
+      };
+    },
+    [brands, filterCategories, tags, priceChanged, priceRange, categoryId, priceCategoryId]
+  );
 
   return {
     categories,
     filterCategories,
+    setFilterCategories,
     brands,
     tags,
     priceRange,
-    handleCategoryChange,
     handleBrandChange,
     handleTagSelect,
     handlePriceRangeChange,
+    resetFilters,
+    getFilterRequest,
   };
 };

@@ -1,6 +1,6 @@
 // src/hooks/useNewProducts.ts
 import { useEffect, useState } from 'react';
-import { fetchNewProducts } from '../../Services/products';
+import { fetchNewProducts } from '../../Service/products';
 import { Product } from '../../types/Product';
 
 export const useNewProducts = () => {

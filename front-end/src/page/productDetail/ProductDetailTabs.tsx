@@ -1,27 +1,35 @@
 import React from "react";
 import Tabs, { TabItem } from "../../components/ui/tabs";
 import ProductTypeDetailDisplay from "./ProductTypeDetailDisplay";
-import ProductReviewSection from "./ProductReviewSection";
+import ReviewSection from "./ProductReviewSection";
 import { ProductType } from "../../types/ProductDetail";
+import { useReview } from "../../hooks/useReview";
 
 interface Props {
+  productId: number;
   productType: ProductType;
-  detail: any; // chi tiết sản phẩm tương ứng
-  reviews: {
-    username: string;
-    rating: number;
-    comment: string;
-    createdAt: string;
-  }[];
-  onSubmitReview: (rating: number, comment: string) => void;
+  detail: any;
 }
 
 const ProductDetailTabs: React.FC<Props> = ({
+  productId,
   productType,
   detail,
-  reviews,
-  onSubmitReview,
 }) => {
+  const {
+    reviews,
+    submitReview,
+    removeReview,
+  } = useReview(productId);
+
+  const handleSubmitReview = (rating: number, comment: string) => {
+    submitReview({ productId, rating, comment });
+  };
+
+  const handleDeleteReview = (reviewId: number) => {
+    removeReview(reviewId);
+  };
+
   const tabs: TabItem[] = [
     {
       id: "specs",
@@ -34,9 +42,10 @@ const ProductDetailTabs: React.FC<Props> = ({
       id: "reviews",
       label: "Bài viết đánh giá",
       content: (
-        <ProductReviewSection
+        <ReviewSection
           reviews={reviews}
-          onSubmitReview={onSubmitReview}
+          onSubmitReview={handleSubmitReview}
+          onDeleteReview={handleDeleteReview}
         />
       ),
     },

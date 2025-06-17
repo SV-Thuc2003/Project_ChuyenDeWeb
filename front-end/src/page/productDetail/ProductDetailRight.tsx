@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import Button from "../../components/ui/Button"; // Đường dẫn cần đúng với vị trí Button của bạn
+import { ProductDetail } from "../../types/ProductDetail";
 
 interface ProductDetailProps {
-  product: {
-    name: string;
-    price?: number;
-    brand?: string;
-    feature?: string;
-    category?: string;
-  };
+  product: ProductDetail;
+  // product: {
+  //   name: string;
+  //   price?: number;
+  //   brand?: string | null;
+  //   feature?: string;
+  //   category?: string;
+  // };
 }
 
 const ProductDetailRight: React.FC<ProductDetailProps> = ({ product }) => {
@@ -84,7 +86,7 @@ const ProductDetailRight: React.FC<ProductDetailProps> = ({ product }) => {
         </p>
         <p>
           <span className="font-semibold">Danh mục:</span>{" "}
-          {product.category || "Lọc điện giải ion kiềm"}
+          {product.categories?.[0] || "Đang cập nhật"}
         </p>
       </div>
     </div>

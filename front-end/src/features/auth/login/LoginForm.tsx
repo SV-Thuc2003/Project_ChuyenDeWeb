@@ -4,7 +4,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import InputField from "../../../components/ui/InputField.tsx";
 import Button from "../../../components/ui/Button.tsx";
 import Checkbox from "../../../components/ui/Checkbox.tsx";
-import { login } from "../../../Services/authService.ts";
+import { login } from "../../../Service/authService.ts";
 import { LoginCredentials } from "../../../types/Login.ts";
 
 const LoginForm: React.FC = () => {
