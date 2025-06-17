@@ -1,11 +1,8 @@
-import Routes from "./router.tsx";
-import "./index.css";
+import React from "react";
+import AppRoutes from "./router";
 
-function App() {
-  return (
-    <Routes />
-    // <h1 className="text-3xl font-bold underline">Hello world!</h1>
-  );
-}
+const App: React.FC = () => {
+  return <AppRoutes />;
+};
 
 export default App;

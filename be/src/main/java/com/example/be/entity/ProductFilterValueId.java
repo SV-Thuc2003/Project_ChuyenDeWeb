@@ -28,6 +28,6 @@ public class ProductFilterValueId implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, filterId, value);
+        return Objects.hash(productId, filterId);
     }
 }

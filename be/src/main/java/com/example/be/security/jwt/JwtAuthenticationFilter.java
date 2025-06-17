@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // lấy JWT từ cookie
-        String token = extractTokenFromCookies(request);
+        String token = extractTokenFromRequest(request);
         // Kiểm tra tính hợp lệ của token
         if (token != null && jwtService.validateToken(token)){
             // Trích xuất email (hoặc username) từ token
@@ -59,14 +59,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * @param request yêu cầu HTTP
      * @return giá trị token nếu có, ngược lại trả về null
      */
-    private String extractTokenFromCookies(HttpServletRequest request) {
+//    private String extractTokenFromCookies(HttpServletRequest request) {
+//        if (request.getCookies() != null) {
+//            for (Cookie cookie : request.getCookies()){
+//                if ("jwt".equals(cookie.getName())){
+//                    return cookie.getValue();
+//                }
+//            }
+//        }
+//        return null;
+//    }
+
+    private String extractTokenFromRequest(HttpServletRequest request) {
+        // Ưu tiên Header
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+
+        // Fallback về cookie nếu không có header
         if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()){
-                if ("jwt".equals(cookie.getName())){
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
                     return cookie.getValue();
                 }
             }
         }
+
         return null;
     }
+
 }

@@ -40,15 +40,17 @@ const CartSection: React.FC<CartSectionProps> = ({
           </tr>
         </thead>
         <tbody>
-          {cartItems.map(item => (
+        {cartItems.map(item => (
             <ProductItem
-              key={item.id}
-              item={item}
-              onRemove={onRemoveItem}
-              onQuantityChange={onQuantityChange}
+                key={`${item.id}-${item.productId}`}         // ✅ Key ổn định
+                item={item}
+                onRemove={onRemoveItem}
+                onQuantityChange={onQuantityChange}          // ✅ Bây giờ truyền theo cartId
             />
-          ))}
+        ))}
+
         </tbody>
+
         <tfoot>
           <tr>
             <td colSpan={6} className="py-4 border-b border-[#a48c8ca8]">

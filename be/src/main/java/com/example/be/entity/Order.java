@@ -7,7 +7,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,40 +20,41 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "total_invoice", nullable = false)
+    @Column(name = "total_invoice", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalInvoice;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "status_id")
+    @JoinColumn(name = "status_id", nullable = false)
     private OrderStatus status;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "payment_method_id")
+    @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethod paymentMethod;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "shipping_method_id")
-    private ShippingMethod shippingMethod;
-
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "order_note", columnDefinition = "TEXT")
     private String orderNote;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "shipping_address_id")
     private ShippingAddress shippingAddress;
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OrderDetail> orderDetails;
 
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderDetail> orderDetails = new ArrayList<>();
 }

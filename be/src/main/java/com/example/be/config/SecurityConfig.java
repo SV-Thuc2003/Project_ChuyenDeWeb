@@ -1,6 +1,6 @@
 package com.example.be.config;
 
-
+import jakarta.servlet.http.HttpServletResponse;
 import com.example.be.security.jwt.JwtAuthenticationFilter;
 import com.example.be.security.oauth2.*;
 import jakarta.servlet.http.HttpServletResponse;
@@ -49,21 +49,23 @@ public class SecurityConfig {
      * @return SecurityFilterChain đã được cấu hình
      * @throws Exception nếu cấu hình thất bại
      */
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        HttpSecurity httpSecurity = http
-                // Vô hiệu hóa csrf (chỉ tắt nếu xử lý csrf ở nơi khác
+        http
                 .csrf(AbstractHttpConfigurer::disable)
-//                Bật cors với cấu hình bên dưới
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .formLogin(AbstractHttpConfigurer::disable) // Disable login form nếu không dùng
-                .httpBasic(AbstractHttpConfigurer::disable) // Disable basic auth nếu không dùng
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/oauth2/**").permitAll() // cho phép login/register/OAuth2
+                        .requestMatchers("/auth/**", "/oauth2/**").permitAll()
                         .requestMatchers("/api/products/**").permitAll()
                         .requestMatchers("/api/brands/**", "/api/categories/**").permitAll()
                         .requestMatchers("/api/favorites/**").authenticated()
-                        .anyRequest().authenticated() //các route còn lại cần login
+                        .requestMatchers("/api/cart/**").authenticated()
+                        .requestMatchers("/api/shipping/fee").permitAll() // ✅ Cho phép public endpoint tính phí GH
+                        .anyRequest().authenticated()
+
                 )
                 .exceptionHandling(exc -> exc
                         .authenticationEntryPoint((request, response, authException) -> {
@@ -80,8 +82,9 @@ public class SecurityConfig {
                         .successHandler(successHandler)
                         .failureHandler(new OAuth2AuthenticationFailureHandler())
                 );
-// add filter xử lý jwt trước khi nhấn vào UsernamePasswordAuthenticationFilter
+
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
@@ -95,7 +98,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
 //        cho phép nguồn gốc từ React dev server
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
 //        cho phép các phương thức HTTP  thông dụng
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 //        cho phép mọi header
