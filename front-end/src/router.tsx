@@ -14,7 +14,7 @@ import ContactPage from "./page/contact";
 import AboutUs from "./page/about";
 import ProfilePage from "./page/profile";
 import Order from "./page/order";
-import FavoriteList from "./page/favorite/FavoriteProductsPage";
+import FavoriteProductsPage from "./page/favorite/FavoriteProductsPage";
 import CartCheckOut from "./page/cart";
 import SearchPage  from "./page/SearchPage";
 import ForgotPassword from "./features/auth/forgotPassword/ForgotPassword";
@@ -38,7 +38,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/about" element={<AboutUs />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/orders" element={<Order />} />
-            <Route path="/favorites" element={<FavoriteList userId={parseInt(localStorage.getItem('userId') || '0')} />} />
+            <Route path="/favorites" element={<FavoriteProductsPage />} />
             <Route path="/cart" element={<CartCheckOut />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/order-success" element={<OrderSuccess />} />

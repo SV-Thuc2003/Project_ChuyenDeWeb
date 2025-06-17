@@ -12,6 +12,7 @@ public interface FavoriteMapper {
     @Mapping(target = "productId", source = "product.id")
     @Mapping(target = "productName", source = "product.name")
     @Mapping(target = "productSlug", source = "product.slug")
+    @Mapping(target = "productPrice", source = "product.price")
     @Mapping(target = "productImage", expression = "java(favorite.getProduct().getImages().isEmpty() ? null : favorite.getProduct().getImages().get(0).getImageUrl())")
     FavoriteResponse toDto(Favorite favorite);
 }
