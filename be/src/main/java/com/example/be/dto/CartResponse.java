@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class CartResponse {
     private int id;
+    private int productId; // ✅ thêm dòng này!
     private String name;
     private BigDecimal price;
     private int quantity;
@@ -17,6 +18,7 @@ public class CartResponse {
 
     public CartResponse(Cart cart) {
         this.id = cart.getId();
+        this.productId = cart.getProduct().getId(); // ✅ thêm dòng này!
         this.name = cart.getProduct().getName();
         this.price = cart.getProduct().getPrice();
         this.quantity = cart.getQuantity();

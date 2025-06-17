@@ -21,4 +21,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 
     // ✅ Tuỳ chọn: Xoá theo cart ID + user
     void deleteByIdAndUserId(Integer id, Integer userId);
+
+    void deleteByUserId(Integer userId);
+
 }

@@ -16,6 +16,7 @@ import ProfilePage from "./page/profile";
 import Order from "./page/order";
 import CartCheckOut from "./page/cart";
 import ForgotPassword from "./features/auth/forgotPassword/ForgotPassword";
+import OrderSuccess from "./page/order/OrderSuccess.tsx";
 
 const AppRoutes: React.FC = () => {
     return (
@@ -36,7 +37,8 @@ const AppRoutes: React.FC = () => {
             <Route path="/orders" element={<Order />} />
             <Route path="/cart" element={<CartCheckOut />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="*" element={<Navigate to="/" replace />} /> {/* Catch-all route */}
+                <Route path="/order-success" element={<OrderSuccess />} />
+                <Route path="*" element={<Navigate to="/" replace />} /> {/* Catch-all route */}
         </Routes>
     );
 };

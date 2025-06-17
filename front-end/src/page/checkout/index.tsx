@@ -13,6 +13,7 @@ import {
 } from "../../types/ChechOut";
 import { CartItem } from "../../types/Cart";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Checkout: React.FC = () => {
   const [checkoutState, setCheckoutState] = useState<CheckoutState>({
@@ -32,9 +33,8 @@ const Checkout: React.FC = () => {
 
   const [products, setProducts] = useState<CartItem[]>([]);
   const [shippingFee, setShippingFee] = useState<number>(0);
+  const navigate = useNavigate();
 
-
-  // 🚚 Lấy giỏ hàng từ backend
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
@@ -58,44 +58,32 @@ const Checkout: React.FC = () => {
         });
   }, []);
 
-
-  // Tính tổng giá sản phẩm
-  const subtotal = products.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-  );
-
+  const subtotal = products.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const discount = checkoutState.discountCode ? 50000 : 0;
 
-  const handlePersonalInfoChange = (
-      field: keyof PersonalInfo,
-      value: string
-  ) => {
-    setCheckoutState((prev) => ({
+  const handlePersonalInfoChange = (field: keyof PersonalInfo, value: string) => {
+    setCheckoutState(prev => ({
       ...prev,
       personalInfo: { ...prev.personalInfo, [field]: value },
     }));
   };
 
-  const handleShippingAddressChange = (
-      field: keyof ShippingAddress,
-      value: string
-  ) => {
-    setCheckoutState((prev) => ({
+  const handleShippingAddressChange = (field: keyof ShippingAddress, value: string) => {
+    setCheckoutState(prev => ({
       ...prev,
       shippingAddress: { ...prev.shippingAddress, [field]: value },
     }));
   };
 
   const handleDiscountCodeChange = (value: string) => {
-    setCheckoutState((prev) => ({
+    setCheckoutState(prev => ({
       ...prev,
       discountCode: value,
     }));
   };
 
   const handlePaymentMethodChange = (value: string) => {
-    setCheckoutState((prev) => ({
+    setCheckoutState(prev => ({
       ...prev,
       paymentMethod: value,
     }));
@@ -105,23 +93,54 @@ const Checkout: React.FC = () => {
     console.log("🎟️ Mã giảm giá:", checkoutState.discountCode);
   };
 
-  const handlePlaceOrder = () => {
-    const data = {
-      ...checkoutState,
-      products,
-      shippingFee,
+  const handlePlaceOrder = async () => {
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
+
+    if (!userId || !token) return;
+
+    const formattedProducts = products.map(item => ({
+      productId: item.productId,
+      quantity: item.quantity,
+    }));
+
+    const statusOverride = checkoutState.paymentMethod === "cash" ? "Accepting" : undefined;
+
+    const payload = {
+      userId: parseInt(userId),
+      personalInfo: checkoutState.personalInfo,
+      shippingAddress: checkoutState.shippingAddress,
+      products: formattedProducts,
+      paymentMethod: checkoutState.paymentMethod,
+      discountCode: checkoutState.discountCode,
       subtotal,
+      shippingFee,
       discount,
       total: subtotal - discount + shippingFee,
+      status: statusOverride // 👈 Thêm dòng này
     };
-    console.log("✅ Đặt hàng:", data);
-    alert("Đặt hàng thành công!");
+
+
+    try {
+      const res = await axios.post("/api/orders", payload, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (checkoutState.paymentMethod === "vnpay" && res.data.vnpayUrl) {
+        window.location.href = res.data.vnpayUrl;
+      } else {
+        navigate("/order-success");
+      }
+    } catch (err: any) {
+      console.error("❌ Lỗi đặt hàng:", err.response?.data || err.message);
+    }
   };
 
   return (
       <div className="min-h-screen flex flex-col">
         <Header />
-
         <main className="flex-grow">
           <div className="container mx-auto px-4 py-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -166,7 +185,6 @@ const Checkout: React.FC = () => {
             </div>
           </div>
         </main>
-
         <Footer />
       </div>
   );
