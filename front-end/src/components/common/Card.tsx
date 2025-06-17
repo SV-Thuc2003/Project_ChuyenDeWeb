@@ -8,7 +8,7 @@ interface CardProps {
     id?: number;
     image?: string;
     title?: string;
-    price?: string;
+    price?: number;
     onAddToWishlist?: (id?: number) => void;
     isFavorite?: boolean;
     onFavoriteToggle?: (id: number) => void;

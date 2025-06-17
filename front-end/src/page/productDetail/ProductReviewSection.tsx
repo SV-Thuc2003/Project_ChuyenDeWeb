@@ -1,44 +1,5 @@
-// import { useState } from "react";
-// import { useReview } from "../../hooks/useReview";
-
-// const ReviewSection = ({ productId }: { productId: number }) => {
-//   const { reviews, submitReview, removeReview, loading, error } = useReview(productId);
-//   const [comment, setComment] = useState("");
-//   const [rating, setRating] = useState(5);
-
-//   const handleSubmit = () => {
-//     submitReview({ productId, comment, rating });
-//     setComment("");
-//   };
-
-//   return (
-//     <div>
-//       <h3>Đánh giá sản phẩm</h3>
-//       <textarea value={comment} onChange={(e) => setComment(e.target.value)} />
-//       <input
-//         type="number"
-//         min={1}
-//         max={5}
-//         value={rating}
-//         onChange={(e) => setRating(Number(e.target.value))}
-//       />
-//       <button onClick={handleSubmit} disabled={loading}>Gửi đánh giá</button>
-//       {error && <p>{error}</p>}
-//       <ul>
-//         {reviews.map((r) => (
-//           <li key={r.id}>
-//             {r.comment} - ⭐{r.rating}
-//             <button onClick={() => removeReview(r.id)}>Xoá</button>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default ReviewSection;
 import React, { useState } from 'react';
-
+import Button from "../../components/ui/Button";
 interface Review {
   id: number;
   user: string;
@@ -70,34 +31,86 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
   };
 
   return (
-    <div>
-      <h3>Đánh giá sản phẩm</h3>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Số sao:
-          <input type="number" value={rating} onChange={(e) => setRating(+e.target.value)} min={1} max={5} />
-        </label>
-        <label>
-          Bình luận:
-          <textarea value={comment} onChange={(e) => setComment(e.target.value)} />
-        </label>
-        <button type="submit">Gửi đánh giá</button>
+    <div className="bg-gray-50 p-6 rounded-lg mt-6">
+      <h3 className="text-xl font-semibold mb-4">Đánh giá sản phẩm</h3>
+
+      {/* Form gửi đánh giá */}
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white border border-gray-200 rounded-lg p-4 mb-6"
+      >
+        <div className="mb-4">
+          <label htmlFor="rating" className="block font-medium mb-1">
+            Số sao:
+          </label>
+          <select
+            id="rating"
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            value={rating}
+            onChange={(e) => setRating(Number(e.target.value))}
+          >
+            <option value="">-- Chọn --</option>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <option key={star} value={star}>
+                {star}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="comment" className="block font-medium mb-1">
+            Bình luận:
+          </label>
+          <textarea
+            id="comment"
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            rows={3}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Hãy chia sẻ cảm nhận của bạn..."
+          />
+        </div>
+
+        <Button
+          type="submit"
+          className="text-white font-semibold px-4 py-2 rounded"
+        >
+          Gửi đánh giá
+        </Button>
       </form>
 
-      <div>
-        <h4>Các đánh giá</h4>
+      {/* Danh sách đánh giá */}
+      <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <h4 className="text-lg font-semibold mb-4">
+          Đánh giá ({reviews.length})
+        </h4>
         {reviews.map((review) => (
-          <div key={review.id}>
-            <strong>{review.user}</strong> - {review.rating} sao
-            <p>{review.comment}</p>
-            <small>{new Date(review.createdAt).toLocaleString()}</small>
-            <button onClick={() => onDeleteReview(review.id)}>Xóa</button>
+          <div key={review.id} className="border-b border-gray-100 pb-4 mb-4">
+            <div className="flex justify-between items-center text-sm text-gray-600">
+              <span className="font-semibold text-blue-600">{review.user}</span>
+              <span className="text-yellow-500">
+                {'⭐'.repeat(review.rating)} ({review.rating})
+              </span>
+              <span className="text-gray-400 text-xs">
+                {new Date(review.createdAt).toLocaleString()}
+              </span>
+            </div>
+            <p className="mt-2 text-gray-700">{review.comment}</p>
+            <button
+              onClick={() => onDeleteReview(review.id)}
+              className="mt-2 text-red-500 text-sm hover:underline"
+            >
+              Xoá
+            </button>
           </div>
         ))}
+        {reviews.length === 0 && (
+          <p className="text-gray-500 italic">Chưa có đánh giá nào.</p>
+        )}
       </div>
     </div>
   );
 };
 
 export default ReviewSection;
-

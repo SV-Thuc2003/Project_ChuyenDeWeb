@@ -1,5 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
+import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
+
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -13,19 +14,25 @@ const ProductImages: React.FC<ProductImagesProps> = ({ imageUrls, thumbnailUrl }
   const detailImages = imageUrls.filter((url) => url !== thumbnailUrl);
   const allImages = detailImages.length > 0 ? detailImages : [thumbnailUrl];
 
-  const [selectedImage, setSelectedImage] = useState<string>(allImages[0]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
 
   useEffect(() => {
-    const updatedImages = imageUrls.filter((url) => url !== thumbnailUrl);
-    const initialImage = updatedImages.length > 0 ? updatedImages[0] : thumbnailUrl;
-    setSelectedImage(initialImage);
+    setSelectedIndex(0);
   }, [thumbnailUrl, imageUrls]);
 
   const openFullscreen = (clickedIndex: number) => {
     setStartIndex(clickedIndex);
     setIsFullscreen(true);
+  };
+
+  const prevImage = () => {
+    setSelectedIndex((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
+  };
+
+  const nextImage = () => {
+    setSelectedIndex((prev) => (prev === allImages.length - 1 ? 0 : prev + 1));
   };
 
   const sliderSettings = {
@@ -40,25 +47,41 @@ const ProductImages: React.FC<ProductImagesProps> = ({ imageUrls, thumbnailUrl }
 
   return (
     <>
-      {/* Hình ảnh chính */}
+      {/* Hình ảnh chính có nút điều hướng */}
       <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded shadow">
-        <img
-          src={selectedImage}
-          alt="Ảnh sản phẩm"
-          className="w-full max-h-[500px] object-contain cursor-zoom-in"
-          onClick={() => openFullscreen(allImages.indexOf(selectedImage))}
-        />
+        <div className="relative">
+          <img
+            src={allImages[selectedIndex]}
+            alt="Ảnh sản phẩm"
+            className="w-full max-h-[500px] object-contain cursor-zoom-in"
+            onClick={() => openFullscreen(selectedIndex)}
+          />
+          {/* Nút trái */}
+          <button
+            onClick={prevImage}
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-opacity-100"
+          >
+            <MdNavigateBefore size={40} />
+          </button>
+          {/* Nút phải */}
+          <button
+            onClick={nextImage}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-opacity-100"
+          >
+            <MdNavigateNext size={40} />
+          </button>
+        </div>
 
         {/* Thumbnail nhỏ */}
-        <div className="flex gap-2 overflow-x-auto">
+        <div className="flex gap-2 overflow-x-auto justify-center md:justify-start">
           {allImages.map((img, idx) => (
             <img
               key={idx}
               src={img}
               alt={`Ảnh chi tiết ${idx + 1}`}
-              onClick={() => setSelectedImage(img)}
+              onClick={() => setSelectedIndex(idx)}
               className={`w-20 h-20 object-cover border cursor-pointer rounded transition duration-200 ${
-                img === selectedImage ? 'ring-2 ring-blue-500' : ''
+                idx === selectedIndex ? 'ring-2 ring-blue-500' : ''
               }`}
             />
           ))}
@@ -90,4 +113,3 @@ const ProductImages: React.FC<ProductImagesProps> = ({ imageUrls, thumbnailUrl }
 };
 
 export default ProductImages;
-
