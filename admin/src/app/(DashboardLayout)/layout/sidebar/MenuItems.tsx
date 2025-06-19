@@ -36,12 +36,12 @@ const Menuitems = [
     icon: IconUsers,
     href: "/ui-components/customer",
   },
-  {
-    id: uniqueId(),
-    title: "Khuyến mãi",
-    icon: IconDiscount,
-    href: "/ui-components/promotion",
-  },
+  // {
+  //   id: uniqueId(),
+  //   title: "Khuyến mãi",
+  //   icon: IconDiscount,
+  //   href: "/ui-components/promotion",
+  // },
   {
     id: uniqueId(),
     title: "Hộp thư liên hệ",

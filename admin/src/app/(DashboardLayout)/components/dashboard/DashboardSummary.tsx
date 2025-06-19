@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Paper, Stack } from "@mui/material";
 import {
     IconCurrencyDong,
@@ -7,41 +7,55 @@ import {
     IconPackage,
 } from "@tabler/icons-react";
 
-const summaryData = [
-    {
-        id: 1,
-        title: "Doanh thu hôm nay",
-        value: "150 triệu ₫",
-        icon: <IconCurrencyDong size={32} color="#1976d2" />,
-        color: "#1976d2",
-    },
-    {
-        id: 2,
-        title: "Sản phẩm đã bán",
-        value: "320 máy",
-        icon: <IconDeviceWatch size={32} color="#2e7d32" />,
-        color: "#2e7d32",
-    },
-    {
-        id: 3,
-        title: "Khách hàng mới",
-        value: "45 người",
-        icon: <IconUsers size={32} color="#ed6c02" />,
-        color: "#ed6c02",
-    },
-    {
-        id: 4,
-        title: "Đơn hàng đang xử lý",
-        value: "23 đơn",
-        icon: <IconPackage size={32} color="#d32f2f" />,
-        color: "#d32f2f",
-    },
-];
-
 const DashboardSummary = () => {
+    const [data, setData] = useState({
+        todayRevenue: "0 triệu ₫",
+        totalSoldProducts: "0 sản phẩm",
+        newCustomersToday: 0,
+        processingOrders: 0,
+    });
+
+    useEffect(() => {
+        fetch("http://localhost:8080/api/admin/summary")
+            .then((res) => res.json())
+            .then((res) => setData(res))
+            .catch((err) => console.error("Lỗi khi load dữ liệu tổng quan:", err));
+    }, []);
+
+    const summaryData = [
+        {
+            id: 1,
+            title: "Doanh thu hôm nay",
+            value: data.todayRevenue,
+            icon: <IconCurrencyDong size={32} color="#1976d2" />,
+            color: "#1976d2",
+        },
+        {
+            id: 2,
+            title: "Sản phẩm đã bán",
+            value: data.totalSoldProducts,
+            icon: <IconDeviceWatch size={32} color="#2e7d32" />,
+            color: "#2e7d2",
+        },
+        {
+            id: 3,
+            title: "Khách hàng mới",
+            value: `${data.newCustomersToday} người`,
+            icon: <IconUsers size={32} color="#ed6c02" />,
+            color: "#ed6c02",
+        },
+        {
+            id: 4,
+            title: "Đơn hàng đang xử lý",
+            value: `${data.processingOrders} đơn`,
+            icon: <IconPackage size={32} color="#d32f2f" />,
+            color: "#d32f2f",
+        },
+    ];
+
     return (
         <Paper
-            elevation={0}  // tắt đổ bóng ở Paper
+            elevation={0}
             sx={{
                 p: 3,
                 display: "flex",
@@ -80,7 +94,11 @@ const DashboardSummary = () => {
                         >
                             {value}
                         </Typography>
-                        <Typography variant="subtitle2" color="text.secondary" fontWeight={600}>
+                        <Typography
+                            variant="subtitle2"
+                            color="text.secondary"
+                            fontWeight={600}
+                        >
                             {title}
                         </Typography>
                     </Stack>
