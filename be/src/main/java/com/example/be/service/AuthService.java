@@ -2,6 +2,7 @@ package com.example.be.service;
 
 import com.example.be.dto.request.*;
 import com.example.be.dto.response.LoginResponse;
+import com.example.be.dto.response.UserProfileResponse;
 import com.example.be.entity.User;
 import com.example.be.entity.UserRoles;
 import com.example.be.enums.RoleName;
@@ -157,6 +158,18 @@ public class AuthService {
         return new LoginResponse(token, user.getUsername(), role, user.getId()); // 👈 thêm user.getId()
     }
 
+    public UserProfileResponse getProfile(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        return new UserProfileResponse(
+                user.getName(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getAddress()
+        );
+    }
+
     /**
      * Cập nhật thông tin cá nhân của người dùng
      *
@@ -164,17 +177,31 @@ public class AuthService {
      * @param request thông tin cập nhật
      * @return thông báo kết quả
      */
-    public String updateProfile(Integer userId, UpdateProfileRequest request){
+    public String updateProfile(Integer userId, UpdateProfileRequest request) {
+        // Tìm user trong database
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        user.setName(request.getName());
-        user.setPhone(request.getPhone());
-        user.setAddress(request.getAddress());
+
+        // Cập nhật thông tin nếu có sự thay đổi (optional, có thể bỏ)
+        if (request.getName() != null) {
+            user.setName(request.getName().trim());
+        }
+        if (request.getPhone() != null) {
+            user.setPhone(request.getPhone().trim());
+        }
+        if (request.getAddress() != null) {
+            user.setAddress(request.getAddress().trim());
+        }
+
+        // Cập nhật thời gian
         user.setUpdateAt(LocalDateTime.now());
 
+        // Lưu lại
         userRepository.save(user);
+
         return "Cập nhật thông tin thành công";
     }
+
 
     /**
      * Đổi mật khẩu của người dùng sau khi xác minh mật khẩu cũ.
@@ -254,10 +281,5 @@ public class AuthService {
         return "Đổi mật khẩu thành công";
     }
 
-
-//    public String logout(String token){
-//        LocalDateTime expery =jwtService.extractExpiration(token);
-//        Black
-//    }
 }
 

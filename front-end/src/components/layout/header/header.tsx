@@ -10,6 +10,7 @@ import { CiLocationOn, CiHeart, CiShoppingCart } from "react-icons/ci";
 import { IoSearchCircle } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
 import { useCart } from "../../../contexts/CartContext";
+import { useFavorites } from "../../../hooks/useFavorite"; 
 
 const Header: React.FC = () => {
   const { username, logout } = useAuth();
@@ -20,7 +21,7 @@ const Header: React.FC = () => {
   const currentPath = location.pathname;
 
   const [searchTerm, setSearchTerm] = React.useState("");
-
+  const { favoriteProductIds = [] } = useFavorites();
   const handleSearch = () => {
     if (searchTerm.trim()) {
       navigate(`/search?keyword=${encodeURIComponent(searchTerm.trim())}`);
@@ -147,7 +148,7 @@ const Header: React.FC = () => {
           >
             <CiHeart className="w-7 h-7" />
             <div className="absolute -top-2 -right-2 bg-[#5290f3] text-white text-[10px] w-3 h-3 rounded-full flex items-center justify-center">
-              0
+              {favoriteProductIds.length}
             </div>
           </div>
 

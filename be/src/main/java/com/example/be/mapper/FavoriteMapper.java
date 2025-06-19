@@ -1,5 +1,6 @@
 package com.example.be.mapper;
 
+
 import com.example.be.dto.response.FavoriteResponse;
 import com.example.be.entity.Favorite;
 import org.mapstruct.Mapper;
