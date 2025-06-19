@@ -36,4 +36,12 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query("SELECT od.product, SUM(od.quantity) as total FROM OrderDetail od GROUP BY od.product ORDER BY total DESC")
     List<Object[]> findTopSellingProducts(Pageable pageable);
 
+    @Query("SELECT o FROM Order o " +
+            "JOIN FETCH o.user " +
+            "JOIN FETCH o.status " +
+            "JOIN FETCH o.paymentMethod " +
+            "JOIN FETCH o.shippingAddress " +
+            "LEFT JOIN FETCH o.orderDetails od " +
+            "LEFT JOIN FETCH od.product p")
+    List<Order> findAllWithDetails();
 }

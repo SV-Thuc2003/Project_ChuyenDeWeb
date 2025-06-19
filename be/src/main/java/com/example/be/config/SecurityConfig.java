@@ -70,8 +70,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/shipping/fee").permitAll()
                         .requestMatchers("/api/payment/qr").permitAll() // ✅ Cho phép gọi mà không cần token
                         .requestMatchers("/api/payment/verify").authenticated() // ✅ Vẫn yêu cầu token
+                                .requestMatchers("/api/orders/**", "/api/order-statuses/**").permitAll()
                                 .requestMatchers("/api/contact").permitAll()
-                        .anyRequest().authenticated()
+                                .requestMatchers("/api/order-statuses/**").permitAll()
+                                .requestMatchers("/api/contact/**").permitAll()
+                                .anyRequest().authenticated()
 
                 )
                 .exceptionHandling(exc -> exc
