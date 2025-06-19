@@ -75,13 +75,4 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-//    @PutMapping("/profile")
-//    public ResponseEntity<String> updateProfile(@RequestBody UpdateProfileRequest request, @AuthenticationPrincipal UserPrincipal principal){
-//        return ResponseEntity.ok(authService.updateProfile(principal.getId(), request));
-//    }
-//    @PutMapping("/change-password")
-//    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request,
-//                                                 @AuthenticationPrincipal UserPrincipal principal) {
-//        return ResponseEntity.ok(authService.changePassword(principal.getId(), request));
-//    }
 }
