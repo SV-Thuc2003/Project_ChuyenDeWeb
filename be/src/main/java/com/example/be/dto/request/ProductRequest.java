@@ -7,9 +7,11 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import jakarta.validation.constraints.NotBlank;
 
 @Data
 public class ProductRequest {
+    @NotBlank(message = "Tên sản phẩm không được để trống")
     private String name;
     private String slug;
     private String description;

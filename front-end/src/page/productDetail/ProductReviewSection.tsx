@@ -17,7 +17,6 @@ interface ReviewSectionProps {
 const ReviewSection: React.FC<ReviewSectionProps> = ({
   reviews,
   onSubmitReview,
-  onDeleteReview,
 }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
@@ -97,12 +96,12 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
               </span>
             </div>
             <p className="mt-2 text-gray-700">{review.comment}</p>
-            <button
-              onClick={() => onDeleteReview(review.id)}
-              className="mt-2 text-red-500 text-sm hover:underline"
-            >
-              Xoá
-            </button>
+            {/*<button*/}
+            {/*  onClick={() => onDeleteReview(review.id)}*/}
+            {/*  className="mt-2 text-red-500 text-sm hover:underline"*/}
+            {/*>*/}
+            {/*  Xoá*/}
+            {/*</button>*/}
           </div>
         ))}
         {reviews.length === 0 && (

@@ -27,6 +27,7 @@ public class OrderService {
     private final OrderDetailRepository orderDetailRepository;
     private final CartRepository cartRepository;
 
+
     @Transactional
     public Integer placeOrder(OrderRequest request) {
         User user = userRepository.findById(request.getUserId())
@@ -114,5 +115,10 @@ public class OrderService {
         order.setStatus(paidStatus);
         orderRepository.save(order);
     }
+
+
+        public boolean hasUserPurchasedProduct(Integer userId, Integer productId) {
+            return orderRepository.existsByUserIdAndProductId(userId, productId);
+        }
 
 }
