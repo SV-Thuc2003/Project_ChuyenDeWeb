@@ -6,6 +6,8 @@ import ShippingAddressForm from "../checkout/ShippingAddressForm";
 import DiscountCodeForm from "../checkout/DiscountCodeForm";
 import PaymentMethodForm from "../checkout/PaymentMethodForm";
 import OrderSummary from "../checkout/OrderSummary";
+import QrPayment from "../payment/QrPayment";
+
 import {
   CheckoutState,
   PersonalInfo,
@@ -33,6 +35,9 @@ const Checkout: React.FC = () => {
 
   const [products, setProducts] = useState<CartItem[]>([]);
   const [shippingFee, setShippingFee] = useState<number>(0);
+  const [showQr, setShowQr] = useState(false);
+  const [qrData, setQrData] = useState<any>(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,17 +50,11 @@ const Checkout: React.FC = () => {
     }
 
     axios.get(`/api/cart/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
       withCredentials: true,
     })
-        .then(res => {
-          setProducts(res.data);
-        })
-        .catch(err => {
-          console.error("❌ Lỗi lấy giỏ hàng:", err);
-        });
+        .then(res => setProducts(res.data))
+        .catch(err => console.error("❌ Lỗi lấy giỏ hàng:", err));
   }, []);
 
   const subtotal = products.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -76,17 +75,11 @@ const Checkout: React.FC = () => {
   };
 
   const handleDiscountCodeChange = (value: string) => {
-    setCheckoutState(prev => ({
-      ...prev,
-      discountCode: value,
-    }));
+    setCheckoutState(prev => ({ ...prev, discountCode: value }));
   };
 
   const handlePaymentMethodChange = (value: string) => {
-    setCheckoutState(prev => ({
-      ...prev,
-      paymentMethod: value,
-    }));
+    setCheckoutState(prev => ({ ...prev, paymentMethod: value }));
   };
 
   const handleApplyDiscountCode = () => {
@@ -104,37 +97,64 @@ const Checkout: React.FC = () => {
       quantity: item.quantity,
     }));
 
-    const statusOverride = checkoutState.paymentMethod === "cash" ? "Accepting" : undefined;
+    const amount = subtotal - discount + shippingFee;
 
-    const payload = {
-      userId: parseInt(userId),
-      personalInfo: checkoutState.personalInfo,
-      shippingAddress: checkoutState.shippingAddress,
-      products: formattedProducts,
-      paymentMethod: checkoutState.paymentMethod,
-      discountCode: checkoutState.discountCode,
-      subtotal,
-      shippingFee,
-      discount,
-      total: subtotal - discount + shippingFee,
-      status: statusOverride // 👈 Thêm dòng này
-    };
+    if (checkoutState.paymentMethod === "vnpay") {
+      try {
+        const qrRes = await axios.get(`/api/payment/qr`, {
+          params: { amount },
+          withCredentials: true
+        });
 
+        const { qrUrl, txnRef } = qrRes.data;
 
-    try {
-      const res = await axios.post("/api/orders", payload, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+        setQrData({
+          qrUrl,
+          txnRef,
+          userId: parseInt(userId),
+          amount,
+          payload: {
+            userId: parseInt(userId),
+            personalInfo: checkoutState.personalInfo,
+            shippingAddress: checkoutState.shippingAddress,
+            products: formattedProducts,
+            paymentMethod: checkoutState.paymentMethod,
+            discountCode: checkoutState.discountCode,
+            subtotal,
+            shippingFee,
+            discount,
+            total: amount,
+            status: "PAID"
+          }
+        });
 
-      if (checkoutState.paymentMethod === "vnpay" && res.data.vnpayUrl) {
-        window.location.href = res.data.vnpayUrl;
-      } else {
-        navigate("/order-success");
+        setShowQr(true);
+      } catch (err) {
+        console.error("❌ Lỗi tạo mã QR:", err);
       }
-    } catch (err: any) {
-      console.error("❌ Lỗi đặt hàng:", err.response?.data || err.message);
+    } else {
+      try {
+        const payload = {
+          userId: parseInt(userId),
+          personalInfo: checkoutState.personalInfo,
+          shippingAddress: checkoutState.shippingAddress,
+          products: formattedProducts,
+          paymentMethod: checkoutState.paymentMethod,
+          discountCode: checkoutState.discountCode,
+          subtotal,
+          shippingFee,
+          discount,
+          total: amount,
+          status: "Accepting"
+        };
+
+        await axios.post("/api/orders", payload, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        navigate("/order-success");
+      } catch (err) {
+        console.error("❌ Lỗi đặt hàng:", err);
+      }
     }
   };
 
@@ -149,26 +169,22 @@ const Checkout: React.FC = () => {
                     personalInfo={checkoutState.personalInfo}
                     onPersonalInfoChange={handlePersonalInfoChange}
                 />
-
                 <ShippingAddressForm
                     shippingAddress={checkoutState.shippingAddress}
                     onShippingAddressChange={handleShippingAddressChange}
                     onShippingFeeChange={setShippingFee}
                 />
-
                 <DiscountCodeForm
                     discountCode={checkoutState.discountCode}
                     onDiscountCodeChange={handleDiscountCodeChange}
                     onApplyDiscountCode={handleApplyDiscountCode}
                 />
-
                 <PaymentMethodForm
                     paymentMethod={checkoutState.paymentMethod}
                     onPaymentMethodChange={handlePaymentMethodChange}
                     onApplyDiscountCode={handleApplyDiscountCode}
                 />
               </div>
-
               <div className="lg:col-span-1">
                 <OrderSummary
                     personalInfo={checkoutState.personalInfo}
@@ -186,6 +202,28 @@ const Checkout: React.FC = () => {
           </div>
         </main>
         <Footer />
+
+        {qrData && (
+            <QrPayment
+                isOpen={showQr}
+                onClose={() => setShowQr(false)}
+                qrUrl={qrData.qrUrl}
+                txnRef={qrData.txnRef}
+                userId={qrData.userId}
+                amount={qrData.amount}
+                payload={qrData.payload}
+                onConfirm={async (payload) => {
+                  const res = await axios.post("/api/orders", payload, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                    withCredentials: true
+                  });
+                  return res.data; // ✅ phải return cái này để có orderId
+                }}
+
+            />
+
+
+        )}
       </div>
   );
 };

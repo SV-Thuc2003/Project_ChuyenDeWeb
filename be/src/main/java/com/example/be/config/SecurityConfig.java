@@ -65,6 +65,13 @@ public class SecurityConfig {
 //                        .requestMatchers("/api/customers/**").hasRole("USER")
                         .requestMatchers("/api/favorites/**", "/api/cart/**").authenticated()   //.hasAnyRole("USER", "ADMIN") // cả user và admin
                         .requestMatchers("/api/shipping/fee").permitAll() // ✅ Cho phép public endpoint tính phí GH
+
+                        .requestMatchers("/api/favorites/**").authenticated()
+                        .requestMatchers("/api/cart/**").authenticated()
+                        .requestMatchers("/api/shipping/fee").permitAll()
+                        .requestMatchers("/api/payment/qr").permitAll() // ✅ Cho phép gọi mà không cần token
+                        .requestMatchers("/api/payment/verify").authenticated() // ✅ Vẫn yêu cầu token
+
                         .anyRequest().authenticated()
 
                 )
