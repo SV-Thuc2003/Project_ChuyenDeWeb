@@ -5,6 +5,7 @@ import com.example.be.enums.ProductStatus;
 import com.example.be.enums.ProductType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -68,4 +69,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, JpaS
     Page<Product> findByCategoryIdAndStatus(@Param("categoryId") Integer categoryId,
                                             @Param("status") ProductStatus status,
                                             Pageable pageable);
+
 }
