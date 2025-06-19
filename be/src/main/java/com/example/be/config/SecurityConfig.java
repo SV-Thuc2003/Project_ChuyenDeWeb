@@ -63,7 +63,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/brands/**", "/api/categories/**").permitAll()
                         .requestMatchers("/api/favorites/**").authenticated()
                         .requestMatchers("/api/cart/**").authenticated()
-                        .requestMatchers("/api/shipping/fee").permitAll() // ✅ Cho phép public endpoint tính phí GH
+                        .requestMatchers("/api/shipping/fee").permitAll()
+                        .requestMatchers("/api/payment/qr").permitAll() // ✅ Cho phép gọi mà không cần token
+                        .requestMatchers("/api/payment/verify").authenticated() // ✅ Vẫn yêu cầu token
                         .anyRequest().authenticated()
 
                 )

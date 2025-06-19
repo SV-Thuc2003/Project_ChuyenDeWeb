@@ -15,18 +15,16 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService; // ✅ Dòng này nè
-
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody OrderRequest request) {
         try {
-            orderService.placeOrder(request);
-            return ResponseEntity.ok("Đặt hàng thành công");
+            Integer orderId = orderService.placeOrder(request);
+            return ResponseEntity.ok(orderId); // ✅ trả về ID đơn hàng
         } catch (Exception e) {
-            e.printStackTrace(); // ✅ In lỗi ra console
+            e.printStackTrace();
             return ResponseEntity.status(500).body("Lỗi đặt hàng: " + e.getMessage());
         }
     }
-
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getUserOrders(@PathVariable Integer userId) {
