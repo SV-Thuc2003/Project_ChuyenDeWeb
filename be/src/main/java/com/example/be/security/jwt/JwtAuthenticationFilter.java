@@ -7,6 +7,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Lọc JWT để xác thực người dùng trong mỗi request.
@@ -42,6 +44,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (token != null && jwtService.validateToken(token)){
             // Trích xuất email (hoặc username) từ token
             String email = jwtService.getUsernameFromToken(token);
+            // Tạm set ROLE_USER cho tất cả token hợp lệ (test)
+//            List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
             // Tạo đối tượng xác thực (authentication)
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(email, null, null); // có thể cung cấp quyền hạn (authorities) nếu cần
             // Gán thông tin chi tiết về request cho đối tượng authentication
@@ -89,4 +93,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 
+//    @Override
+//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+//        String path = request.getRequestURI();
+//        return path.startsWith("/auth/")
+//                || path.startsWith("/oauth2/")
+//                || path.startsWith("/api/admin/");
+//    }
 }

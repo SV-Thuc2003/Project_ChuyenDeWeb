@@ -1,23 +1,31 @@
-import React from "react";
-import AppRoutes from "./router";
+import Routes from "./router.tsx";
+import "./index.css";
 import { useAuth } from "./contexts/AuthContext";
 import { FavoriteProvider } from "./contexts/FavoriteContext";
 
-
-const App: React.FC = () => {
-
-  const { userId, token } = useAuth();
-
-  if (!token || !userId) {
-    return <div>Vui lòng đăng nhập</div>; // hoặc <Navigate to="/login" />
-  }
+function App() {
+  const { userId } = useAuth();
 
   return (
-    <FavoriteProvider userId={userId}>
-      <AppRoutes />
+    <FavoriteProvider userId={userId || 0}>
+      <Routes />
     </FavoriteProvider>
   );
-  // return <AppRoutes />;
-};
+}
 
 export default App;
+
+
+
+// import Routes from "./router.tsx";
+// import "./index.css";
+
+// function App() {
+//   return (
+//     <Routes />
+    
+//   );
+// }
+
+// export default App;
+

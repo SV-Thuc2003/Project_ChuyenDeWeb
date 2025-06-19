@@ -61,8 +61,9 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**", "/oauth2/**").permitAll()
                         .requestMatchers("/api/products/**").permitAll()
                         .requestMatchers("/api/brands/**", "/api/categories/**").permitAll()
-                        .requestMatchers("/api/favorites/**").authenticated()
-                        .requestMatchers("/api/cart/**").authenticated()
+                        .requestMatchers("/api/admin/**").permitAll()
+//                        .requestMatchers("/api/customers/**").hasRole("USER")
+                        .requestMatchers("/api/favorites/**", "/api/cart/**").authenticated()   //.hasAnyRole("USER", "ADMIN") // cả user và admin
                         .requestMatchers("/api/shipping/fee").permitAll() // ✅ Cho phép public endpoint tính phí GH
                         .anyRequest().authenticated()
 
@@ -98,7 +99,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
 //        cho phép nguồn gốc từ React dev server
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", "http://localhost:3000"));
 //        cho phép các phương thức HTTP  thông dụng
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 //        cho phép mọi header

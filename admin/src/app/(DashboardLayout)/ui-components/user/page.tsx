@@ -307,3 +307,122 @@ const EmployeeManagement = () => {
 };
 
 export default EmployeeManagement;
+
+
+// 'use client';
+// import { useState, useEffect } from 'react';
+// import {
+//   Box, Button, Card, CardContent, Table,
+//   TableBody, TableCell, TableContainer,
+//   TableHead, TableRow, Typography, Pagination,
+//   IconButton
+// } from "@mui/material";
+// import { IconEdit, IconTrash } from "@tabler/icons-react";
+// import { apiGet, apiPut } from '../../service/api';
+
+// interface Customer {
+//   id: number;
+//   name: string;
+//   email: string;
+//   phone?: string;
+//   address?: string;
+//   status: 'ACTIVE' | 'INACTIVE' | 'BANNED';
+// }
+
+// export default function EmployeeManagement() {
+//   const [customers, setCustomers] = useState<Customer[]>([]);
+//   const [page, setPage] = useState(1);
+//   const ITEMS_PER_PAGE = 10;
+
+//   const token = typeof window !== 'undefined'
+//     ? localStorage.getItem('token') || ''
+//     : '';
+
+//   useEffect(() => {
+//     if (!token) return;
+//     apiGet<Customer[]>('/api/admin/customers', token)
+//       .then(setCustomers)
+//       .catch(err => {
+//         console.error(err);
+//         alert('Không thể lấy dữ liệu khách hàng');
+//       });
+//   }, [token]);
+
+//   const toggleStatus = (id: number, current: Customer['status']) => {
+//     const next = current === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+//     apiPut(`/api/admin/customers/${id}/status?status=${next}`, token)
+//       .then(() => {
+//         setCustomers(prev =>
+//           prev.map(c => c.id === id ? { ...c, status: next } : c)
+//         );
+//       })
+//       .catch(err => {
+//         console.error(err);
+//         alert('Cập nhật trạng thái thất bại');
+//       });
+//   };
+
+//   const paged = customers.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+
+//   return (
+//     <Card>
+//       <CardContent>
+//         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+//           <Typography variant="h6">Quản lý khách hàng</Typography>
+//         </Box>
+//         <TableContainer>
+//           <Table>
+//             <TableHead>
+//               <TableRow>
+//                 <TableCell>ID</TableCell>
+//                 <TableCell>Tên</TableCell>
+//                 <TableCell>Email</TableCell>
+//                 <TableCell>Điện thoại</TableCell>
+//                 <TableCell>Địa chỉ</TableCell>
+//                 <TableCell>Trạng thái</TableCell>
+//                 <TableCell align="center">Hành động</TableCell>
+//               </TableRow>
+//             </TableHead>
+//             <TableBody>
+//               {paged.map(c => (
+//                 <TableRow key={c.id}>
+//                   <TableCell>{c.id}</TableCell>
+//                   <TableCell>{c.name}</TableCell>
+//                   <TableCell>{c.email}</TableCell>
+//                   <TableCell>{c.phone || '-'}</TableCell>
+//                   <TableCell>{c.address || '-'}</TableCell>
+//                   <TableCell>{c.status}</TableCell>
+//                   <TableCell align="center">
+//                     {/* Edit/Delete nếu muốn mở rộng */}
+//                     <IconButton disabled><IconEdit /></IconButton>
+//                     <IconButton disabled><IconTrash /></IconButton>
+//                     <Button
+//                       variant="outlined"
+//                       size="small"
+//                       color={c.status === 'ACTIVE' ? 'error' : 'success'}
+//                       onClick={() => toggleStatus(c.id, c.status)}
+//                     >
+//                       {c.status === 'ACTIVE' ? 'Khóa' : 'Mở'}
+//                     </Button>
+//                   </TableCell>
+//                 </TableRow>
+//               ))}
+//               {paged.length === 0 && (
+//                 <TableRow>
+//                   <TableCell colSpan={7} align="center">Không có khách hàng</TableCell>
+//                 </TableRow>
+//               )}
+//             </TableBody>
+//           </Table>
+//         </TableContainer>
+//         <Box mt={2} display="flex" justifyContent="center">
+//           <Pagination
+//             count={Math.ceil(customers.length / ITEMS_PER_PAGE)}
+//             page={page}
+//             onChange={(_, v) => setPage(v)}
+//           />
+//         </Box>
+//       </CardContent>
+//     </Card>
+//   );
+// }
