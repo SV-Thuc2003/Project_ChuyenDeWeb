@@ -2,6 +2,7 @@ package com.example.be.controller;
 
 import com.example.be.dto.request.*;
 import com.example.be.dto.response.LoginResponse;
+import com.example.be.dto.response.UserProfileResponse;
 import com.example.be.entity.User;
 
 import com.example.be.service.AuthService;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
@@ -45,6 +46,18 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(request));
     }
 
+    @GetMapping("/profile/{userId}")
+    public ResponseEntity<UserProfileResponse> getProfile(@PathVariable Integer userId) {
+        return ResponseEntity.ok(authService.getProfile(userId));
+    }
+
+    @PutMapping("/profile/{userId}")
+    public ResponseEntity<String> updateProfile(@PathVariable Integer userId,
+                                                @Valid @RequestBody UpdateProfileRequest request) {
+        String result = authService.updateProfile(userId, request);
+        return ResponseEntity.ok(result);
+    }
+
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestParam String email) {
         String response = authService.forgotPassword(email);
@@ -62,13 +75,4 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-//    @PutMapping("/profile")
-//    public ResponseEntity<String> updateProfile(@RequestBody UpdateProfileRequest request, @AuthenticationPrincipal UserPrincipal principal){
-//        return ResponseEntity.ok(authService.updateProfile(principal.getId(), request));
-//    }
-//    @PutMapping("/change-password")
-//    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request,
-//                                                 @AuthenticationPrincipal UserPrincipal principal) {
-//        return ResponseEntity.ok(authService.changePassword(principal.getId(), request));
-//    }
 }

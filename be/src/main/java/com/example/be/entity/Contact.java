@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "contact")
 @Getter
@@ -19,9 +18,10 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    // ❌ Bỏ quan hệ với User
+    // @ManyToOne(optional = false)
+    // @JoinColumn(name = "user_id", nullable = false)
+    // private User user;
 
     private String name;
 

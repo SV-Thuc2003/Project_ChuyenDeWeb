@@ -18,25 +18,25 @@ const ContactForm: React.FC = () => {
 
   const validateForm = (): boolean => {
     const newErrors: ContactFormErrors = {};
-    
+
     if (!formData.firstName.trim()) {
       newErrors.firstName = 'Vui lòng nhập họ của bạn';
     }
-    
+
     if (!formData.lastName.trim()) {
       newErrors.lastName = 'Vui lòng nhập tên của bạn';
     }
-    
+
     if (!formData.email.trim()) {
       newErrors.email = 'Vui lòng nhập email của bạn';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email không hợp lệ';
     }
-    
+
     if (!formData.message.trim()) {
       newErrors.message = 'Vui lòng nhập câu hỏi của bạn';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -49,96 +49,107 @@ const ContactForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (validateForm()) {
-      setIsSubmitting(true);
-      
-      // Simulate API call
-      setTimeout(() => {
-        console.log('Form submitted:', formData);
-        setIsSubmitting(false);
+
+    if (!validateForm()) return;
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('http://localhost:8080/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
+          title: 'Liên hệ từ khách hàng',
+          message: formData.message
+        }),
+      });
+
+      if (response.ok) {
         setSubmitSuccess(true);
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          message: '',
-        });
-        
-        // Reset success message after 5 seconds
-        setTimeout(() => {
-          setSubmitSuccess(false);
-        }, 5000);
-      }, 1500);
+        setFormData({ firstName: '', lastName: '', email: '', message: '' });
+        setTimeout(() => setSubmitSuccess(false), 5000);
+      } else {
+        alert("Gửi thất bại.");
+      }
+
+    } catch (error) {
+      console.error('Lỗi gửi liên hệ:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
+
+
   return (
-    <div className="bg-gray-100 rounded-2xl p-8 shadow-sm">
-      {submitSuccess ? (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-          <p>Cảm ơn bạn đã liên hệ với chúng tôi! Chúng tôi sẽ phản hồi sớm nhất có thể.</p>
-        </div>
-      ) : null}
-      
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="bg-gray-100 rounded-2xl p-8 shadow-sm">
+        {submitSuccess && (
+            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+              <p>Cảm ơn bạn đã liên hệ với chúng tôi! Chúng tôi sẽ phản hồi sớm nhất có thể.</p>
+            </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <InputField
+                label="Họ"
+                name="firstName"
+                placeholder="Họ"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+                error={errors.firstName}
+            />
+
+            <InputField
+                label="Tên"
+                name="lastName"
+                placeholder="Tên"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+                error={errors.lastName}
+            />
+          </div>
+
           <InputField
-            label="Họ"
-            name="firstName"
-            placeholder="Họ"
-            value={formData.firstName}
-            onChange={handleChange}
-            required
-            error={errors.firstName}
+              label="Email"
+              name="email"
+              type="email"
+              placeholder="E-mail"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              error={errors.email}
+              className="mt-4"
           />
-          
-          <InputField
-            label="Tên"
-            name="lastName"
-            placeholder="Tên"
-            value={formData.lastName}
-            onChange={handleChange}
-            required
-            error={errors.lastName}
+
+          <Textarea
+              label="Câu hỏi"
+              name="message"
+              placeholder="Câu hỏi của bạn..."
+              value={formData.message}
+              onChange={handleChange}
+              required
+              rows={6}
+              error={errors.message}
+              className="mt-4"
           />
-        </div>
-        
-        <InputField
-          label="Email"
-          name="email"
-          type="email"
-          placeholder="E-mail"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          error={errors.email}
-          className="mt-4"
-        />
-        
-        <Textarea
-          label="Câu hỏi"
-          name="message"
-          placeholder="Câu hỏi của bạn..."
-          value={formData.message}
-          onChange={handleChange}
-          required
-          rows={6}
-          error={errors.message}
-          className="mt-4"
-        />
-        
-        <Button
-          type="submit"
-          className="mt-6 py-3 px-16"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Đang gửi...' : 'Gửi'}
-        </Button>
-      </form>
-    </div>
+
+          <Button
+              type="submit"
+              className="mt-6 py-3 px-16"
+              disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Đang gửi...' : 'Gửi'}
+          </Button>
+        </form>
+      </div>
   );
 };
 

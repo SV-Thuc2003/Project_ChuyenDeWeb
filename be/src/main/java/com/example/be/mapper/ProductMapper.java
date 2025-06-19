@@ -37,6 +37,7 @@ public interface ProductMapper {
     );
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(source = "name", target = "name")
     @Mapping(target = "categories", ignore = true)
     @Mapping(target = "images", ignore = true)
     @Mapping(target = "waterPurifierDetail", ignore = true)

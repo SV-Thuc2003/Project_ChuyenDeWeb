@@ -1,167 +1,106 @@
+// src/components/profile/ProfileForm.tsx
 import React, { useState } from "react";
 import { UserProfile } from "../../types/Profile";
 import Button from "../../components/ui/Button";
 import InputField from "../../components/ui/InputField";
-// import Dropdown from "../../components/ui/Dropdown";
 import { CgProfile } from "react-icons/cg";
+import { useUpdateProfile } from "../../hooks/useUpdateProfile";
 
 interface ProfileFormProps {
-  userProfile: UserProfile;
-  onSave: (profile: UserProfile) => void;
+  userId: number;                  // <-- nhận userId để call API
+  initialProfile: UserProfile;
 }
 
-const ProfileForm: React.FC<ProfileFormProps> = ({ userProfile, onSave }) => {
-  const [profile, setProfile] = useState<UserProfile>(userProfile);
+const ProfileForm: React.FC<ProfileFormProps> = ({
+  userId,
+  initialProfile,
+}) => {
+  const { updateProfile, loading } = useUpdateProfile();
+
+  const [profile, setProfile] = useState<UserProfile>(initialProfile);
   const [errors, setErrors] = useState<
     Partial<Record<keyof UserProfile, string>>
   >({});
 
-  const genderOptions = [
-    { value: "male", label: "Nam" },
-    { value: "female", label: "Nữ" },
-    { value: "other", label: "Khác" },
-  ];
-
+  /* ---------- HANDLE INPUT ---------- */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setProfile({
-      ...profile,
-      [name]: value,
-    });
+    setProfile((prev) => ({ ...prev, [name]: value }));
 
-    // Clear error when user types
+    // Clear lỗi realtime
     if (errors[name as keyof UserProfile]) {
-      setErrors({
-        ...errors,
-        [name]: "",
-      });
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
-  const handleGenderChange = (value: string) => {
-    setProfile({
-      ...profile,
-      gender: value,
-    });
-
-    // Clear error when user selects
-    if (errors.gender) {
-      setErrors({
-        ...errors,
-        gender: "",
-      });
-    }
-  };
-
+  /* ---------- VALIDATE ---------- */
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof UserProfile, string>> = {};
 
-    if (!profile.firstName.trim()) {
-      newErrors.firstName = "Họ không được để trống";
-    }
-
-    if (!profile.lastName.trim()) {
-      newErrors.lastName = "Tên không được để trống";
-    }
-
-    if (!profile.email.trim()) {
-      newErrors.email = "Email không được để trống";
-    } else if (!/\S+@\S+\.\S+/.test(profile.email)) {
-      newErrors.email = "Email không hợp lệ";
-    }
+    if (!profile.name.trim()) newErrors.name = "Họ tên không được để trống";
+    if (!profile.phone.trim()) newErrors.phone = "Số điện thoại không được để trống";
+    if (!profile.address?.trim()) newErrors.address = "Địa chỉ không được để trống";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  /* ---------- SUBMIT ---------- */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (validateForm()) {
-      onSave(profile);
-    }
+    if (!validateForm()) return;
+    updateProfile(userId, profile);          // <-- call API
   };
 
   return (
     <div className="bg-[#f8f9fa] p-8 rounded-2xl">
+      {/* Header */}
       <div className="flex items-center mb-8">
         <div className="w-[68px] h-[68px] bg-[#fd7e14] rounded-full flex items-center justify-center">
-          <CgProfile className="w-[68px] h-[68px]" />
+          <CgProfile className="w-[40px] h-[40px]" />
         </div>
         <div className="ml-4">
-          <h2 className="text-xl font-medium">
-            {profile.firstName} {profile.lastName}
-          </h2>
-          <p className="text-gray-500">{profile.email}</p>
+          <h2 className="text-xl font-medium">{profile.name}</h2>
+          <p className="text-gray-500">{profile.phone}</p>
         </div>
       </div>
 
+      {/* Form */}
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
           <InputField
-            label="Họ"
-            name="firstName"
-            value={profile.firstName}
+            label="Họ tên"
+            name="name"
+            value={profile.name}
             onChange={handleInputChange}
-            placeholder="Họ"
-            error={errors.firstName}
-          />
-
-          <InputField
-            label="Tên"
-            name="lastName"
-            value={profile.lastName}
-            onChange={handleInputChange}
-            placeholder="Tên"
-            error={errors.lastName}
-          />
-
-          <InputField
-            label="Giới tính"
-            name="gender"
-            type="select"
-            value={profile.gender}
-            onChange={(e) => handleGenderChange(e.target.value)}
-            options={genderOptions}
-            placeholder="Chọn giới tính"
-            error={errors.gender}
+            placeholder="Họ và tên"
+            error={errors.name}
           />
 
           <InputField
             label="Số điện thoại"
-            name="phoneNumber"
-            value={profile.phoneNumber}
+            name="phone"
+            value={profile.phone}
             onChange={handleInputChange}
-            placeholder="Phone number"
-            error={errors.phoneNumber}
+            placeholder="Số điện thoại"
+            error={errors.phone}
           />
 
           <div className="md:col-span-2">
             <InputField
-              label="Email"
-              name="email"
-              type="email"
-              value={profile.email}
+              label="Địa chỉ"
+              name="address"
+              value={profile.address ?? ""}
               onChange={handleInputChange}
-              placeholder="Email"
-              error={errors.email}
+              placeholder="Địa chỉ"
+              error={errors.address}
             />
           </div>
-
-          <InputField
-            label="Ngày sinh"
-            name="birthday"
-            type="date"
-            value={profile.birthday}
-            onChange={handleInputChange}
-            placeholder="Birthday"
-            error={errors.birthday}
-          />
         </div>
 
         <div className="mt-8">
-          <Button type="submit" variant="primary" className="px-8 py-2">
-            Chỉnh sửa thông tin
+          <Button type="submit" variant="primary" className="px-8 py-2" disabled={loading}>
+            {loading ? "Đang cập nhật..." : "Cập nhật thông tin"}
           </Button>
         </div>
       </form>

@@ -1,14 +1,22 @@
 package com.example.be.controller;
 
-import com.example.be.dto.ReviewRequest;
-import com.example.be.dto.ReviewResponse;
-import com.example.be.service.JwtService;
+import com.example.be.dto.ReviewDTO;
+import com.example.be.dto.request.ReviewRequest;
+import com.example.be.entity.Product;
+import com.example.be.entity.Review;
+import com.example.be.entity.User;
+import com.example.be.repository.OrderRepository;
+import com.example.be.repository.ProductRepository;
+import com.example.be.repository.ReviewRepository;
+import com.example.be.repository.UserRepository;
 import com.example.be.service.ReviewService;
-import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.example.be.service.OrderService;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -16,75 +24,41 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewController {
 
+    private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
     private final ReviewService reviewService;
-    private final JwtService jwtService;;
+    private final OrderService orderService;
 
-    // Tạo review (giả định userId được truyền từ client hoặc từ token)
     @PostMapping
-    public ResponseEntity<ReviewResponse> createReview(
-            @RequestHeader("Authorization") String authHeader,
-            @Valid @RequestBody ReviewRequest request
-    ) {
-        String token = authHeader.replace("Bearer ", "");
-        Integer userId = jwtService.getUserIdFromToken(token);
-        ReviewResponse response = reviewService.createReview(userId, request);
+    public ResponseEntity<?> submitReview(@RequestBody ReviewRequest dto,
+                                          Principal principal,
+                                          HttpServletRequest request) {
+        User user = userRepository.findByEmail(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        try {
+            ReviewDTO response = reviewService.createReview(user.getId(), dto, request.getRemoteAddr());
+            return ResponseEntity.ok(response); // hoặc trả message nếu muốn
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        }
+    }
+
+
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<List<ReviewDTO>> getReviews(@PathVariable Integer productId) {
+        List<Review> reviews = reviewRepository.findByProductId(productId);
+        List<ReviewDTO> response = reviews.stream().map(r -> new ReviewDTO(
+                r.getId(), r.getUser().getName(), r.getRating(), r.getComment(), r.getCreatedAt()
+        )).toList();
         return ResponseEntity.ok(response);
     }
 
-
-    // Lấy danh sách review của 1 sản phẩm
-    @GetMapping("/product/{productId}")
-    public ResponseEntity<List<ReviewResponse>> getReviewsByProduct(
-            @PathVariable Integer productId
-    ) {
-        List<ReviewResponse> reviews = reviewService.getReviewsByProduct(productId);
-        return ResponseEntity.ok(reviews);
-    }
-
-    // Xoá review
-    @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Void> deleteReview(
-            @PathVariable Integer reviewId,
-            @RequestParam("userId") Integer userId // Hoặc lấy từ token nếu có Spring Security
-    ) {
-        reviewService.deleteReview(reviewId, userId);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/reviews/can-review")
+    public ResponseEntity<Boolean> canReview(@RequestParam Integer userId, @RequestParam Integer productId) {
+        boolean hasPurchased = orderService.hasUserPurchasedProduct(userId, productId);
+        return ResponseEntity.ok(hasPurchased);
     }
 
 }
 
-
-
-//package com.example.be.controller;
-//
-//import com.example.be.dto.*;
-//import com.example.be.service.ReviewService;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping("/api/reviews")
-//@RequiredArgsConstructor
-//public class ReviewController {
-//
-//    private final ReviewService reviewService;
-//
-//    // TODO: lấy userId từ JWT sau này
-//    @PostMapping
-//    public ReviewResponse addReview(@RequestBody ReviewRequest request) {
-//        Integer userId = 1; // tạm hardcode
-//        return reviewService.createReview(userId, request);
-//    }
-//
-//    @GetMapping("/product/{productId}")
-//    public List<ReviewResponse> getReviews(@PathVariable Integer productId) {
-//        return reviewService.getReviewsByProduct(productId);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void delete(@PathVariable Integer id) {
-//        reviewService.deleteReview(id);
-//    }
-//}

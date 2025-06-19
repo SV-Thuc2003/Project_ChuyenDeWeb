@@ -29,13 +29,11 @@ public class OrderService {
 
 
     @Transactional
-    public void placeOrder(OrderRequest request) {
+    public Integer placeOrder(OrderRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         System.out.println("✅ Tìm thấy user: " + user.getUsername());
 
-
-        // Nếu chưa có phí vận chuyển → gọi GHN API
         BigDecimal shippingFee = request.getShippingFee();
         if (shippingFee == null || shippingFee.compareTo(BigDecimal.ZERO) <= 0) {
             int fee = shippingService.calculateShippingFee(
@@ -44,8 +42,8 @@ public class OrderService {
             );
             shippingFee = BigDecimal.valueOf(fee);
         }
+
         System.out.println("📦 Bắt đầu lưu ShippingAddress...");
-        // Lưu địa chỉ giao hàng
         ShippingAddress address = ShippingAddress.builder()
                 .user(user)
                 .fullName(request.getPersonalInfo().getName())
@@ -58,20 +56,14 @@ public class OrderService {
                 .build();
         shippingAddressRepository.save(address);
 
-        // Lấy trạng thái mặc định
         String statusName = request.getStatus() != null ? request.getStatus() : "Pending";
-
         OrderStatus status = orderStatusRepository.findByStatusName(statusName)
                 .orElseThrow(() -> new RuntimeException("OrderStatus not found"));
 
-
-        // Tìm phương thức thanh toán
         PaymentMethod payment = paymentMethodRepository.findByMethodName(request.getPaymentMethod())
                 .orElseThrow(() -> new RuntimeException("PaymentMethod not found"));
         System.out.println("💸 Phương thức thanh toán: " + request.getPaymentMethod());
 
-
-        // Tạo đơn hàng
         Order order = Order.builder()
                 .user(user)
                 .totalInvoice(request.getTotal())
@@ -81,7 +73,6 @@ public class OrderService {
                 .build();
         orderRepository.save(order);
 
-        // Lưu chi tiết đơn hàng
         for (ProductItemRequest item : request.getProducts()) {
             Product product = productRepository.findById(item.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
@@ -101,9 +92,9 @@ public class OrderService {
             orderDetailRepository.save(detail);
         }
 
-
-        // Xóa giỏ hàng
         cartRepository.deleteByUserId(user.getId());
+
+        return order.getId(); // ✅ TRẢ ORDER ID VỀ
     }
     @Transactional
     public List<OrderResponse> getOrdersByUserId(Integer userId) {
@@ -113,5 +104,21 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void markOrderAsPaid(Integer orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng"));
+
+        OrderStatus paidStatus = orderStatusRepository.findByStatusName("Paid")
+                .orElseThrow(() -> new RuntimeException("Trạng thái 'Paid' không tồn tại"));
+
+        order.setStatus(paidStatus);
+        orderRepository.save(order);
+    }
+
+
+        public boolean hasUserPurchasedProduct(Integer userId, Integer productId) {
+            return orderRepository.existsByUserIdAndProductId(userId, productId);
+        }
 
 }
