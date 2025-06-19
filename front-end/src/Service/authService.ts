@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 import { RegisterFormData } from '../types/Register';
 import { LoginCredentials, LoginResponse } from '../types/Login';
 
-const API_URL = 'http://localhost:8080/auth'; // hoặc lấy từ .env
+const API_URL = 'http://localhost:8080/api/auth'; // hoặc lấy từ .env
 //Call api của register
 export const register = async (formData: RegisterFormData): Promise<string> => {
     try {
