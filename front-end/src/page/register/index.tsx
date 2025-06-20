@@ -1,25 +1,24 @@
 import React, { useState } from "react";
-import Stepper from "../../components/ui/Stepper.tsx";
-import RegistrationForm from "../../features/auth/register/RegistrationForm.tsx";
-import Illustration from "../../features/auth/register/Illustration.tsx";
-import OtpVerification from "../../features/auth/register/OtpInput.tsx";
-
-const steps: string[] = ["Đăng ký", "Xác thực OTP"];
+import { useTranslation } from "react-i18next";
+import Stepper from "../../components/ui/Stepper";
+import RegistrationForm from "../../features/auth/register/RegistrationForm";
+import Illustration from "../../features/auth/register/Illustration";
+import OtpVerification from "../../features/auth/register/OtpInput";
 
 const RegisterPage: React.FC = () => {
+    const { t } = useTranslation();
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [email, setEmail] = useState<string>("");
 
-    // Khi đăng ký thành công lấy email
+    const steps = [t("auth.steps.register"), t("auth.steps.verify")];
+
     const handleRegisterSuccess = (registeredEmail: string) => {
         setEmail(registeredEmail);
         setCurrentStep(1);
     };
 
-    // Khi xác thực OTP thành công
     const handleOtpSuccess = () => {
-        alert("Đăng ký và xác thực OTP thành công!");
-        // Có thể chuyển hướng hoặc reset form ở đây
+        alert(t("auth.register.success")); // Đăng ký và xác thực OTP thành công!
     };
 
     return (
@@ -29,7 +28,6 @@ const RegisterPage: React.FC = () => {
             </div>
 
             <div className="w-full p-6 bg-white rounded-md shadow-md mx-auto flex flex-col items-center">
-                {/* Bọc Stepper trong div để set max-width và căn giữa */}
                 <div className="w-full max-w-md mb-6">
                     <Stepper steps={steps} currentStep={currentStep} />
                 </div>

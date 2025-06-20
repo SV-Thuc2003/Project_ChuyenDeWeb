@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { CartItem } from "../types/Cart";
+import { useTranslation } from "react-i18next";
 
 interface CartContextType {
   cartItems: CartItem[];
@@ -12,9 +13,8 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { t } = useTranslation();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const userId = localStorage.getItem("userId");
@@ -25,9 +25,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 
     try {
       const res = await axios.get(`/api/cart/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const data = res.data;
@@ -37,26 +35,24 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         setCartItems(data.cartItems);
       }
     } catch (error) {
-      console.error("❌ Không thể lấy giỏ hàng:", error);
+      console.error(`❌ ${t("cart.fetch_error")}:`, error);
     }
   };
 
   const addToCart = async (productId: number, quantity: number) => {
-    if (!userId || !token) throw new Error("Chưa đăng nhập");
+    if (!userId || !token) throw new Error(t("cart.not_logged_in"));
 
     try {
       await axios.post(
-        `/api/cart/${userId}/add`,
-        { productId, quantity },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+          `/api/cart/${userId}/add`,
+          { productId, quantity },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
       );
-      await fetchCart(); // cập nhật lại giỏ sau khi thêm
+      await fetchCart();
     } catch (error) {
-      console.error("❌ Lỗi khi thêm vào giỏ hàng:", error);
+      console.error(`❌ ${t("cart.add_error")}:`, error);
       throw error;
     }
   };
@@ -66,32 +62,28 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 
     try {
       await axios.delete(`/api/cart/${userId}/remove/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       await fetchCart();
     } catch (error) {
-      console.error("❌ Lỗi khi xoá sản phẩm khỏi giỏ hàng:", error);
+      console.error(`❌ ${t("cart.remove_error")}:`, error);
     }
   };
-  
+
   const updateQuantity = async (productId: number, quantity: number) => {
     if (!userId || !token) return;
 
     try {
       await axios.put(
-        `/api/cart/${userId}/update`,
-        { productId, quantity },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+          `/api/cart/${userId}/update`,
+          { productId, quantity },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
       );
       await fetchCart();
     } catch (err) {
-      console.error("❌ Lỗi khi cập nhật số lượng:", err);
+      console.error(`❌ ${t("cart.update_error")}:`, err);
     }
   };
 
@@ -100,11 +92,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [userId]);
 
   return (
-    <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, refreshCart: fetchCart, updateQuantity }}
-    >
-      {children}
-    </CartContext.Provider>
+      <CartContext.Provider
+          value={{
+            cartItems,
+            addToCart,
+            removeFromCart,
+            refreshCart: fetchCart,
+            updateQuantity,
+          }}
+      >
+        {children}
+      </CartContext.Provider>
   );
 };
 

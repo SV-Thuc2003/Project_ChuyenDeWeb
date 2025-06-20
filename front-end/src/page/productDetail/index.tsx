@@ -1,84 +1,62 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/layout/header/header";
 import Footer from "../../components/layout/footer/footer";
-// import Breadcrumb from '../../components/ui/Breadcrumb';
-import { getProductById } from "../../Service/products"; // Đường dẫn tùy theo dự án
+import { getProductById } from "../../Service/products";
 import { ProductDetail } from "../../types/ProductDetail";
 import ProductImages from "./ProductImages";
 import ProductDetailRight from "./ProductDetailRight";
 import PolicyList from "./PolicyList";
-// import ProductTypeDetailDisplay from "./ProductTypeDetailDisplay";
 import ProductDetailTabs from "./ProductDetailTabs";
 import { useParams } from "react-router-dom";
-// import { useProductFilters } from "../../hooks/useProductFilters";
-  
+import { useTranslation } from "react-i18next";
+
 const ProductDetailPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<ProductDetail | null>(null);
-  // const { categories } = useProductFilters();
+    const { id } = useParams<{ id: string }>();
+    const [product, setProduct] = useState<ProductDetail | null>(null);
+    const { t } = useTranslation();
 
-  useEffect(() => {
-    if (id) {
-      getProductById(Number(id))
-        .then((data) => {
-          console.log("Product:", data); // kiểm tra ở đây
-          setProduct(data);
-        })
-        .catch((err) => console.error("Lỗi lấy sản phẩm:", err));
+    useEffect(() => {
+        if (id) {
+            getProductById(Number(id))
+                .then((data) => {
+                    console.log("Product:", data);
+                    setProduct(data);
+                })
+                .catch((err) => console.error(t("product.errorLoading"), err));
+        }
+    }, [id, t]);
+
+    if (!product) {
+        return <div>{t("product.loading")}</div>;
     }
-  }, [id]);
-  
-  if (!product) {
-    return <div>Đang tải sản phẩm...</div>;
-  }
 
-  // const currentCategory = categories.find(c => c.id === product.categoryId);
-  
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    return (
+        <div className="min-h-screen flex flex-col">
+            <Header />
 
-  {/* <Breadcrumb
-  items={[
-    { label: "Trang chủ", path: "/" },
-    { label: product.productType || "Danh mục", path: `/category/${product.productType}` },
-    { label: product.name },
-  ]}
-/> */}
+            <main className="flex container mx-auto px-4 py-8 gap-12">
+                <div className="flex flex-col flex-[3]">
+                    <div className="mb-15">
+                        <ProductImages
+                            imageUrls={product.imageUrls}
+                            thumbnailUrl={product.thumbnailUrl}
+                        />
+                    </div>
 
+                    <PolicyList />
+                    <ProductDetailTabs
+                        productId={product.id}
+                        productType={product.productType}
+                        detail={product.detail}
+                    />
+                </div>
 
+                <ProductDetailRight product={product} />
+            </main>
 
-      <main className="flex container mx-auto px-4 py-8 gap-12">
-        {/* Left side: ảnh lớn + gallery nhỏ bên dưới */}
-        <div className="flex flex-col flex-[3]">
-          <div className="mb-15">
-            <ProductImages
-              imageUrls={product.imageUrls}
-              thumbnailUrl={product.thumbnailUrl}
-            />
-          </div>
-
-          <PolicyList />
-          <ProductDetailTabs
-            productId={product.id}
-            productType={product.productType}
-            detail={product.detail}
-            // onSubmitReview={handleReviewSubmit}
-          />
-
-          {/* <ProductTypeDetailDisplay
-            productType={product.productType}
-            detail={product.detail}
-          /> */}
+            <Footer />
         </div>
-
-        {/* Right side: thông tin chi tiết */}
-        <ProductDetailRight product={product} />
-      </main>
-
-      <Footer />
-    </div>
-  );
+    );
 };
 
 export default ProductDetailPage;

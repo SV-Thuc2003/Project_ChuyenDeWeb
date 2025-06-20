@@ -1,0 +1,558 @@
+{
+  "common": {
+    "back": "← Quay lại",
+    "processing": "Đang xử lý..."
+  },
+  "auth": {
+    "steps": {
+      "register": "Đăng ký",
+      "verify": "Xác thực OTP"
+    },
+    "loginTitle": "Đăng nhập",
+    "loginIllustrationAlt": "Minh họa đăng nhập",
+    "noAccount": "Bạn chưa có tài khoản?",
+    "registerLink": "Đăng ký",
+    "back": "Quay lại",
+    "otp_prompt": "Vui lòng nhập mã OTP đã gửi tới email",
+    "go_to_login": "Chuyển tới trang đăng nhập",
+    "register_with_google": "Đăng ký với Google",
+    "register_with_apple": "Đăng ký với Apple",
+    "or": "Hoặc",
+    "step_email": "Nhập Email",
+    "step_otp": "Nhập OTP",
+    "step_new_password": "Mật khẩu mới",
+    "email": "Email",
+    "enter_email": "Nhập email",
+    "sending": "Đang gửi...",
+    "send_otp": "Gửi OTP",
+    "otp_sent": "OTP đã được gửi tới email.",
+    "otp_failed": "Gửi OTP thất bại",
+    "new_password": "Mật khẩu mới",
+    "enter_new_password": "Nhập mật khẩu mới",
+    "confirm_password": "Xác nhận mật khẩu",
+    "retype_password": "Nhập lại mật khẩu",
+    "fill_all_fields": "Vui lòng nhập đầy đủ thông tin",
+    "password_mismatch": "Mật khẩu không khớp",
+    "reset_success": "Đổi mật khẩu thành công",
+    "reset_failed": "Đổi mật khẩu thất bại",
+    "changing": "Đang đổi...",
+    "reset_password": "Đổi mật khẩu",
+    "otp": "Mã OTP",
+    "enter_otp": "Nhập mã OTP",
+    "verifying": "Đang xác minh...",
+    "verify": "Xác minh",
+    "otp_verify_success": "Xác minh OTP thành công",
+    "otp_verify_failed": "Xác minh OTP thất bại",
+    "username": "Tên đăng nhập",
+    "enter_username": "Nhập tên đăng nhập",
+    "enter_password": "Nhập mật khẩu",
+    "remember_me": "Ghi nhớ đăng nhập",
+    "forgot_password": "Quên mật khẩu",
+    "login": "Đăng nhập",
+    "logging_in": "Đang xử lý...",
+    "login_failed": "Đăng nhập thất bại",
+    "server_error": "Lỗi kết nối đến máy chủ",
+    "oauth_processing": "Đang xử lý đăng nhập OAuth2...",
+    "login_google": "Đăng nhập với Google",
+    "login_facebook": "Đăng nhập với Facebook",
+    "register_title": "Đăng ký",
+    "username_placeholder": "Nhập tên đăng nhập của bạn",
+    "fullname": "Họ và tên",
+    "fullname_placeholder": "Nhập họ tên đầy đủ",
+    "email_placeholder": "Điền địa chỉ email vào đây",
+    "phone": "Điện thoại",
+    "phone_placeholder": "Điền số điện thoại vào đây",
+    "password": "Mật khẩu",
+    "password_placeholder": "Điền mật khẩu vào đây",
+    "confirm_password_placeholder": "Nhập lại mật khẩu",
+    "terms_agree": "Tôi đã đồng ý với thoả thuận và điều khoản người dùng",
+    "register": "Đăng ký",
+    "already_have_account": "Nếu bạn đã có tài khoản?",
+    "login_redirect": "Chuyển tới trang đăng nhập",
+    "login_success": "Đăng nhập thành công",
+    "logout_success": "Đăng xuất thành công",
+    "auth_required": "Bạn cần đăng nhập để tiếp tục",
+    "use_auth_error": "useAuth chỉ có thể sử dụng bên trong AuthProvider",
+    "enterUsername": "Nhập tên đăng nhập",
+    "enterPassword": "Nhập mật khẩu",
+    "rememberMe": "Ghi nhớ đăng nhập",
+    "forgotPassword": "Quên mật khẩu",
+    "loading": "Đang xử lý...",
+    "error": {
+      "emptyUsername": "Tên đăng nhập không được để trống",
+      "shortUsername": "Tên đăng nhập phải có ít nhất 3 ký tự",
+      "emptyPassword": "Mật khẩu không được để trống",
+      "shortPassword": "Mật khẩu phải có ít nhất 8 ký tự",
+      "loginFailed": "Đăng nhập thất bại",
+      "server": "Lỗi kết nối đến máy chủ"
+    }
+  },
+    "otp": {
+      "title": "Xác thực OTP",
+      "instructions": "Vui lòng nhập mã OTP đã gửi tới email",
+      "placeholder": "Nhập mã OTP",
+      "verify": "Xác thực",
+      "verifying": "Đang xác thực...",
+      "not_received": "Không nhận được mã?",
+      "resend": "Gửi lại mã OTP",
+      "resending": "Đang gửi lại...",
+      "enter_warning": "Vui lòng nhập mã OTP.",
+      "success": "Xác thực OTP thành công!",
+      "failed": "Xác thực OTP thất bại.",
+      "resend_success": "Mã OTP đã được gửi lại. Vui lòng kiểm tra email.",
+      "resend_failed": "Gửi lại mã OTP thất bại."
+    },
+    "cart": {
+      "fetch_error": "Không thể lấy dữ liệu giỏ hàng.",
+      "not_logged_in": "Bạn chưa đăng nhập.",
+      "add_error": "Thêm sản phẩm vào giỏ hàng thất bại.",
+      "remove_error": "Xoá sản phẩm khỏi giỏ hàng thất bại.",
+      "update_error": "Cập nhật số lượng thất bại.",
+      "in_cart": "trong giỏ",
+      "title": "Giỏ hàng",
+      "product_fallback": "Sản phẩm",
+      "product": "Sản phẩm",
+      "price": "Giá",
+      "quantity": "Số lượng",
+      "subtotal": "Tạm tính",
+      "continue_shopping": "Tiếp tục xem sản phẩm",
+      "update_cart": "Cập nhật giỏ hàng"
+    },
+    "hero": {
+      "title": "Chào mừng đến với cửa hàng Water Purifier",
+      "subtitle": "Thế giới máy lọc nước",
+      "button": "Khám phá ngay"
+    },
+    "profile": {
+      "info": "Thông tin tài khoản",
+      "orders": "Quản lý đơn hàng",
+      "security": "Bảo mật",
+      "favorites": "Sản phẩm yêu thích",
+      "logout": "Đăng xuất",
+      "notLoggedIn": "Bạn chưa đăng nhập.",
+      "loading": "Đang tải thông tin…",
+      "loadError": "Không thể tải thông tin người dùng",
+      "updateSuccess": "Thông tin đã được cập nhật!",
+      "fields": {
+        "name": "Họ tên",
+        "phone": "Số điện thoại",
+        "address": "Địa chỉ"
+      },
+      "placeholders": {
+        "name": "Họ và tên",
+        "phone": "Số điện thoại",
+        "address": "Địa chỉ"
+      },
+      "errors": {
+        "nameRequired": "Họ tên không được để trống",
+        "phoneRequired": "Số điện thoại không được để trống",
+        "addressRequired": "Địa chỉ không được để trống"
+      },
+      "save": "Cập nhật thông tin",
+      "saving": "Đang cập nhật..."
+    },
+    "favorite": {
+      "load_error": "Không thể tải danh sách yêu thích",
+      "toggle_error": "Lỗi khi thay đổi trạng thái yêu thích"
+    },
+    "home": "Trang chủ",
+    "cart_summary": {
+      "title": "Cộng giỏ hàng",
+      "subtotal": "Tạm tính",
+      "total": "Tổng",
+      "checkout": "Tiến hành thanh toán"
+    },
+    "checkout": {
+      "noUser": "❌ Không có user đăng nhập.",
+      "fetchCartError": "❌ Lỗi lấy giỏ hàng:",
+      "discountApplied": "🎟️ Mã giảm giá đã được áp dụng:",
+      "qrError": "❌ Lỗi tạo mã QR:",
+      "orderError": "❌ Lỗi đặt hàng:"
+    },
+    "order": {
+      "title": "Tóm tắt đơn hàng",
+      "name": "Người nhận",
+      "phone": "Điện thoại",
+      "email": "Email",
+      "address": "Địa chỉ",
+      "discountCode": "Mã giảm giá",
+      "subtotal": "Tạm tính",
+      "discount": "Giảm giá",
+      "shippingFee": "Phí vận chuyển",
+      "total": "Tổng cộng",
+      "checkout": "Thanh toán",
+      "all": "Tất cả",
+      "pending": "Chờ thanh toán",
+      "paid": "Đã thanh toán",
+      "accepting": "Chờ xác nhận",
+      "shipped": "Đang giao",
+      "completed": "Hoàn thành",
+      "cancelled": "Đã hủy",
+      "code": "Mã đơn",
+      "date": "Ngày đặt",
+      "status": "Trạng thái",
+      "price": "Giá",
+      "total_pay": "Tổng thanh toán",
+      "includeShipping": "đã gồm {{fee}} ₫ phí vận chuyển",
+      "buyAgain": "Mua lại",
+      "review": "Đánh giá",
+      "searchPlaceholder": "Bạn có thể tìm kiếm theo ID đơn hàng và tên món hàng",
+      "noMatch": "Không có đơn hàng nào phù hợp."
+    },
+    "payment": {
+      "title": "Phương thức thanh toán",
+      "cash": "Thanh toán khi nhận hàng",
+      "vnpay": "Thanh toán qua VNPAY QR",
+      "creditCard": "Thẻ tín dụng / thẻ ghi nợ",
+      "cardName": "Tên chủ thẻ",
+      "cardNumber": "Số thẻ",
+      "expiry": "Ngày hết hạn",
+      "cvc": "Mã CVC",
+      "qrTitle": "Quét mã QR để thanh toán",
+      "txnRef": "Mã giao dịch",
+      "amount": "Số tiền",
+      "close": "Đóng",
+      "confirmed": "Đã thanh toán",
+      "error": {
+        "missingInfo": "❌ Thiếu thông tin thanh toán. Không thể xác nhận.",
+        "noOrderId": "❌ Không nhận được mã đơn hàng. Không thể xác nhận.",
+        "failed": "❌ Thanh toán thất bại. Vui lòng thử lại!"
+      }
+    },
+    "personal": {
+      "title": "Thông tin cá nhân",
+      "name": "Họ tên",
+      "namePlaceholder": "Nhập tên của bạn",
+      "email": "Email",
+      "emailPlaceholder": "Nhập email",
+      "phone": "Số điện thoại",
+      "phonePlaceholder": "Nhập số điện thoại"
+    },
+    "shipping": {
+      "title": "Địa chỉ giao hàng",
+      "selectProvince": "Chọn tỉnh/thành phố",
+      "selectDistrict": "Chọn quận/huyện",
+      "selectWard": "Chọn phường/xã",
+      "addressPlaceholder": "Số nhà, tên đường"
+    },
+    "nav": {
+      "home": "Trang chủ",
+      "products": "Sản phẩm",
+      "about": "Giới Thiệu",
+      "services": "Dịch vụ",
+      "news": "Tin tức",
+      "contact": "Liên hệ"
+    },
+    "contact": {
+      "phone": "Điện thoại",
+      "email": "Email",
+      "title": "Liên hệ với chúng tôi",
+      "firstName": "Họ",
+      "lastName": "Tên",
+      "message": "Câu hỏi",
+      "messagePlaceholder": "Câu hỏi của bạn...",
+      "submit": "Gửi",
+      "submitting": "Đang gửi...",
+      "successMessage": "Cảm ơn bạn đã liên hệ với chúng tôi! Chúng tôi sẽ phản hồi sớm nhất có thể.",
+      "submitFailed": "Gửi thất bại.",
+      "emailTitle": "Liên hệ từ khách hàng",
+      "errors": {
+        "firstName": "Vui lòng nhập họ của bạn",
+        "lastName": "Vui lòng nhập tên của bạn",
+        "email": {
+          "required": "Vui lòng nhập email của bạn",
+          "invalid": "Email không hợp lệ"
+        },
+        "message": "Vui lòng nhập câu hỏi của bạn"
+      },
+      "details": {
+        "title": "Vui lòng liên hệ với chúng tôi",
+        "subtitle": "Để biết thêm thông tin chi tiết vui lòng liên hệ dựa trên những thông tin dưới đây",
+        "address": "Khu phố 6, Phường Linh Trung, TP.Thủ Đức, TP.HCM",
+        "email": "WaterPurifierShop@gmail.com",
+        "phone": "+84 33 645 709",
+        "hours": "Thứ 2 - Thứ 6: 8h - 16h"
+      }
+    },
+    "location": "Thủ Đức, Hồ Chí Minh",
+    "language": {
+      "vi": "Tiếng Việt",
+      "en": "English"
+    },
+    "account": {
+      "update": "Thay đổi thông tin",
+      "logout": "Đăng xuất",
+      "login": "Đăng nhập"
+    },
+
+    "favorites": {
+      "title": "Sản phẩm yêu thích",
+      "empty": "Chưa có sản phẩm yêu thích.",
+      "loading": "Đang tải...",
+      "addToCart": "Thêm vào giỏ",
+      "add": "Thêm yêu thích",
+      "remove": "Bỏ yêu thích",
+      "loadError": "Lỗi khi tải sản phẩm yêu thích",
+      "invalidData": "Dữ liệu sản phẩm yêu thích không đúng định dạng",
+      "loginRequired": "Vui lòng đăng nhập để xem sản phẩm yêu thích."
+
+    },
+    "footer": {
+      "brand": "Water Purifier Shop",
+      "description": "Mang đến nguồn nước sạch, thanh khiết từ thiên nhiên, bảo vệ sức khỏe và cuộc sống xanh cho gia đình bạn.",
+      "companyTitle": "Công ty",
+      "about": "Giới thiệu",
+      "blog": "Nhật ký trực tuyến",
+      "giftCards": "Thẻ quà tặng",
+      "careers": "Tuyển dụng",
+      "linksTitle": "Liên kết hữu ích",
+      "newProducts": "Sản phẩm mới",
+      "bestSellers": "Sản phẩm bán chạy",
+      "discounts": "Giảm giá",
+      "faq": "Câu hỏi thường gặp",
+      "serviceTitle": "Dịch vụ khách hàng",
+      "contactUs": "Liên hệ chúng tôi",
+      "shipping": "Vận chuyển",
+      "returns": "Trả hàng",
+      "orderTracking": "Theo dõi đơn hàng",
+      "contact": "Liên hệ",
+      "address": "Khu phố 6, Phường Linh Trung, TP.Thủ Đức, TP.HCM",
+      "phone": "+84 33 645 709",
+      "email": "WaterPurifierShop@gmail.com",
+      "copyright": "@ 2025 Water Purifier Shop. Tp.HCM"
+    },
+  "aboutUs": {
+    "title": "Giới Thiệu Về Công Ty Water Purifier Shop",
+    "mission": {
+      "title": "Sứ mệnh của chúng tôi",
+      "text1": "Công ty Water Purifier Shop được thành lập với sứ mệnh mang đến nguồn nước sạch, an toàn và tinh khiết cho mọi gia đình Việt Nam. Chúng tôi hiểu rằng nước sạch không chỉ là nhu cầu thiết yếu, mà còn là yếu tố quyết định sức khỏe và chất lượng cuộc sống.",
+      "text2": "Với công nghệ lọc nước tiên tiến, thân thiện với môi trường và đội ngũ kỹ sư giàu kinh nghiệm, chúng tôi cam kết cung cấp những sản phẩm chất lượng nhất, đáp ứng được cả những yêu cầu khắt khe nhất."
+    },
+    "values": {
+      "title": "Giá trị cốt lõi",
+      "quality": {
+        "label": "Chất lượng",
+        "desc": "Cam kết sản phẩm đạt chuẩn quốc tế, an toàn tuyệt đối với sức khỏe."
+      },
+      "reputation": {
+        "label": "Uy tín",
+        "desc": "Luôn đặt lợi ích khách hàng lên hàng đầu trong mọi hoạt động kinh doanh."
+      },
+      "innovation": {
+        "label": "Đổi mới",
+        "desc": "Liên tục nghiên cứu, cải tiến công nghệ nhằm mang lại trải nghiệm tốt nhất."
+      },
+      "sustainability": {
+        "label": "Bền vững",
+        "desc": "Hướng tới các giải pháp thân thiện với môi trường và phát triển lâu dài."
+      }
+    },
+    "products": {
+      "title": "Sản phẩm nổi bật",
+      "intro": "Chúng tôi cung cấp đa dạng các dòng máy lọc nước phù hợp với từng nhu cầu sử dụng:",
+      "ro": {
+        "label": "Máy lọc nước RO",
+        "desc": "Công nghệ thẩm thấu ngược loại bỏ hoàn toàn tạp chất, vi khuẩn, kim loại nặng."
+      },
+      "nano": {
+        "label": "Máy lọc nước Nano",
+        "desc": "Giữ lại khoáng chất tự nhiên cần thiết, an toàn cho sức khỏe."
+      },
+      "electrolyzed": {
+        "label": "Máy lọc nước điện giải",
+        "desc": "Giúp cân bằng độ pH, hỗ trợ nâng cao sức đề kháng."
+      }
+    },
+    "whyUs": {
+      "title": "Tại sao chọn chúng tôi?",
+      "intro": "Bên cạnh chất lượng sản phẩm vượt trội, Máy Lọc Nước ABC còn nổi bật với các dịch vụ sau:",
+      "point1": "Hỗ trợ tư vấn miễn phí để chọn máy lọc nước phù hợp với từng gia đình.",
+      "point2": "Dịch vụ bảo trì và bảo hành tận nơi nhanh chóng, chu đáo.",
+      "point3": "Giao hàng tận nhà và lắp đặt miễn phí trong khu vực nội thành.",
+      "point4": "Chính sách đổi trả linh hoạt và minh bạch.",
+      "final": "Hãy để chúng tôi cùng bạn bảo vệ nguồn nước và nâng cao sức khỏe cho cả gia đình."
+    }
+  },
+  "bestseller": {
+    "title": "Sản phẩm bán chạy nhất",
+    "bannerAlt": "Banner Sản phẩm mới",
+    "loading": "Đang tải sản phẩm bán chạy...",
+    "error": "Lỗi khi tải sản phẩm bán chạy"
+  },
+  "newProducts": {
+    "title": "Sản phẩm mới",
+    "bannerAlt": "Banner Sản phẩm mới",
+    "loading": "Đang tải sản phẩm mới...",
+    "error": "Lỗi khi tải sản phẩm mới"
+  },
+  "news": {
+    "title": "Tin Tức Mới Nhất",
+    "articles": [
+      {
+        "id": 1,
+        "title": "Máy lọc nước công nghệ mới giúp tăng hiệu quả lọc",
+        "date": "2025-05-01",
+        "summary": "Công nghệ lọc nước mới với màng lọc siêu nhỏ giúp loại bỏ tạp chất hiệu quả hơn và giữ lại khoáng chất cần thiết cho cơ thể."
+      },
+      {
+        "id": 2,
+        "title": "Hướng dẫn bảo trì máy lọc nước đúng cách",
+        "date": "2025-04-20",
+        "summary": "Bài viết hướng dẫn các bước bảo trì định kỳ giúp máy lọc nước hoạt động bền bỉ, tiết kiệm chi phí sửa chữa."
+      },
+      {
+        "id": 3,
+        "title": "Lợi ích của nước tinh khiết đối với sức khỏe gia đình",
+        "date": "2025-04-10",
+        "summary": "Nước tinh khiết không chỉ giúp ngăn ngừa bệnh tật mà còn nâng cao sức đề kháng và cải thiện chất lượng cuộc sống."
+      }
+    ]
+  },
+  "orderSuccess": {
+    "imageAlt": "Đặt hàng thành công",
+    "title": "Đặt hàng thành công!",
+    "messageLine1": "Cảm ơn bạn đã mua sắm tại Water Purifier Shop 💚",
+    "messageLine2": "Chúng tôi sẽ xử lý đơn hàng và giao sớm nhất có thể.",
+    "viewOrders": "Xem đơn hàng của bạn",
+    "continueShopping": "Tiếp tục mua sắm"
+  },
+  "product": {
+    "price_unknown": "Giá không rõ",
+    "loading": "Đang tải sản phẩm...",
+    "errorLoading": "Lỗi khi tải thông tin sản phẩm",
+    "favorite": "Yêu thích",
+    "add_to_cart": "Thêm vào giỏ",
+    "policy": {
+      "title": "Water Purifier Shop cam kết",
+      "installation": "<b>Lắp đặt miễn phí</b> lúc giao hàng",
+      "exchange": "Hư gì đổi nấy <b>12 tháng</b> tận nhà (miễn phí tháng đầu) <span class='text-blue-600 underline'>(Xem chi tiết)</span>",
+      "warranty": "Bảo hành <b>chính hãng 3 năm</b>, có người đến tận nhà"
+    },
+    "detail": {
+      "specs": "Thông số kỹ thuật",
+      "reviews": "Bài viết đánh giá"
+    },
+    "image": {
+      "main": "Product image",
+      "thumbnail": "Thumbnail"
+    }
+  },
+  "action": {
+    "close": "Close"
+  },
+  "review": {
+  "title": "Đánh giá sản phẩm",
+  "rating": "Số sao:",
+  "select_rating": "-- Chọn --",
+  "comment": "Bình luận:",
+  "placeholder": "Hãy chia sẻ cảm nhận của bạn...",
+  "submit": "Gửi đánh giá",
+  "review_count": "Đánh giá ({{count}})",
+  "no_reviews": "Chưa có đánh giá nào."
+},
+  "productDetail": {
+    "specs": "Thông số kỹ thuật",
+    "cartridgeSpecs": "Thông số Lõi lọc",
+    "nonElectricSpecs": "Thông số Máy lọc không điện",
+    "prefilterSpecs": "Thông số Vỏ lọc thô",
+    "stageNumber": "Số cấp lọc",
+    "technology": "Công nghệ",
+    "modelName": "Mã sản phẩm",
+    "type": "Loại",
+    "hotColdSupport": "Hỗ trợ nóng/lạnh",
+    "tankCapacity": "Dung tích bình",
+    "capacityLPerHour": "Công suất lọc (L/h)",
+    "powerConsumption": "Công suất tiêu thụ",
+    "dimensions": "Kích thước",
+    "weightKg": "Trọng lượng (kg)",
+    "voltage": "Điện áp",
+    "origin": "Nơi sản xuất",
+    "warranty": "Thời gian bảo hành",
+    "suitableUses": "Mục đích sử dụng",
+    "material": "Chất liệu",
+    "additionalInfo": "Thông tin thêm",
+    "filterSizeMicron": "Kích thước lọc (Micron)",
+    "lifespanLiters": "Tuổi thọ (L)",
+    "lifespanMonths": "Tuổi thọ (Tháng)",
+    "functions": "Chức năng",
+    "brandOrigin": "Thương hiệu",
+    "manufactureOrigin": "Nơi sản xuất",
+    "filtrationStages": "Số cấp lọc",
+    "filterLevels": "Cấp lọc",
+    "filterLifespanMonths": "Tuổi thọ bộ lọc (Tháng)",
+    "workingPressureMpa": "Áp lực làm việc (Mpa)",
+    "flowRateLPerMin": "Lưu lượng (L/phút)",
+    "features": "Tính năng",
+    "launchYear": "Năm ra mắt",
+    "cupCount": "Số cốc",
+    "filterMaterials": "Chất liệu lõi lọc",
+    "housingMaterial": "Chất liệu vỏ",
+    "filterCapacity": "Dung tích lọc",
+    "filterLifespan": "Tuổi thọ bộ lọc",
+    "noData": "Thông tin chi tiết không có."
+  },
+  "products": {
+    "breadcrumb": {
+      "home": "Trang chủ",
+      "all": "Tất cả sản phẩm",
+      "search": "Tìm kiếm: \"{{keyword}}\"",
+      "category": "Danh mục: {{name}}"
+    },
+    "loading": "Đang tải sản phẩm...",
+    "noData": "Không có sản phẩm nào.",
+    "error": "Lỗi khi tải sản phẩm.",
+    "filterError": "Lỗi khi áp dụng bộ lọc.",
+    "sortError": "Lỗi khi sắp xếp sản phẩm."
+  },
+  "filter": {
+    "brand": "Lọc theo thương hiệu",
+    "price": "Lọc theo giá",
+    "priceLabel": "Giá: {{min}}đ - {{max}}đ",
+    "apply": "Áp dụng",
+    "tag": "Lọc theo thẻ"
+  },
+  "category": {
+    "title": "Danh mục sản phẩm",
+    "Máy lọc nước": "Máy lọc nước",
+    "Lõi lọc": "Lõi lọc",
+    "Máy lọc không điện": "Máy lọc không điện",
+    "Vỏ lọc thô": "Vỏ lọc thô"
+  },
+  "sort": {
+    "latest": "Sắp xếp theo mới nhất",
+    "priceAsc": "Giá: Thấp đến cao",
+    "priceDesc": "Giá: Cao đến thấp",
+    "nameAsc": "Tên: A-Z",
+    "nameDesc": "Tên: Z-A"
+  },
+  "productGrid": {
+    "resultRange": "Hiển thị kết quả từ {{from}} đến {{to}} trong số {{total}} kết quả"
+  },
+  "services": {
+    "pageTitle": "Dịch Vụ Tại WaterPurifierShop",
+    "pageDescription": "Chúng tôi không chỉ cung cấp máy lọc nước chất lượng mà còn mang đến dịch vụ chăm sóc khách hàng tận tâm, giúp bạn có trải nghiệm tốt nhất và nguồn nước an toàn cho gia đình.",
+    "consultation": {
+      "title": "Tư vấn chọn máy lọc nước",
+      "description": "Chúng tôi hỗ trợ bạn chọn lựa sản phẩm phù hợp với nhu cầu và nguồn nước tại nhà."
+    },
+    "installation": {
+      "title": "Lắp đặt chuyên nghiệp",
+      "description": "Đội ngũ kỹ thuật viên giàu kinh nghiệm sẽ lắp đặt nhanh chóng và đúng kỹ thuật."
+    },
+    "maintenance": {
+      "title": "Bảo trì và bảo dưỡng",
+      "description": "Dịch vụ bảo trì định kỳ giúp máy hoạt động bền bỉ và hiệu quả lâu dài."
+    },
+    "support": {
+      "title": "Hỗ trợ kỹ thuật 24/7",
+      "description": "Luôn sẵn sàng hỗ trợ bạn khi gặp sự cố hoặc thắc mắc về sản phẩm."
+    }
+  },
+  "search": {
+    "results": "Kết quả tìm kiếm: \"{{keyword}}\"",
+    "loading": "Đang tải dữ liệu...",
+    "noResults": "Không tìm thấy sản phẩm nào.",
+    "placeholder": "Tìm kiếm sản phẩm...",
+    "voice": "Tìm kiếm bằng giọng nói"
+  }
+}

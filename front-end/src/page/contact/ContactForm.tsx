@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import InputField from '../../components/ui/InputField';
 import Textarea from '../../components/ui/TextArea';
 import Button from '../../components/ui/Button';
 import { ContactFormData, ContactFormErrors } from '../../types/Contact';
 
 const ContactForm: React.FC = () => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState<ContactFormData>({
     firstName: '',
     lastName: '',
@@ -20,21 +23,21 @@ const ContactForm: React.FC = () => {
     const newErrors: ContactFormErrors = {};
 
     if (!formData.firstName.trim()) {
-      newErrors.firstName = 'Vui lòng nhập họ của bạn';
+      newErrors.firstName = t('contact.errors.firstName');
     }
 
     if (!formData.lastName.trim()) {
-      newErrors.lastName = 'Vui lòng nhập tên của bạn';
+      newErrors.lastName = t('contact.errors.lastName');
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Vui lòng nhập email của bạn';
+      newErrors.email = t('contact.errors.email.required');
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email không hợp lệ';
+      newErrors.email = t('contact.errors.email.invalid');
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = 'Vui lòng nhập câu hỏi của bạn';
+      newErrors.message = t('contact.errors.message');
     }
 
     setErrors(newErrors);
@@ -43,28 +46,22 @@ const ContactForm: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!validateForm()) return;
     setIsSubmitting(true);
 
     try {
       const response = await fetch('http://localhost:8080/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: `${formData.firstName} ${formData.lastName}`,
           email: formData.email,
-          title: 'Liên hệ từ khách hàng',
+          title: t('contact.emailTitle'),
           message: formData.message
         }),
       });
@@ -74,32 +71,29 @@ const ContactForm: React.FC = () => {
         setFormData({ firstName: '', lastName: '', email: '', message: '' });
         setTimeout(() => setSubmitSuccess(false), 5000);
       } else {
-        alert("Gửi thất bại.");
+        alert(t('contact.submitFailed'));
       }
-
     } catch (error) {
-      console.error('Lỗi gửi liên hệ:', error);
+      console.error('Submit error:', error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-
-
   return (
       <div className="bg-gray-100 rounded-2xl p-8 shadow-sm">
         {submitSuccess && (
             <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-              <p>Cảm ơn bạn đã liên hệ với chúng tôi! Chúng tôi sẽ phản hồi sớm nhất có thể.</p>
+              <p>{t('contact.successMessage')}</p>
             </div>
         )}
 
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <InputField
-                label="Họ"
+                label={t('contact.firstName')}
                 name="firstName"
-                placeholder="Họ"
+                placeholder={t('contact.firstName')}
                 value={formData.firstName}
                 onChange={handleChange}
                 required
@@ -107,9 +101,9 @@ const ContactForm: React.FC = () => {
             />
 
             <InputField
-                label="Tên"
+                label={t('contact.lastName')}
                 name="lastName"
-                placeholder="Tên"
+                placeholder={t('contact.lastName')}
                 value={formData.lastName}
                 onChange={handleChange}
                 required
@@ -121,7 +115,7 @@ const ContactForm: React.FC = () => {
               label="Email"
               name="email"
               type="email"
-              placeholder="E-mail"
+              placeholder="Email"
               value={formData.email}
               onChange={handleChange}
               required
@@ -130,9 +124,9 @@ const ContactForm: React.FC = () => {
           />
 
           <Textarea
-              label="Câu hỏi"
+              label={t('contact.message')}
               name="message"
-              placeholder="Câu hỏi của bạn..."
+              placeholder={t('contact.messagePlaceholder')}
               value={formData.message}
               onChange={handleChange}
               required
@@ -141,12 +135,8 @@ const ContactForm: React.FC = () => {
               className="mt-4"
           />
 
-          <Button
-              type="submit"
-              className="mt-6 py-3 px-16"
-              disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Đang gửi...' : 'Gửi'}
+          <Button type="submit" className="mt-6 py-3 px-16" disabled={isSubmitting}>
+            {isSubmitting ? t('contact.submitting') : t('contact.submit')}
           </Button>
         </form>
       </div>

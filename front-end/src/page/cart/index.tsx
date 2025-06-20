@@ -44,7 +44,6 @@ const CartCheckOut: React.FC = () => {
         }
       } catch (error) {
         console.error("Lỗi khi lấy giỏ hàng:", error);
-        alert("Không thể tải giỏ hàng. Vui lòng thử lại sau.");
       }
     };
 
@@ -53,12 +52,12 @@ const CartCheckOut: React.FC = () => {
 
   useEffect(() => {
     const newSubtotal = cartItems.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
+        (sum, item) => sum + item.price * item.quantity,
+        0
     );
     setSubtotal(newSubtotal);
     setTotal(newSubtotal);
-    console.log("🛒 DEBUG - cartItems:", cartItems); // 👈 kiểm tra trùng productId không
+    console.log("🛒 DEBUG - cartItems:", cartItems);
   }, [cartItems]);
 
   const handleRemoveItem = async (cartItemId: number) => {
@@ -75,20 +74,18 @@ const CartCheckOut: React.FC = () => {
       });
 
       setCartItems((prevItems) =>
-        prevItems.filter((item) => item.id !== cartItemId)
+          prevItems.filter((item) => item.id !== cartItemId)
       );
-      console.log("🗑️ Đã xóa khỏi giỏ hàng");
     } catch (error) {
       console.error("❌ Xóa giỏ hàng lỗi:", error);
-      alert("Lỗi khi xóa sản phẩm.");
     }
   };
 
   const handleQuantityChange = (cartId: number, newQuantity: number) => {
     setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === cartId ? { ...item, quantity: newQuantity } : item
-      )
+        prevItems.map((item) =>
+            item.id === cartId ? { ...item, quantity: newQuantity } : item
+        )
     );
   };
 
@@ -99,23 +96,20 @@ const CartCheckOut: React.FC = () => {
 
     try {
       await axios.put(
-        `/api/cart/${userId}/update`,
-        cartItems.map((item) => ({
-          id: item.id, // 👈 THÊM VÀO
-          productId: item.productId,
-          quantity: item.quantity,
-        })),
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }, // ❌ đừng để withCredentials nếu không cần
-        }
+          `/api/cart/${userId}/update`,
+          cartItems.map((item) => ({
+            id: item.id,
+            productId: item.productId,
+            quantity: item.quantity,
+          })),
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
       );
-
-      alert("Cập nhật giỏ hàng thành công!");
     } catch (err) {
       console.error("Lỗi khi cập nhật giỏ hàng:", err);
-      alert("Lỗi cập nhật giỏ hàng.");
     }
   };
 
@@ -124,7 +118,7 @@ const CartCheckOut: React.FC = () => {
   };
 
   const handleApplyPromoCode = (code: string) => {
-    alert(`Mã ưu đãi "${code}" đã được áp dụng!`);
+    console.log(`Mã ưu đãi "${code}" đã được áp dụng!`);
   };
 
   const handleProceedToCheckout = () => {
@@ -132,37 +126,37 @@ const CartCheckOut: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+      <div className="min-h-screen flex flex-col">
+        <Header />
 
-      <Breadcrumb
-        items={[{ label: "Trang chủ", path: "/" }, { label: "Giỏ hàng" }]}
-      />
-      <main className="flex-grow py-8 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <CartSection
-                cartItems={cartItems}
-                onRemoveItem={handleRemoveItem}
-                onQuantityChange={handleQuantityChange}
-                onUpdateCart={handleUpdateCart} // ✅ TRUYỀN VÀO ĐÂY
-                onContinueShopping={handleContinueShopping}
-              />
-            </div>
-            <div className="lg:col-span-1">
-              <CartSummary
-                subtotal={subtotal}
-                total={total}
-                onApplyPromoCode={handleApplyPromoCode}
-                onProceedToCheckout={handleProceedToCheckout}
-              />
+        <Breadcrumb
+            items={[{ label: "Trang chủ", path: "/" }, { label: "Giỏ hàng" }]}
+        />
+        <main className="flex-grow py-8 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2">
+                <CartSection
+                    cartItems={cartItems}
+                    onRemoveItem={handleRemoveItem}
+                    onQuantityChange={handleQuantityChange}
+                    onUpdateCart={handleUpdateCart}
+                    onContinueShopping={handleContinueShopping}
+                />
+              </div>
+              <div className="lg:col-span-1">
+                <CartSummary
+                    subtotal={subtotal}
+                    total={total}
+                    onApplyPromoCode={handleApplyPromoCode}
+                    onProceedToCheckout={handleProceedToCheckout}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+      </div>
   );
 };
 

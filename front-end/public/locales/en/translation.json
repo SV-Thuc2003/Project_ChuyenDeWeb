@@ -1,0 +1,557 @@
+{
+  "common": {
+    "back": "← Back"
+  },
+  "auth": {
+    "steps": {
+      "register": "Register",
+      "verify": "Verify OTP"
+    },
+    "loginTitle": "Login",
+    "loginIllustrationAlt": "Login illustration",
+    "noAccount": "Don't have an account?",
+    "registerLink": "Sign up",
+    "back": "Back",
+    "otp_prompt": "Please enter the OTP sent to your email",
+    "register": "Register",
+    "go_to_login": "Go to login page",
+    "register_with_google": "Register with Google",
+    "register_with_apple": "Register with Apple",
+    "or": "Or",
+    "step_email": "Enter Email",
+    "step_otp": "Enter OTP",
+    "step_new_password": "New Password",
+    "email": "Email",
+    "enter_email": "Enter your email",
+    "sending": "Sending...",
+    "send_otp": "Send OTP",
+    "otp_sent": "OTP has been sent to your email.",
+    "otp_failed": "Failed to send OTP",
+    "new_password": "New Password",
+    "enter_new_password": "Enter new password",
+    "confirm_password": "Confirm Password",
+    "retype_password": "Retype password",
+    "fill_all_fields": "Please fill in all fields",
+    "password_mismatch": "Passwords do not match",
+    "reset_success": "Password reset successful",
+    "reset_failed": "Password reset failed",
+    "changing": "Changing...",
+    "reset_password": "Reset Password",
+    "otp": "OTP Code",
+    "enter_otp": "Enter OTP code",
+    "verifying": "Verifying...",
+    "verify": "Verify",
+    "otp_verify_success": "OTP verification successful",
+    "otp_verify_failed": "OTP verification failed",
+    "enter_username": "Enter your username",
+    "enter_password": "Enter your password",
+    "remember_me": "Remember me",
+    "forgot_password": "Forgot password",
+    "login": "Login",
+    "logging_in": "Logging in...",
+    "login_failed": "Login failed",
+    "server_error": "Server connection error",
+    "oauth_processing": "Processing OAuth2 login...",
+    "login_google": "Login with Google",
+    "login_facebook": "Login with Facebook",
+    "register_title": "Register",
+    "username": "Username",
+    "username_placeholder": "Enter your username",
+    "fullname": "Full name",
+    "fullname_placeholder": "Enter your full name",
+    "email_placeholder": "Enter your email address",
+    "phone": "Phone number",
+    "phone_placeholder": "Enter your phone number",
+    "password_placeholder": "Enter your password",
+    "confirm_password_placeholder": "Re-enter your password",
+    "terms_agree": "I agree to the terms and conditions",
+    "already_have_account": "Already have an account?",
+    "login_redirect": "Go to login page",
+    "login_success": "Login successful",
+    "logout_success": "Logged out successfully",
+    "auth_required": "You need to log in to continue",
+    "error-": "Authentication error occurred",
+    "use_auth_error": "useAuth must be used within an AuthProvider",
+    "enterUsername": "Enter your username",
+    "password": "Password",
+    "enterPassword": "Enter your password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password",
+    "loading": "Processing...",
+    "error": {
+      "emptyUsername": "Username must not be empty",
+      "shortUsername": "Username must be at least 3 characters",
+      "emptyPassword": "Password must not be empty",
+      "shortPassword": "Password must be at least 8 characters",
+      "loginFailed": "Login failed",
+      "server": "Server connection error"
+    }
+  },
+  "otp": {
+    "title": "OTP Verification",
+    "instructions": "Please enter the OTP sent to your email",
+    "placeholder": "Enter OTP",
+    "verify": "Verify",
+    "verifying": "Verifying...",
+    "not_received": "Didn't receive the code?",
+    "resend": "Resend OTP",
+    "resending": "Resending...",
+    "enter_warning": "Please enter the OTP.",
+    "success": "OTP verified successfully!",
+    "failed": "OTP verification failed.",
+    "resend_success": "OTP has been resent. Please check your email.",
+    "resend_failed": "Failed to resend OTP."
+  },
+  "cart": {
+    "fetch_error": "Unable to fetch cart data.",
+    "not_logged_in": "You are not logged in.",
+    "add_error": "Failed to add product to cart.",
+    "remove_error": "Failed to remove product from cart.",
+    "update_error": "Failed to update quantity.",
+    "in_cart": " in cart",
+    "title": "Cart",
+    "product_fallback": "Product",
+    "product": "Product",
+    "price": "Price",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal",
+    "continue_shopping": "Continue shopping",
+    "update_cart": "Update cart"
+  },
+  "product": {
+    "price_unknown": "Price unknown",
+    "favorite": "Favorite",
+    "add_to_cart": "Add to cart",
+    "loading": "Loading product...",
+    "errorLoading": "Error loading product information",
+    "policy": {
+      "title": "Water Purifier Shop Commitment",
+      "installation": "<b>Free installation</b> upon delivery",
+      "exchange": "1-to-1 exchange for <b>12 months</b> at home (first month free) <span class='text-blue-600 underline'>(View details)</span>",
+      "warranty": "Official <b>3-year warranty</b>, home service included"
+    },
+    "detail": {
+      "specs": "Specifications",
+      "reviews": "Reviews"
+    },
+    "image": {
+      "main": "Product image",
+      "thumbnail": "Thumbnail"
+    }
+  },
+  "action": {
+    "close": "Close"
+  },
+  "hero": {
+    "title": "Welcome to Water Purifier Shop",
+    "subtitle": "Water Purifier World",
+    "button": "Explore Now"
+  },
+  "profile": {
+    "info": "Account Information",
+    "orders": "Order Management",
+    "security": "Security",
+    "favorites": "Favorite Products",
+    "logout": "Logout",
+    "notLoggedIn": "You are not logged in.",
+    "loading": "Loading profile…",
+    "loadError": "Unable to load user information",
+    "updateSuccess": "Profile updated successfully!",
+    "fields": {
+      "name": "Full Name",
+      "phone": "Phone Number",
+      "address": "Address"
+    },
+    "placeholders": {
+      "name": "Enter your full name",
+      "phone": "Enter your phone number",
+      "address": "Enter your address"
+    },
+    "errors": {
+      "nameRequired": "Name is required",
+      "phoneRequired": "Phone number is required",
+      "addressRequired": "Address is required"
+    },
+    "save": "Update Information",
+    "saving": "Updating..."
+  },
+  "favorite": {
+    "load_error": "Failed to load favorite products.",
+    "toggle_error": "An error occurred while toggling favorite status."
+  },
+  "home": "Home",
+  "cart_summary": {
+    "title": "Cart Summary",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "checkout": "Proceed to Checkout"
+  },
+  "checkout": {
+    "noUser": "❌ No user logged in.",
+    "fetchCartError": "❌ Failed to fetch cart:",
+    "discountApplied": "🎟️ Discount code applied:",
+    "qrError": "❌ QR code generation failed:",
+    "orderError": "❌ Order submission failed:"
+  },
+  "order": {
+    "all": "All",
+    "pending": "Pending Payment",
+    "paid": "Paid",
+    "accepting": "Awaiting Confirmation",
+    "shipped": "Shipping",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "code": "Order ID",
+    "date": "Order Date",
+    "status": "Status",
+    "price": "Price",
+    "total_pay": "Total",
+    "includeShipping": "including {{fee}}₫ shipping fee",
+    "buyAgain": "Buy Again",
+    "review": "Review",
+    "searchPlaceholder": "You can search by order ID or product name",
+    "noMatch": "No matching orders found.",
+    "title": "Order Summary",
+    "name": "Recipient",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "discountCode": "Discount Code",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "shippingFee": "Shipping Fee",
+    "total": "Total",
+    "checkout": "Place Order"
+  },
+  "payment": {
+    "title": "Payment Method",
+    "cash": "Cash on Delivery",
+    "vnpay": "VNPAY QR Payment",
+    "creditCard": "Credit / Debit Card",
+    "cardName": "Cardholder Name",
+    "cardNumber": "Card Number",
+    "expiry": "Expiry Date",
+    "cvc": "CVC Code",
+    "qrTitle": "Scan the QR code to pay",
+    "txnRef": "Transaction ID",
+    "amount": "Amount",
+    "close": "Close",
+    "confirmed": "I have paid",
+    "error": {
+      "missingInfo": "❌ Missing payment information. Cannot proceed.",
+      "noOrderId": "❌ Order ID not received. Cannot proceed.",
+      "failed": "❌ Payment failed. Please try again!"
+    }
+  },
+  "personal": {
+    "title": "Personal Information",
+    "name": "Full Name",
+    "namePlaceholder": "Enter your name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "phone": "Phone Number",
+    "phonePlaceholder": "Enter your phone number"
+  },
+  "shipping": {
+    "title": "Shipping Address",
+    "selectProvince": "Select province/city",
+    "selectDistrict": "Select district",
+    "selectWard": "Select ward",
+    "addressPlaceholder": "House number, street name"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About",
+    "services": "Services",
+    "news": "News",
+    "contact": "Contact"
+  },
+  "contact": {
+    "phone": "Phone",
+    "email": "Email",
+    "title": "Contact Us",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "message": "Message",
+    "messagePlaceholder": "Your message...",
+    "submit": "Send",
+    "submitting": "Submitting...",
+    "successMessage": "Thank you for contacting us! We will respond as soon as possible.",
+    "submitFailed": "Failed to submit.",
+    "emailTitle": "Customer Inquiry",
+    "errors": {
+      "firstName": "Please enter your first name",
+      "lastName": "Please enter your last name",
+      "email": {
+        "required": "Please enter your email",
+        "invalid": "Invalid email format"
+      },
+      "message": "Please enter your message"
+    },
+    "details": {
+      "title": "Please Contact Us",
+      "subtitle": "For more detailed information, please use the contact methods below.",
+      "address": "Block 6, Linh Trung Ward, Thu Duc City, Ho Chi Minh City",
+      "email": "WaterPurifierShop@gmail.com",
+      "phone": "+84 33 645 709",
+      "hours": "Mon - Fri: 8AM - 4PM"
+    }
+  },
+  "location": "Thu Duc, Ho Chi Minh City",
+  "language": {
+    "vi": "Vietnamese",
+    "en": "English"
+  },
+  "account": {
+    "update": "Update Profile",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "favorites": {
+    "title": "Favorite Products",
+    "empty": "No favorite products yet.",
+    "loading": "Loading...",
+    "addToCart": "Add to cart",
+    "add": "Add to favorites",
+    "remove": "Remove from favorites",
+    "loadError": "Error loading favorite products",
+    "invalidData": "Favorite product data is in an invalid format",
+    "loginRequired": "Please log in to view your favorite products."
+
+  },
+  "footer": {
+    "brand": "Water Purifier Shop",
+    "description": "Delivering clean, pure water from nature to protect your health and green living.",
+    "companyTitle": "Company",
+    "about": "About Us",
+    "blog": "Blog",
+    "giftCards": "Gift Cards",
+    "careers": "Careers",
+    "linksTitle": "Useful Links",
+    "newProducts": "New Products",
+    "bestSellers": "Best Sellers",
+    "discounts": "Discounts",
+    "faq": "FAQ",
+    "serviceTitle": "Customer Service",
+    "contactUs": "Contact Us",
+    "shipping": "Shipping",
+    "returns": "Returns",
+    "orderTracking": "Order Tracking",
+    "contact": "Contact",
+    "address": "KP6, Linh Trung Ward, Thu Duc City, HCMC",
+    "phone": "+84 33 645 709",
+    "email": "WaterPurifierShop@gmail.com",
+    "copyright": "@ 2025 Water Purifier Shop. HCMC"
+  },
+  "aboutUs": {
+    "title": "About Water Purifier Shop",
+    "mission": {
+      "title": "Our Mission",
+      "text1": "Water Purifier Shop was founded with a mission to provide clean, safe, and pure water for every Vietnamese household. We understand that clean water is not only essential but also a key factor in health and quality of life.",
+      "text2": "With advanced and environmentally friendly water filtration technology and a team of experienced engineers, we are committed to delivering top-quality products that meet even the most demanding standards."
+    },
+    "values": {
+      "title": "Core Values",
+      "quality": {
+        "label": "Quality",
+        "desc": "Committed to international standards and absolute safety for health."
+      },
+      "reputation": {
+        "label": "Reputation",
+        "desc": "Always put customer interests first in all business activities."
+      },
+      "innovation": {
+        "label": "Innovation",
+        "desc": "Continuously researching and improving technology to provide the best experience."
+      },
+      "sustainability": {
+        "label": "Sustainability",
+        "desc": "Focus on eco-friendly and long-term development solutions."
+      }
+    },
+    "products": {
+      "title": "Featured Products",
+      "intro": "We offer a wide range of water purifiers tailored to each usage need:",
+      "ro": {
+        "label": "RO Water Purifier",
+        "desc": "Reverse osmosis technology completely removes impurities, bacteria, and heavy metals."
+      },
+      "nano": {
+        "label": "Nano Water Purifier",
+        "desc": "Retains essential natural minerals, safe for health."
+      },
+      "electrolyzed": {
+        "label": "Electrolyzed Water Purifier",
+        "desc": "Helps balance pH levels and supports improved immunity."
+      }
+    },
+    "whyUs": {
+      "title": "Why Choose Us?",
+      "intro": "Besides outstanding product quality, ABC Water Purifier is also known for the following services:",
+      "point1": "Free consultation to help choose the right water purifier for each family.",
+      "point2": "Fast and dedicated on-site maintenance and warranty service.",
+      "point3": "Home delivery and free installation within urban areas.",
+      "point4": "Flexible and transparent return policy.",
+      "final": "Let us help you protect your water source and improve your family's health."
+    }
+  },
+  "bestseller": {
+    "title": "Best-selling Products",
+    "bannerAlt": "New product banner",
+    "loading": "Loading best-selling products...",
+    "error": "Error loading best-selling products"
+  },
+  "newProducts": {
+    "title": "New Products",
+    "bannerAlt": "New product banner",
+    "loading": "Loading new products...",
+    "error": "Error loading new products"
+  },
+  "news": {
+    "title": "Latest News",
+    "articles": [
+      {
+        "id": 1,
+        "title": "New water purification technology improves filtration efficiency",
+        "date": "2025-05-01",
+        "summary": "New nano-filtration technology removes more impurities while retaining essential minerals for your health."
+      },
+      {
+        "id": 2,
+        "title": "How to properly maintain your water purifier",
+        "date": "2025-04-20",
+        "summary": "This article guides you through routine maintenance steps to keep your water purifier running smoothly and save on repair costs."
+      },
+      {
+        "id": 3,
+        "title": "The benefits of purified water for your family's health",
+        "date": "2025-04-10",
+        "summary": "Purified water not only prevents illness but also boosts immunity and enhances quality of life."
+      }
+    ]
+  },
+  "orderSuccess": {
+    "imageAlt": "Order placed successfully",
+    "title": "Order Placed Successfully!",
+    "messageLine1": "Thank you for shopping at Water Purifier Shop 💚",
+    "messageLine2": "We will process and deliver your order as soon as possible.",
+    "viewOrders": "View Your Orders",
+    "continueShopping": "Continue Shopping"
+  },
+  "review": {
+    "title": "Product Review",
+    "rating": "Rating:",
+    "select_rating": "-- Select --",
+    "comment": "Comment:",
+    "placeholder": "Share your experience...",
+    "submit": "Submit Review",
+    "review_count": "Reviews ({{count}})",
+    "no_reviews": "No reviews yet."
+  },
+  "productDetail": {
+    "specs": "Specifications",
+    "cartridgeSpecs": "Cartridge Specifications",
+    "nonElectricSpecs": "Non-Electric Purifier Specifications",
+    "prefilterSpecs": "Prefilter Housing Specifications",
+    "stageNumber": "Number of Filtration Stages",
+    "technology": "Technology",
+    "modelName": "Model Number",
+    "type": "Type",
+    "hotColdSupport": "Hot/Cold Support",
+    "tankCapacity": "Tank Capacity",
+    "capacityLPerHour": "Filtration Capacity (L/h)",
+    "powerConsumption": "Power Consumption",
+    "dimensions": "Dimensions",
+    "weightKg": "Weight (kg)",
+    "voltage": "Voltage",
+    "origin": "Manufacturing Origin",
+    "warranty": "Warranty Period",
+    "suitableUses": "Suitable Uses",
+    "material": "Material",
+    "additionalInfo": "Additional Information",
+    "filterSizeMicron": "Filter Size (Micron)",
+    "lifespanLiters": "Lifespan (Liters)",
+    "lifespanMonths": "Lifespan (Months)",
+    "functions": "Functions",
+    "brandOrigin": "Brand Origin",
+    "manufactureOrigin": "Manufacture Origin",
+    "filtrationStages": "Filtration Stages",
+    "filterLevels": "Filter Levels",
+    "filterLifespanMonths": "Filter Lifespan (Months)",
+    "workingPressureMpa": "Working Pressure (MPa)",
+    "flowRateLPerMin": "Flow Rate (L/min)",
+    "features": "Features",
+    "launchYear": "Launch Year",
+    "cupCount": "Number of Cups",
+    "filterMaterials": "Filter Material",
+    "housingMaterial": "Housing Material",
+    "filterCapacity": "Filter Capacity",
+    "filterLifespan": "Filter Lifespan",
+    "noData": "No detail information available."
+  },
+  "products": {
+    "breadcrumb": {
+      "home": "Home",
+      "all": "All Products",
+      "search": "Search: \"{{keyword}}\"",
+      "category": "Category: {{name}}"
+    },
+    "loading": "Loading products...",
+    "noData": "No products found.",
+    "error": "Failed to load products.",
+    "filterError": "Failed to apply filters.",
+    "sortError": "Failed to sort products."
+  },
+  "filter": {
+    "brand": "Filter by brand",
+    "price": "Filter by price",
+    "priceLabel": "Price: {{min}} - {{max}} VND",
+    "apply": "Apply",
+    "tag": "Filter by tag"
+  },
+  "category": {
+    "title": "Product Categories",
+    "Máy lọc nước": "Water Purifiers",
+    "Lõi lọc": "Filter Cartridges",
+    "Máy lọc không điện": "Non-electric Purifiers",
+    "Vỏ lọc thô": "Prefilter Housing"
+  },
+  "sort": {
+    "latest": "Sort by newest",
+    "priceAsc": "Price: Low to High",
+    "priceDesc": "Price: High to Low",
+    "nameAsc": "Name: A-Z",
+    "nameDesc": "Name: Z-A"
+  },
+  "productGrid": {
+    "resultRange": "Showing results {{from}} to {{to}} out of {{total}}"
+  },
+  "services": {
+    "pageTitle": "Services at WaterPurifierShop",
+    "pageDescription": "We not only provide quality water purifiers but also dedicated customer service, ensuring the best experience and safe water for your family.",
+    "consultation": {
+      "title": "Water Purifier Consultation",
+      "description": "We help you choose the right product for your needs and water source at home."
+    },
+    "installation": {
+      "title": "Professional Installation",
+      "description": "Our experienced technicians will install the system quickly and correctly."
+    },
+    "maintenance": {
+      "title": "Maintenance & Care",
+      "description": "Regular maintenance service ensures long-term durability and efficiency."
+    },
+    "support": {
+      "title": "24/7 Technical Support",
+      "description": "We're always ready to assist you with any issues or questions about the product."
+    }
+  },
+  "search": {
+    "results": "Search results for: \"{{keyword}}\"",
+    "loading": "Loading data...",
+    "noResults": "No products found.",
+    "placeholder": "Search for products...",
+    "voice": "Voice search"
+  }
+}

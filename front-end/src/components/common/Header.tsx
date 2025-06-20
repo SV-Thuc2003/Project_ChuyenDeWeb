@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 
 type HeaderProps = {
     title?: string;
@@ -13,6 +14,8 @@ const Header: React.FC<HeaderProps> = ({
                                            onBackClick,
                                            className = "",
                                        }) => {
+    const { t } = useTranslation();
+
     return (
         <header className={`flex items-center py-4 ${className}`}>
             {showBackButton && (
@@ -20,12 +23,13 @@ const Header: React.FC<HeaderProps> = ({
                     onClick={onBackClick}
                     className="mr-4 text-black hover:text-gray-700"
                 >
-                    ← Back
+                    {t("common.back")}
                 </button>
             )}
             {title && <h1 className="text-xl font-medium text-black">{title}</h1>}
         </header>
     );
 };
+
 
 export default Header;

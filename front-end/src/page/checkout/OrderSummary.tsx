@@ -1,14 +1,15 @@
 import React from 'react';
 import catImage from '../../assets/cat.jpg';
 import { PersonalInfo, ShippingAddress } from '../../types/ChechOut';
-import { CartItem } from '../../types/Cart'; // ✅ import type mới
+import { CartItem } from '../../types/Cart';
+import { useTranslation } from 'react-i18next';
 
 interface OrderSummaryProps {
     personalInfo: PersonalInfo;
     shippingAddress: ShippingAddress;
     discountCode: string;
     paymentMethod: string;
-    products: CartItem[]; // ✅ danh sách nhiều sản phẩm
+    products: CartItem[];
     subtotal: number;
     discount: number;
     shippingFee: number;
@@ -25,33 +26,31 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                                                        personalInfo,
                                                        shippingAddress,
                                                    }) => {
-    const total = (subtotal ?? 0) - (discount ?? 0) + (shippingFee ?? 0);
+    const total = subtotal - discount + shippingFee;
+    const { t } = useTranslation();
 
     return (
         <div className="p-6 bg-gray-100 rounded-lg shadow-md w-full space-y-5">
-            <h2 className="text-xl font-bold">Tóm tắt đơn hàng</h2>
+            <h2 className="text-xl font-bold">{t('order.title')}</h2>
 
-            {/* Thông tin người nhận */}
             <div className="text-sm space-y-1">
-                <p><strong>Người nhận:</strong> {personalInfo.name}</p>
-                <p><strong>Điện thoại:</strong> {personalInfo.phone}</p>
-                <p><strong>Email:</strong> {personalInfo.email}</p>
+                <p><strong>{t('order.name')}:</strong> {personalInfo.name}</p>
+                <p><strong>{t('order.phone')}:</strong> {personalInfo.phone}</p>
+                <p><strong>{t('order.email')}:</strong> {personalInfo.email}</p>
                 <p>
-                    <strong>Địa chỉ:</strong>{' '}
+                    <strong>{t('order.address')}:</strong>{' '}
                     {[shippingAddress.address, shippingAddress.ward, shippingAddress.district, shippingAddress.city]
                         .filter(Boolean)
                         .join(', ')}
                 </p>
             </div>
 
-            {/* Mã giảm giá */}
             {discountCode && (
                 <div className="text-sm">
-                    <p><strong>Mã giảm giá:</strong> {discountCode}</p>
+                    <p><strong>{t('order.discountCode')}:</strong> {discountCode}</p>
                 </div>
             )}
 
-            {/* Danh sách sản phẩm */}
             {products.map((product, index) => (
                 <div key={index} className="flex items-center space-x-4 border-b pb-4">
                     <img
@@ -68,23 +67,22 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                 </div>
             ))}
 
-            {/* Tổng kết giá */}
             <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                    <span>Tạm tính</span>
-                    <span>{(subtotal ?? 0).toLocaleString()} đ</span>
+                    <span>{t('order.subtotal')}</span>
+                    <span>{subtotal.toLocaleString()} đ</span>
                 </div>
                 <div className="flex justify-between">
-                    <span>Giảm giá</span>
-                    <span>-{(discount ?? 0).toLocaleString()} đ</span>
+                    <span>{t('order.discount')}</span>
+                    <span>-{discount.toLocaleString()} đ</span>
                 </div>
                 <div className="flex justify-between">
-                    <span>Phí vận chuyển</span>
-                    <span>{(shippingFee ?? 0).toLocaleString()} đ</span>
+                    <span>{t('order.shippingFee')}</span>
+                    <span>{shippingFee.toLocaleString()} đ</span>
                 </div>
                 <div className="border-t pt-2 flex justify-between font-semibold text-base">
-                    <span>Tổng cộng</span>
-                    <span>{(total ?? 0).toLocaleString()} đ</span>
+                    <span>{t('order.total')}</span>
+                    <span>{total.toLocaleString()} đ</span>
                 </div>
             </div>
 
@@ -92,7 +90,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                 onClick={onPlaceOrder}
                 className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
             >
-                Thanh toán
+                {t('order.checkout')}
             </button>
         </div>
     );

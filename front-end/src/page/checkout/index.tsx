@@ -3,7 +3,6 @@ import Header from "../../components/layout/header/header";
 import Footer from "../../components/layout/footer/footer";
 import PersonalInfoForm from "../checkout/PersonalInfoForm";
 import ShippingAddressForm from "../checkout/ShippingAddressForm";
-import DiscountCodeForm from "../checkout/DiscountCodeForm";
 import PaymentMethodForm from "../checkout/PaymentMethodForm";
 import OrderSummary from "../checkout/OrderSummary";
 import QrPayment from "../payment/QrPayment";
@@ -16,8 +15,11 @@ import {
 import { CartItem } from "../../types/Cart";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Checkout: React.FC = () => {
+  const { t } = useTranslation();
+
   const [checkoutState, setCheckoutState] = useState<CheckoutState>({
     personalInfo: { name: "", email: "", phone: "" },
     shippingAddress: {
@@ -45,7 +47,7 @@ const Checkout: React.FC = () => {
     const token = localStorage.getItem("token");
 
     if (!userId || !token) {
-      console.error("❌ Không có user đăng nhập.");
+      console.error(t("checkout.noUser"));
       return;
     }
 
@@ -54,8 +56,8 @@ const Checkout: React.FC = () => {
       withCredentials: true,
     })
         .then(res => setProducts(res.data))
-        .catch(err => console.error("❌ Lỗi lấy giỏ hàng:", err));
-  }, []);
+        .catch(err => console.error(t("checkout.fetchCartError"), err));
+  }, [t]);
 
   const subtotal = products.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const discount = checkoutState.discountCode ? 50000 : 0;
@@ -74,16 +76,12 @@ const Checkout: React.FC = () => {
     }));
   };
 
-  const handleDiscountCodeChange = (value: string) => {
-    setCheckoutState(prev => ({ ...prev, discountCode: value }));
-  };
-
   const handlePaymentMethodChange = (value: string) => {
     setCheckoutState(prev => ({ ...prev, paymentMethod: value }));
   };
 
   const handleApplyDiscountCode = () => {
-    console.log("🎟️ Mã giảm giá:", checkoutState.discountCode);
+    console.log(t("checkout.discountApplied"), checkoutState.discountCode);
   };
 
   const handlePlaceOrder = async () => {
@@ -130,7 +128,7 @@ const Checkout: React.FC = () => {
 
         setShowQr(true);
       } catch (err) {
-        console.error("❌ Lỗi tạo mã QR:", err);
+        console.error(t("checkout.qrError"), err);
       }
     } else {
       try {
@@ -153,7 +151,7 @@ const Checkout: React.FC = () => {
         });
         navigate("/order-success");
       } catch (err) {
-        console.error("❌ Lỗi đặt hàng:", err);
+        console.error(t("checkout.orderError"), err);
       }
     }
   };
@@ -173,11 +171,6 @@ const Checkout: React.FC = () => {
                     shippingAddress={checkoutState.shippingAddress}
                     onShippingAddressChange={handleShippingAddressChange}
                     onShippingFeeChange={setShippingFee}
-                />
-                <DiscountCodeForm
-                    discountCode={checkoutState.discountCode}
-                    onDiscountCodeChange={handleDiscountCodeChange}
-                    onApplyDiscountCode={handleApplyDiscountCode}
                 />
                 <PaymentMethodForm
                     paymentMethod={checkoutState.paymentMethod}
@@ -217,12 +210,9 @@ const Checkout: React.FC = () => {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
                     withCredentials: true
                   });
-                  return res.data; // ✅ phải return cái này để có orderId
+                  return res.data;
                 }}
-
             />
-
-
         )}
       </div>
   );

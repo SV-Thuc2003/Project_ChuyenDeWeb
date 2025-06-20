@@ -4,10 +4,17 @@ import StepEmail from "./StepEmail";
 import StepOtp from "./StepOtp";
 import StepNewPassword from "./StepNewPassword";
 import logologin from "../../../assets/logologin.jpg";
-
-const steps = ["Nhập Email", "Nhập OTP", "Mật khẩu mới"];
+import { useTranslation } from 'react-i18next';
 
 const ForgotPassword: React.FC = () => {
+    const { t } = useTranslation(); // ✅ đặt ở đây nè
+
+    const steps = [
+        t("auth.step_email"),
+        t("auth.step_otp"),
+        t("auth.step_new_password")
+    ];
+
   const [currentStep, setCurrentStep] = useState(0);
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");

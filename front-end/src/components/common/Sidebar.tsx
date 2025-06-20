@@ -6,40 +6,42 @@ import { FaClipboardList } from "react-icons/fa";
 import { MdSecurity } from "react-icons/md";
 import { AiOutlineHeart } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
+import { useTranslation } from 'react-i18next';
 
 interface SidebarItem {
   icon: IconType;
-  label: string;
+  labelKey: string; // dùng key thay vì text cứng
   path: string;
 }
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
-  
+  const { t } = useTranslation();
+
   const sidebarItems: SidebarItem[] = [
     {
       icon: IoHomeOutline,
-      label: 'Thông tin tài khoản',
+      labelKey: 'profile.info',
       path: '/profile'
     },
     {
       icon: FaClipboardList,
-      label: 'Quản lý đơn hàng',
+      labelKey: 'profile.orders',
       path: '/profile/orders'
     },
     {
       icon: MdSecurity,
-      label: 'Bảo mật',
+      labelKey: 'profile.security',
       path: '/profile/security'
     },
     {
       icon: AiOutlineHeart,
-      label: 'Sản phẩm yêu thích',
+      labelKey: 'profile.favorites',
       path: '/profile/favorites'
     },
     {
       icon: FiLogOut,
-      label: 'Logout',
+      labelKey: 'profile.logout',
       path: '/logout'
     }
   ];
@@ -47,37 +49,37 @@ const Sidebar: React.FC = () => {
   const handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (e.currentTarget.getAttribute('href') === '/logout') {
       e.preventDefault();
-      // Implement logout functionality
       console.log('Logging out...');
-      // Redirect to home page or login page after logout
+      // Thêm logout logic ở đây
     }
   };
 
   return (
-    <div className="bg-white p-5 rounded-lg">
-      {sidebarItems.map((item, index) => {
-        const isActive = location.pathname === item.path;
-        const Icon = item.icon;
-        return (
-          <Link
-            key={index}
-            to={item.path}
-            onClick={handleLogout}
-            className={`flex items-center p-3 mb-3 rounded-sm ${
-              isActive ? 'bg-[#fff7ef]' : ''
-            }`}
-          >
-            {/* <img src={item.icon} alt={item.label} className="w-5 h-5" /> */}
-            <Icon className="w-5 h-5 text-[#313f53]" />
-            <span className={`ml-4 text-base font-medium ${
-              isActive ? 'text-[#fd7e14]' : 'text-[#313f53]'
-            }`}>
-              {item.label}
+      <div className="bg-white p-5 rounded-lg">
+        {sidebarItems.map((item, index) => {
+          const isActive = location.pathname === item.path;
+          const Icon = item.icon;
+          return (
+              <Link
+                  key={index}
+                  to={item.path}
+                  onClick={handleLogout}
+                  className={`flex items-center p-3 mb-3 rounded-sm ${
+                      isActive ? 'bg-[#fff7ef]' : ''
+                  }`}
+              >
+                <Icon className="w-5 h-5 text-[#313f53]" />
+                <span
+                    className={`ml-4 text-base font-medium ${
+                        isActive ? 'text-[#fd7e14]' : 'text-[#313f53]'
+                    }`}
+                >
+              {t(item.labelKey)}
             </span>
-          </Link>
-        );
-      })}
-    </div>
+              </Link>
+          );
+        })}
+      </div>
   );
 };
 

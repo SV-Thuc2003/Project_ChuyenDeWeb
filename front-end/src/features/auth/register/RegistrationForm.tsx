@@ -7,13 +7,15 @@ import { RegisterFormData, RegisterFormErrors } from "../../../types/Register.ts
 import { register } from "../../../Service/authService.ts";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from "react-i18next";
 
-// ✅ Khai báo props
 interface RegistrationFormProps {
     onSuccess: (email: string) => void;
 }
 
 const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
+    const { t } = useTranslation();
+
     const [formData, setFormData] = useState<RegisterFormData>({
         username: "",
         name: "",
@@ -46,37 +48,37 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
         const newErrors: RegisterFormErrors = {};
 
         if (!formData.username.trim()) {
-            newErrors.username = "Tên đăng nhập không được để trống";
+            newErrors.username = t("auth.errors.username_required");
         }
 
         if (!formData.name.trim()) {
-            newErrors.name = "Họ và tên không được để trống";
+            newErrors.name = t("auth.errors.fullname_required");
         }
 
         if (!formData.email.trim()) {
-            newErrors.email = "Email không được để trống";
+            newErrors.email = t("auth.errors.email_required");
         } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = "Email không hợp lệ";
+            newErrors.email = t("auth.errors.email_invalid");
         }
 
         if (!formData.phone.trim()) {
-            newErrors.phone = "Số điện thoại không được để trống";
+            newErrors.phone = t("auth.errors.phone_required");
         } else if (!/^\d{10,11}$/.test(formData.phone.replace(/\D/g, ""))) {
-            newErrors.phone = "Số điện thoại không hợp lệ";
+            newErrors.phone = t("auth.errors.phone_invalid");
         }
 
         if (!formData.password) {
-            newErrors.password = "Mật khẩu không được để trống";
+            newErrors.password = t("auth.errors.password_required");
         } else if (formData.password.length < 6) {
-            newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
+            newErrors.password = t("auth.errors.password_short");
         }
 
         if (formData.password !== formData.confirmPassword) {
-            newErrors.confirmPassword = "Mật khẩu không khớp";
+            newErrors.confirmPassword = t("auth.errors.password_mismatch");
         }
 
         if (!formData.termsAccepted) {
-            newErrors.termsAccepted = "Bạn phải đồng ý với điều khoản sử dụng";
+            newErrors.termsAccepted = t("auth.errors.terms_required");
         }
 
         setErrors(newErrors);
@@ -93,10 +95,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
         try {
             const message = await register(formData);
             toast.success(message);
-            onSuccess(formData.email); // ✅ Gọi callback khi thành công
+            onSuccess(formData.email);
         } catch (error: unknown) {
             const err = error as Error;
-            toast.error(err.message || "Đăng ký thất bại. Vui lòng thử lại.");
+            toast.error(err.message || t("auth.errors.registration_failed"));
         } finally {
             setIsLoading(false);
         }
@@ -104,13 +106,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
 
     return (
         <div className="w-full max-w-[700px] ml-4">
-            <h1 className="text-3xl mb-6">Đăng ký</h1>
+            <h1 className="text-3xl mb-6">{t("auth.register_title")}</h1>
 
             <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-y-3 p-3">
                     <InputField
-                        label="Tên đăng nhập"
-                        placeholder="Nhập tên đăng nhập của bạn"
+                        label={t("auth.username")}
+                        placeholder={t("auth.username_placeholder")}
                         name="username"
                         value={formData.username}
                         onChange={handleChange}
@@ -119,8 +121,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
                     />
 
                     <InputField
-                        label="Họ và tên"
-                        placeholder="Nhập họ tên đầy đủ"
+                        label={t("auth.fullname")}
+                        placeholder={t("auth.fullname_placeholder")}
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
@@ -129,8 +131,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
                     />
 
                     <InputField
-                        label="Địa chỉ Email"
-                        placeholder="Điền địa chỉ email vào đây"
+                        label={t("auth.email")}
+                        placeholder={t("auth.email_placeholder")}
                         type="email"
                         name="email"
                         value={formData.email}
@@ -140,8 +142,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
                     />
 
                     <InputField
-                        label="Điện thoại"
-                        placeholder="Điền số điện thoại vào đây"
+                        label={t("auth.phone")}
+                        placeholder={t("auth.phone_placeholder")}
                         type="tel"
                         name="phone"
                         value={formData.phone}
@@ -151,8 +153,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
                     />
 
                     <InputField
-                        label="Mật khẩu"
-                        placeholder="Điền mật khẩu vào đây"
+                        label={t("auth.password")}
+                        placeholder={t("auth.password_placeholder")}
                         type="password"
                         name="password"
                         value={formData.password}
@@ -162,8 +164,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
                     />
 
                     <InputField
-                        label="Nhập lại mật khẩu"
-                        placeholder="Nhập lại mật khẩu"
+                        label={t("auth.confirm_password")}
+                        placeholder={t("auth.confirm_password_placeholder")}
                         type="password"
                         name="confirmPassword"
                         value={formData.confirmPassword}
@@ -174,7 +176,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
 
                     <div className="mt-4 mb-6">
                         <Checkbox
-                            label="Tôi đã đồng ý với thoả thuận và điều khoản người dùng"
+                            label={t("auth.terms_agree")}
                             checked={formData.termsAccepted}
                             onChange={handleChange}
                             name="termsAccepted"
@@ -191,16 +193,16 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
                         className="h-8 font-bold text-lq mt-2"
                         disabled={isLoading}
                     >
-                        {isLoading ? "Đang xử lý..." : "Đăng ký"}
+                        {isLoading ? t("common.processing") : t("auth.register")}
                     </Button>
                 </div>
             </form>
 
             <div className="mt-6 text-center">
                 <p className="text-lg text-black">
-                    Nếu bạn đã có tài khoản?{" "}
+                    {t("auth.already_have_account")}{" "}
                     <Link to="/login" className="text-[#3b63f3] hover:underline">
-                        Chuyển tới trang đăng nhập
+                        {t("auth.login_redirect")}
                     </Link>
                 </p>
             </div>

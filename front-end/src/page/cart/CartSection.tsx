@@ -2,6 +2,7 @@ import React from 'react';
 import ProductItem from './ProductItem';
 import Button from '../../components/ui/Button';
 import { CartItem } from '../../types/Cart';
+import { useTranslation } from 'react-i18next';
 
 interface CartSectionProps {
   cartItems: CartItem[];
@@ -12,69 +13,69 @@ interface CartSectionProps {
 }
 
 const CartSection: React.FC<CartSectionProps> = ({
-  cartItems,
-  onRemoveItem,
-  onQuantityChange,
-  onUpdateCart,
-  onContinueShopping
-}) => {
+                                                   cartItems,
+                                                   onRemoveItem,
+                                                   onQuantityChange,
+                                                   onUpdateCart,
+                                                   onContinueShopping,
+                                                 }) => {
+  const { t } = useTranslation();
+
   return (
-    <div className="mb-8">
-      <table className="w-full border-collapse">
-        <thead>
+      <div className="mb-8">
+        <table className="w-full border-collapse">
+          <thead>
           <tr>
             <th className="text-left py-2 border-b border-[#a48c8ca8] w-[124px]"></th>
             <th className="text-left py-2 border-b border-[#a48c8ca8] w-[124px]"></th>
             <th className="text-left py-2 border-b border-[#a48c8ca8] uppercase text-2xl font-bold">
-              Sản phẩm
+              {t('cart.product')}
             </th>
             <th className="py-2 border-b border-[#a48c8ca8] w-[124px] uppercase text-base font-bold">
-              Giá
+              {t('cart.price')}
             </th>
             <th className="py-2 border-b border-[#a48c8ca8] w-[124px] uppercase text-base font-bold text-center">
-              Số lượng
+              {t('cart.quantity')}
             </th>
             <th className="py-2 border-b border-[#a48c8ca8] w-[124px] uppercase text-base font-bold text-right">
-              Tạm tính
+              {t('cart.subtotal')}
             </th>
           </tr>
-        </thead>
-        <tbody>
-        {cartItems.map(item => (
-            <ProductItem
-                key={`${item.id}-${item.productId}`}         // ✅ Key ổn định
-                item={item}
-                onRemove={onRemoveItem}
-                onQuantityChange={onQuantityChange}          // ✅ Bây giờ truyền theo cartId
-            />
-        ))}
-
-        </tbody>
-
-        <tfoot>
+          </thead>
+          <tbody>
+          {cartItems.map(item => (
+              <ProductItem
+                  key={`${item.id}-${item.productId}`}
+                  item={item}
+                  onRemove={onRemoveItem}
+                  onQuantityChange={onQuantityChange}
+              />
+          ))}
+          </tbody>
+          <tfoot>
           <tr>
             <td colSpan={6} className="py-4 border-b border-[#a48c8ca8]">
               <div className="flex space-x-4">
-                <Button 
-                  variant="outline" 
-                  onClick={onContinueShopping}
-                  className="uppercase py-2"
+                <Button
+                    variant="outline"
+                    onClick={onContinueShopping}
+                    className="uppercase py-2"
                 >
-                  ← Tiếp tục xem sản phẩm
+                  ← {t('cart.continue_shopping')}
                 </Button>
-                <Button 
-                  variant="secondary" 
-                  onClick={onUpdateCart}
-                  className="uppercase py-2"
+                <Button
+                    variant="secondary"
+                    onClick={onUpdateCart}
+                    className="uppercase py-2"
                 >
-                  Cập nhật giỏ hàng
+                  {t('cart.update_cart')}
                 </Button>
               </div>
             </td>
           </tr>
-        </tfoot>
-      </table>
-    </div>
+          </tfoot>
+        </table>
+      </div>
   );
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { CartItem } from '../../types/Cart';
+import { useTranslation } from 'react-i18next';
 
 interface ProductItemProps {
     item: CartItem;
@@ -12,15 +13,17 @@ const ProductItem: React.FC<ProductItemProps> = ({
                                                      onRemove,
                                                      onQuantityChange
                                                  }) => {
+    const { t } = useTranslation();
+
     const handleIncrement = () => {
         const newQuantity = item.quantity + 1;
-        onQuantityChange(item.id, newQuantity); // ✅ dùng item.id
+        onQuantityChange(item.id, newQuantity);
     };
 
     const handleDecrement = () => {
         if (item.quantity > 1) {
             const newQuantity = item.quantity - 1;
-            onQuantityChange(item.id, newQuantity); // ✅ dùng item.id
+            onQuantityChange(item.id, newQuantity);
         }
     };
 
@@ -28,18 +31,17 @@ const ProductItem: React.FC<ProductItemProps> = ({
         <tr className="border-b border-[#a48c8ca8]">
             <td className="py-4 border-r border-[#a48c8ca8] w-[124px] text-center">
                 <button
-                    onClick={() => onRemove(item.id)} // ✅ Dùng id, không phải productId
+                    onClick={() => onRemove(item.id)}
                     className="w-10 h-10 rounded-full border border-[#cccccc] inline-flex items-center justify-center text-[#cccccc] text-3xl font-bold"
                 >
                     ×
                 </button>
-
             </td>
 
             <td className="py-4 border-r border-[#a48c8ca8] w-[124px] text-center">
                 <img
                     src={item.thumbnail || "/default-image.png"}
-                    alt={item.name || "Sản phẩm"}
+                    alt={item.name || t("cart.product_fallback")}
                     className="w-[92px] h-[116px] object-contain mx-auto"
                     onError={(e) => {
                         e.currentTarget.src = "/default-image.png";

@@ -1,6 +1,7 @@
 // FavoriteContext.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getFavorites, addFavorite, removeFavorite } from "../Service/FavoriteService";
+import { useTranslation } from "react-i18next";
 
 interface FavoriteContextType {
   favoriteProductIds: number[];
@@ -15,7 +16,9 @@ interface FavoriteProviderProps {
   userId: number;
   children: React.ReactNode;
 }
+
 export const FavoriteProvider: React.FC<FavoriteProviderProps> = ({ userId, children }) => {
+  const { t } = useTranslation(); // ✅ i18n
   const [favoriteProductIds, setFavoriteProductIds] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,14 +29,14 @@ export const FavoriteProvider: React.FC<FavoriteProviderProps> = ({ userId, chil
         const favorites = await getFavorites(userId);
         setFavoriteProductIds(favorites);
       } catch (err) {
-        console.error("Lỗi tải favorites:", err);
+        console.error(t("favorite.load_error"), err); // ✅ i18n message
       } finally {
         setLoading(false);
       }
     };
 
     fetchFavorites();
-  }, [userId]);
+  }, [userId, t]);
 
   const isFavorite = (productId: number) => favoriteProductIds.includes(productId);
 
@@ -47,14 +50,16 @@ export const FavoriteProvider: React.FC<FavoriteProviderProps> = ({ userId, chil
         setFavoriteProductIds((prev) => [...prev, productId]);
       }
     } catch (err) {
-      console.error("Lỗi toggle favorite:", err);
+      console.error(t("favorite.toggle_error"), err); // ✅ i18n message
     }
   };
 
   return (
-    <FavoriteContext.Provider value={{ favoriteProductIds, isFavorite, toggleFavorite, loading }}>
-      {children}
-    </FavoriteContext.Provider>
+      <FavoriteContext.Provider
+          value={{ favoriteProductIds, isFavorite, toggleFavorite, loading }}
+      >
+        {children}
+      </FavoriteContext.Provider>
   );
 };
 

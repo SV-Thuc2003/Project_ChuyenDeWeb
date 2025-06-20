@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
-
 import Slider from 'react-slick';
+import { useTranslation } from 'react-i18next';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -11,6 +11,7 @@ interface ProductImagesProps {
 }
 
 const ProductImages: React.FC<ProductImagesProps> = ({ imageUrls, thumbnailUrl }) => {
+  const { t } = useTranslation();
   const detailImages = imageUrls.filter((url) => url !== thumbnailUrl);
   const allImages = detailImages.length > 0 ? detailImages : [thumbnailUrl];
 
@@ -46,69 +47,68 @@ const ProductImages: React.FC<ProductImagesProps> = ({ imageUrls, thumbnailUrl }
   };
 
   return (
-    <>
-      {/* Hình ảnh chính có nút điều hướng */}
-      <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded shadow">
-        <div className="relative">
-          <img
-            src={allImages[selectedIndex]}
-            alt="Ảnh sản phẩm"
-            className="w-full max-h-[500px] object-contain cursor-zoom-in"
-            onClick={() => openFullscreen(selectedIndex)}
-          />
-          {/* Nút trái */}
-          <button
-            onClick={prevImage}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-opacity-100"
-          >
-            <MdNavigateBefore size={40} />
-          </button>
-          {/* Nút phải */}
-          <button
-            onClick={nextImage}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-opacity-100"
-          >
-            <MdNavigateNext size={40} />
-          </button>
-        </div>
-
-        {/* Thumbnail nhỏ */}
-        <div className="flex gap-2 overflow-x-auto justify-center md:justify-start">
-          {allImages.map((img, idx) => (
+      <>
+        <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded shadow">
+          <div className="relative">
             <img
-              key={idx}
-              src={img}
-              alt={`Ảnh chi tiết ${idx + 1}`}
-              onClick={() => setSelectedIndex(idx)}
-              className={`w-20 h-20 object-cover border cursor-pointer rounded transition duration-200 ${
-                idx === selectedIndex ? 'ring-2 ring-blue-500' : ''
-              }`}
+                src={allImages[selectedIndex]}
+                alt={t('product.image.main')}
+                className="w-full max-h-[500px] object-contain cursor-zoom-in"
+                onClick={() => openFullscreen(selectedIndex)}
             />
-          ))}
-        </div>
-      </div>
+            <button
+                onClick={prevImage}
+                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-opacity-100"
+            >
+              <MdNavigateBefore size={40} />
+            </button>
+            <button
+                onClick={nextImage}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-opacity-100"
+            >
+              <MdNavigateNext size={40} />
+            </button>
+          </div>
 
-      {/* Fullscreen slider */}
-      {isFullscreen && (
-        <div className="fixed top-0 left-0 z-[10000] w-full h-full bg-black bg-opacity-95 flex items-center justify-center">
-          <button
-            onClick={() => setIsFullscreen(false)}
-            className="absolute top-5 right-5 text-white text-lg font-semibold hover:underline"
-          >
-            Đóng
-          </button>
-          <div className="w-full max-w-4xl px-4">
-            <Slider {...sliderSettings}>
-              {allImages.map((img, index) => (
-                <div key={index} className="flex items-center justify-center h-[90vh]">
-                  <img src={img} alt={`slide-${index}`} className="max-h-full max-w-full object-contain" />
-                </div>
-              ))}
-            </Slider>
+          <div className="flex gap-2 overflow-x-auto justify-center md:justify-start">
+            {allImages.map((img, idx) => (
+                <img
+                    key={idx}
+                    src={img}
+                    alt={`${t('product.image.thumbnail')} ${idx + 1}`}
+                    onClick={() => setSelectedIndex(idx)}
+                    className={`w-20 h-20 object-cover border cursor-pointer rounded transition duration-200 ${
+                        idx === selectedIndex ? 'ring-2 ring-blue-500' : ''
+                    }`}
+                />
+            ))}
           </div>
         </div>
-      )}
-    </>
+
+        {isFullscreen && (
+            <div className="fixed top-0 left-0 z-[10000] w-full h-full bg-black bg-opacity-95 flex items-center justify-center">
+              <button
+                  onClick={() => setIsFullscreen(false)}
+                  className="absolute top-5 right-5 text-white text-lg font-semibold hover:underline"
+              >
+                {t('action.close')}
+              </button>
+              <div className="w-full max-w-4xl px-4">
+                <Slider {...sliderSettings}>
+                  {allImages.map((img, index) => (
+                      <div key={index} className="flex items-center justify-center h-[90vh]">
+                        <img
+                            src={img}
+                            alt={`slide-${index}`}
+                            className="max-h-full max-w-full object-contain"
+                        />
+                      </div>
+                  ))}
+                </Slider>
+              </div>
+            </div>
+        )}
+      </>
   );
 };
 

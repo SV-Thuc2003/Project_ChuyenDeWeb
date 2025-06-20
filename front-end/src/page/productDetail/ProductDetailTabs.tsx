@@ -4,6 +4,7 @@ import ProductTypeDetailDisplay from "./ProductTypeDetailDisplay";
 import ReviewSection from "./ProductReviewSection";
 import { ProductType } from "../../types/ProductDetail";
 import { useReview } from "../../hooks/useReview";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   productId: number;
@@ -12,10 +13,12 @@ interface Props {
 }
 
 const ProductDetailTabs: React.FC<Props> = ({
-  productId,
-  productType,
-  detail,
-}) => {
+                                              productId,
+                                              productType,
+                                              detail,
+                                            }) => {
+  const { t } = useTranslation();
+
   const {
     reviews,
     submitReview,
@@ -33,20 +36,20 @@ const ProductDetailTabs: React.FC<Props> = ({
   const tabs: TabItem[] = [
     {
       id: "specs",
-      label: "Thông số kỹ thuật",
+      label: t("product.detail.specs"),
       content: (
-        <ProductTypeDetailDisplay productType={productType} detail={detail} />
+          <ProductTypeDetailDisplay productType={productType} detail={detail} />
       ),
     },
     {
       id: "reviews",
-      label: "Bài viết đánh giá",
+      label: t("product.detail.reviews"),
       content: (
-        <ReviewSection
-          reviews={reviews}
-          onSubmitReview={handleSubmitReview}
-          onDeleteReview={handleDeleteReview}
-        />
+          <ReviewSection
+              reviews={reviews}
+              onSubmitReview={handleSubmitReview}
+              onDeleteReview={handleDeleteReview}
+          />
       ),
     },
   ];

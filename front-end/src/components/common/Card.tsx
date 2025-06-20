@@ -1,8 +1,9 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { CiHeart, CiShoppingCart } from "react-icons/ci";
 import { useCart } from "../../contexts/CartContext";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 interface CardProps {
     id?: number;
@@ -22,12 +23,13 @@ const Card: React.FC<CardProps> = ({
                                        price,
                                        onAddToWishlist = () => {},
                                        isFavorite = false,
-  onFavoriteToggle,
-                                       className = '',
+                                       onFavoriteToggle,
+                                       className = "",
                                    }) => {
     const navigate = useNavigate();
     const { addToCart, cartItems } = useCart();
     const { token } = useAuth();
+    const { t } = useTranslation();
     const userId = localStorage.getItem("userId");
 
     const handleCardClick = () => {
@@ -37,16 +39,14 @@ const Card: React.FC<CardProps> = ({
     };
 
     const handleWishlistClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+        e.stopPropagation();
 
-    // Nếu có prop `onFavoriteToggle` thì gọi nó
-    if (onFavoriteToggle && id !== undefined) {
-      onFavoriteToggle(id);
-    } else {
-      // fallback gọi hàm cũ nếu chưa cập nhật hook
-      onAddToWishlist(id);
-    }
-  };
+        if (onFavoriteToggle && id !== undefined) {
+            onFavoriteToggle(id);
+        } else {
+            onAddToWishlist(id);
+        }
+    };
 
     const handleAddToCart = async (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -56,11 +56,10 @@ const Card: React.FC<CardProps> = ({
         }
 
         try {
-            await addToCart(id!, 1); // ✅ gọi context
+            await addToCart(id!, 1);
         } catch {
-            alert("Lỗi khi thêm vào giỏ hàng");
+            alert(t("cart.add_error"));
         }
-
     };
 
     const itemInCart = cartItems.find((item) => item.productId === id);
@@ -68,88 +67,47 @@ const Card: React.FC<CardProps> = ({
 
     return (
         <div
-  onClick={handleCardClick}
-  className={`group border border-[#e0e0e0] rounded-[20px] overflow-hidden cursor-pointer transition hover:shadow-md relative ${className}`}
->
-  <div className="w-full h-[360px] relative overflow-hidden">
-    <img src={image} alt={title} className="w-full h-full object-cover" />
+            onClick={handleCardClick}
+            className={`group border border-[#e0e0e0] rounded-[20px] overflow-hidden cursor-pointer transition hover:shadow-md relative ${className}`}
+        >
+            <div className="w-full h-[360px] relative overflow-hidden">
+                <img src={image} alt={title} className="w-full h-full object-cover" />
 
-    {quantityInCart > 0 && (
-      <div className="absolute top-2 left-2 bg-[#5290f3] text-white text-xs font-semibold px-2 py-1 rounded-full">
-        {quantityInCart} trong giỏ
-      </div>
-    )}
-  </div>
+                {quantityInCart > 0 && (
+                    <div className="absolute top-2 left-2 bg-[#5290f3] text-white text-xs font-semibold px-2 py-1 rounded-full">
+                        {quantityInCart} {t("cart.in_cart")}
+                    </div>
+                )}
+            </div>
 
-  <div className="p-5">
-    <h3 className="text-xl font-semibold text-black mb-2">{title}</h3>
-    <p className="text-base text-black">{price}</p>
-  </div>
+            <div className="p-5">
+                <h3 className="text-xl font-semibold text-black mb-2">{title}</h3>
+                <p className="text-base text-black">{price}</p>
+            </div>
 
-  {/* Các nút hiển thị khi hover */}
-  <div
-    className="absolute bottom-5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex space-x-3"
-    onClick={(e) => e.stopPropagation()} // Ngăn click lan ra card
-  >
-     <button
+            <div
+                className="absolute bottom-5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex space-x-3"
+                onClick={(e) => e.stopPropagation()}
+            >
+                <button
                     onClick={handleWishlistClick}
                     className={`w-10 h-10 rounded-full flex items-center justify-center shadow hover:bg-gray-100 
-                        ${isFavorite ? "bg-red-100 text-red-500" : "bg-gray-200 text-gray-600"}`}
-                    title="Yêu thích"
+              ${isFavorite ? "bg-red-100 text-red-500" : "bg-gray-200 text-gray-600"}`}
+                    title={t("product.favorite")}
                 >
-      <CiHeart className="w-[24px] h-[24px]" />
-    </button>
+                    <CiHeart className="w-[24px] h-[24px]" />
+                </button>
 
-    <button
-      onClick={handleAddToCart}
-      className="bg-[#f8f9fa] w-10 h-10 rounded-full flex items-center justify-center shadow hover:bg-gray-100"
-      title="Thêm vào giỏ"
-    >
-      <CiShoppingCart className="w-[24px] h-[24px]" />
-    </button>
-  </div>
-</div>
-
+                <button
+                    onClick={handleAddToCart}
+                    className="bg-[#f8f9fa] w-10 h-10 rounded-full flex items-center justify-center shadow hover:bg-gray-100"
+                    title={t("product.add_to_cart")}
+                >
+                    <CiShoppingCart className="w-[24px] h-[24px]" />
+                </button>
+            </div>
+        </div>
     );
 };
 
 export default Card;
-
-
-// <div
-//             onClick={handleCardClick}
-//             className={`border border-[#e0e0e0] rounded-[20px] overflow-hidden cursor-pointer transition hover:shadow-md ${className}`}
-//         >
-//             <div className="w-full h-[360px] relative overflow-hidden">
-//                 <img src={image} alt={title} className="w-full h-full object-cover" />
-
-//                 {quantityInCart > 0 && (
-//                     <div className="absolute top-2 left-2 bg-[#5290f3] text-white text-xs font-semibold px-2 py-1 rounded-full">
-//                         {quantityInCart} trong giỏ
-//                     </div>
-//                 )}
-//             </div>
-
-//             <div className="p-5 relative">
-//                 <h3 className="text-xl font-semibold text-black mb-2">{title}</h3>
-//                 <p className="text-base text-black">{price}</p>
-
-//                 <div className="absolute right-5 top-5 flex flex-col space-y-2">
-//                     <button
-//                         onClick={handleWishlistClick}
-//                         className="bg-[#f8f9fa] w-8 h-8 rounded-full flex items-center justify-center"
-//                         title="Yêu thích"
-//                     >
-//                         <CiHeart className="w-[24px] h-[24px]" />
-//                     </button>
-
-//                     <button
-//                         onClick={handleAddToCart}
-//                         className="bg-[#f8f9fa] w-8 h-8 rounded-full flex items-center justify-center"
-//                         title="Thêm vào giỏ"
-//                     >
-//                         <CiShoppingCart className="w-[24px] h-[24px]" />
-//                     </button>
-//                 </div>
-//             </div>
-//         </div>

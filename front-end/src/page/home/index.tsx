@@ -3,7 +3,7 @@ import Header from '../../components/layout/header/header';
 import Footer from '../../components/layout/footer/footer';
 // { useState }
 import NewProductSection from './NewProductSection.tsx';
-import PromoSection from './PromoSection';
+// import PromoSection from './PromoSection';
 import BestsellersSection from './BestsellersSection';
 
 // import accessory from '../../assets/phukien.jpg';
@@ -108,7 +108,7 @@ const HomePage: React.FC = () => {
 
                 <BestsellersSection />
 
-                <PromoSection />
+                {/*<PromoSection />*/}
             </main>
 
             <Footer />

@@ -1,51 +1,51 @@
 import React from 'react';
 import { PersonalInfo } from '../../types/ChechOut';
 import InputField from '../../components/ui/InputField';
+import { useTranslation } from 'react-i18next';
 
 interface PersonalInfoFormProps {
-  personalInfo: PersonalInfo;
-  onPersonalInfoChange: (field: keyof PersonalInfo, value: string) => void;
+    personalInfo: PersonalInfo;
+    onPersonalInfoChange: (field: keyof PersonalInfo, value: string) => void;
 }
 
 const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
-                                                             personalInfo,
-                                                             onPersonalInfoChange,
+                                                               personalInfo,
+                                                               onPersonalInfoChange,
                                                            }) => {
-  return (
-      <div className="mb-6">
-        <div className="p-6 border border-gray-300 rounded-lg space-y-4 bg-white shadow-sm">
-          <h2 className="text-2xl font-bold mb-4">Thông tin cá nhân</h2>
+    const { t } = useTranslation();
 
-          {/* Họ tên */}
-          <InputField
-              label="Họ tên"
-              placeholder="Nhập tên của bạn"
-              value={personalInfo.name}
-              onChange={(e) => onPersonalInfoChange('name', e.target.value)}
-          />
+    return (
+        <div className="mb-6">
+            <div className="p-6 border border-gray-300 rounded-lg space-y-4 bg-white shadow-sm">
+                <h2 className="text-2xl font-bold mb-4">{t('personal.title')}</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Email */}
-            <InputField
-                label="Email"
-                placeholder="Nhập email"
-                type="email"
-                value={personalInfo.email}
-                onChange={(e) => onPersonalInfoChange('email', e.target.value)}
-            />
+                <InputField
+                    label={t('personal.name')}
+                    placeholder={t('personal.namePlaceholder')}
+                    value={personalInfo.name}
+                    onChange={(e) => onPersonalInfoChange('name', e.target.value)}
+                />
 
-            {/* Số điện thoại */}
-            <InputField
-                label="Số điện thoại"
-                placeholder="Nhập số điện thoại"
-                type="tel"
-                value={personalInfo.phone}
-                onChange={(e) => onPersonalInfoChange('phone', e.target.value)}
-            />
-          </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <InputField
+                        label={t('personal.email')}
+                        placeholder={t('personal.emailPlaceholder')}
+                        type="email"
+                        value={personalInfo.email}
+                        onChange={(e) => onPersonalInfoChange('email', e.target.value)}
+                    />
+
+                    <InputField
+                        label={t('personal.phone')}
+                        placeholder={t('personal.phonePlaceholder')}
+                        type="tel"
+                        value={personalInfo.phone}
+                        onChange={(e) => onPersonalInfoChange('phone', e.target.value)}
+                    />
+                </div>
+            </div>
         </div>
-      </div>
-  );
+    );
 };
 
 export default PersonalInfoForm;

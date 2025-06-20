@@ -1,117 +1,132 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
-//   ProductDetail,
-  ProductType,
-  WaterPurifierDetail,
-  FilterCartridgeDetail,
-  NonElectricPurifierDetail,
-  PrefilterHousingDetail,
+    ProductType,
+    WaterPurifierDetail,
+    FilterCartridgeDetail,
+    NonElectricPurifierDetail,
+    PrefilterHousingDetail,
 } from "../../types/ProductDetail";
 
 interface Props {
-  productType: ProductType;
-  detail: 
-    | WaterPurifierDetail
-    | FilterCartridgeDetail
-    | NonElectricPurifierDetail
-    | PrefilterHousingDetail;
+    productType: ProductType;
+    detail:
+        | WaterPurifierDetail
+        | FilterCartridgeDetail
+        | NonElectricPurifierDetail
+        | PrefilterHousingDetail;
 }
 
 const ProductTypeDetailDisplay: React.FC<Props> = ({ productType, detail }) => {
-  switch (productType) {
-    case "WATER_PURIFIER":
-      const water = detail as WaterPurifierDetail;
-      return (
-        <div className="mt-6 p-4 bg-white rounded shadow">
-          <h2 className="text-xl font-semibold mb-4">Thông số kỹ thuật</h2>
-          <p><strong>Số cấp lọc:</strong> {water.stageNumber}</p>
-          <p><strong>Công nghệ:</strong> {water.technology}</p>
-          {water.modelName && <p><strong>Mã sản phẩm:</strong> {water.modelName}</p>}
-          {water.type && <p><strong>Loại:</strong> {water.type}</p>}
-          {water.hotColdSupport && <p><strong>Hỗ trợ nóng/lạnh:</strong> {water.hotColdSupport}</p>}
-          {water.tankCapacity && <p><strong>Dung tích bình:</strong> {water.tankCapacity}</p>}
-          {water.capacityLPerHour && <p><strong>Công suất lọc (L/h):</strong> {water.capacityLPerHour}</p>}
-          {water.powerConsumption && <p><strong>Công suất tiêu thụ:</strong> {water.powerConsumption}</p>}
-          {water.dimensions && <p><strong>Kích thước:</strong> {water.dimensions}</p>}
-          {water.weightKg !== undefined && water.weightKg !== null && <p><strong>Trọng lượng (kg):</strong> {water.weightKg}</p>}
-          {water.voltage && <p><strong>Điện áp:</strong> {water.voltage}</p>}
-          {water.origin && <p><strong>Nơi sản xuất:</strong> {water.origin}</p>}
-          {water.warranty && <p><strong>Thời gian bảo hành:</strong> {water.warranty}</p>}
-          {water.suitableUses && <p><strong>Mục đích sử dụng:</strong> {water.suitableUses}</p>}
-          {water.material && <p><strong>Chất liệu:</strong> {water.material}</p>}
-          {water.additionalInfo && <p><strong>Thông tin thêm:</strong> {water.additionalInfo}</p>}
-        </div>
-      );
+    const { t } = useTranslation();
 
-    case "FILTER_CARTRIDGE":
-      const filter = detail as FilterCartridgeDetail;
-      return (
-        <div className="mt-6 p-4 bg-white rounded shadow">
-          <h2 className="text-xl font-semibold mb-4">Thông số Lõi lọc</h2>
-          <p><strong>Số cấp lọc:</strong> {filter.stageNumber}</p>
-          <p><strong>Loại:</strong> {filter.type}</p>
-          <p><strong>Chất liệu:</strong> {filter.material}</p>
-          <p><strong>Kích thước lọc (Micron):</strong> {filter.filterSizeMicron}</p>
-          {filter.lifespanLiters !== null && <p><strong>Tuổi thọ (L):</strong> {filter.lifespanLiters}</p>}
-          {filter.lifespanMonths !== null && <p><strong>Tuổi thọ (Tháng):</strong> {filter.lifespanMonths}</p>}
-          <p><strong>Chức năng:</strong> {filter.functions}</p>
-          <p><strong>Thương hiệu:</strong> {filter.brandOrigin}</p>
-          <p><strong>Nơi sản xuất:</strong> {filter.manufactureOrigin}</p>
-          {filter.warranty && <p><strong>Bảo hành:</strong> {filter.warranty}</p>}
-          {filter.additionalInfo && <p><strong>Thông tin thêm:</strong> {filter.additionalInfo}</p>}
-        </div>
-      );
+    const renderRow = (labelKey: string, value: any) => {
+        if (value === undefined || value === null || value === "") return null;
+        return (
+            <p>
+                <strong>{t(labelKey)}:</strong> {value}
+            </p>
+        );
+    };
 
-    case "NON_ELECTRIC_PURIFIER":
-      const nonElec = detail as NonElectricPurifierDetail;
-      return (
-        <div className="mt-6 p-4 bg-white rounded shadow">
-          <h2 className="text-xl font-semibold mb-4">Thông số Máy lọc không điện</h2>
-          <p><strong>Số cấp lọc:</strong> {nonElec.filtrationStages}</p>
-          <p><strong>Cấp lọc:</strong> {nonElec.filterLevels}</p>
-          <p><strong>Tuổi thọ bộ lọc (Tháng):</strong> {nonElec.filterLifespanMonths}</p>
-          <p><strong>Công nghệ:</strong> {nonElec.technology}</p>
-          <p><strong>Chức năng:</strong> {nonElec.functions}</p>
-          <p><strong>Áp lực làm việc (Mpa):</strong> {nonElec.workingPressureMpa}</p>
-          <p><strong>Lưu lượng (L/phút):</strong> {nonElec.flowRateLPerMin}</p>
-          {nonElec.tankCapacity !== null && <p><strong>Dung tích bình:</strong> {nonElec.tankCapacity}</p>}
-          <p><strong>Công suất lọc (L/h):</strong> {nonElec.capacityLPerHour}</p>
-          <p><strong>Tính năng:</strong> {nonElec.features}</p>
-          <p><strong>Chất liệu:</strong> {nonElec.material}</p>
-          <p><strong>Kích thước:</strong> {nonElec.dimensions}</p>
-          <p><strong>Trọng lượng (kg):</strong> {nonElec.weightKg}</p>
-          <p><strong>Thương hiệu:</strong> {nonElec.brandOrigin}</p>
-          <p><strong>Nơi sản xuất:</strong> {nonElec.manufactureOrigin}</p>
-          <p><strong>Năm ra mắt:</strong> {nonElec.launchYear}</p>
-          {nonElec.warranty && <p><strong>Bảo hành:</strong> {nonElec.warranty}</p>}
-          {nonElec.additionalInfo && <p><strong>Thông tin thêm:</strong> {nonElec.additionalInfo}</p>}
-        </div>
-      );
+    const sectionTitle = (titleKey: string) => (
+        <h2 className="text-xl font-semibold mb-4">{t(titleKey)}</h2>
+    );
 
-    case "PREFILTER_HOUSING":
-      const prefilter = detail as PrefilterHousingDetail;
-      return (
-        <div className="mt-6 p-4 bg-white rounded shadow">
-          <h2 className="text-xl font-semibold mb-4">Thông số Vỏ lọc thô</h2>
-          <p><strong>Số cốc:</strong> {prefilter.cupCount}</p>
-          <p><strong>Chất liệu lõi lọc:</strong> {prefilter.filterMaterials}</p>
-          <p><strong>Chất liệu vỏ:</strong> {prefilter.housingMaterial}</p>
-          <p><strong>Dung tích lọc:</strong> {prefilter.filterCapacity}</p>
-          <p><strong>Chức năng:</strong> {prefilter.functions}</p>
-          <p><strong>Tuổi thọ bộ lọc:</strong> {prefilter.filterLifespan}</p>
-          <p><strong>Kích thước:</strong> {prefilter.dimensions}</p>
-          <p><strong>Trọng lượng (kg):</strong> {prefilter.weightKg}</p>
-          <p><strong>Thương hiệu:</strong> {prefilter.brandOrigin}</p>
-          <p><strong>Nơi sản xuất:</strong> {prefilter.manufactureOrigin}</p>
-          <p><strong>Năm ra mắt:</strong> {prefilter.launchYear}</p>
-          {prefilter.warranty && <p><strong>Bảo hành:</strong> {prefilter.warranty}</p>}
-          {prefilter.additionalInfo && <p><strong>Thông tin thêm:</strong> {prefilter.additionalInfo}</p>}
-        </div>
-      );
+    switch (productType) {
+        case "WATER_PURIFIER":
+            const water = detail as WaterPurifierDetail;
+            return (
+                <div className="mt-6 p-4 bg-white rounded shadow">
+                    {sectionTitle("productDetail.specs")}
+                    {renderRow("productDetail.stageNumber", water.stageNumber)}
+                    {renderRow("productDetail.technology", water.technology)}
+                    {renderRow("productDetail.modelName", water.modelName)}
+                    {renderRow("productDetail.type", water.type)}
+                    {renderRow("productDetail.hotColdSupport", water.hotColdSupport)}
+                    {renderRow("productDetail.tankCapacity", water.tankCapacity)}
+                    {renderRow("productDetail.capacityLPerHour", water.capacityLPerHour)}
+                    {renderRow("productDetail.powerConsumption", water.powerConsumption)}
+                    {renderRow("productDetail.dimensions", water.dimensions)}
+                    {renderRow("productDetail.weightKg", water.weightKg)}
+                    {renderRow("productDetail.voltage", water.voltage)}
+                    {renderRow("productDetail.origin", water.origin)}
+                    {renderRow("productDetail.warranty", water.warranty)}
+                    {renderRow("productDetail.suitableUses", water.suitableUses)}
+                    {renderRow("productDetail.material", water.material)}
+                    {renderRow("productDetail.additionalInfo", water.additionalInfo)}
+                </div>
+            );
 
-    default:
-      return <div>Thông tin chi tiết không có.</div>;
-  }
+        case "FILTER_CARTRIDGE":
+            const filter = detail as FilterCartridgeDetail;
+            return (
+                <div className="mt-6 p-4 bg-white rounded shadow">
+                    {sectionTitle("productDetail.cartridgeSpecs")}
+                    {renderRow("productDetail.stageNumber", filter.stageNumber)}
+                    {renderRow("productDetail.type", filter.type)}
+                    {renderRow("productDetail.material", filter.material)}
+                    {renderRow("productDetail.filterSizeMicron", filter.filterSizeMicron)}
+                    {renderRow("productDetail.lifespanLiters", filter.lifespanLiters)}
+                    {renderRow("productDetail.lifespanMonths", filter.lifespanMonths)}
+                    {renderRow("productDetail.functions", filter.functions)}
+                    {renderRow("productDetail.brandOrigin", filter.brandOrigin)}
+                    {renderRow("productDetail.manufactureOrigin", filter.manufactureOrigin)}
+                    {renderRow("productDetail.warranty", filter.warranty)}
+                    {renderRow("productDetail.additionalInfo", filter.additionalInfo)}
+                </div>
+            );
+
+        case "NON_ELECTRIC_PURIFIER":
+            const nonElec = detail as NonElectricPurifierDetail;
+            return (
+                <div className="mt-6 p-4 bg-white rounded shadow">
+                    {sectionTitle("productDetail.nonElectricSpecs")}
+                    {renderRow("productDetail.filtrationStages", nonElec.filtrationStages)}
+                    {renderRow("productDetail.filterLevels", nonElec.filterLevels)}
+                    {renderRow("productDetail.filterLifespanMonths", nonElec.filterLifespanMonths)}
+                    {renderRow("productDetail.technology", nonElec.technology)}
+                    {renderRow("productDetail.functions", nonElec.functions)}
+                    {renderRow("productDetail.workingPressureMpa", nonElec.workingPressureMpa)}
+                    {renderRow("productDetail.flowRateLPerMin", nonElec.flowRateLPerMin)}
+                    {renderRow("productDetail.tankCapacity", nonElec.tankCapacity)}
+                    {renderRow("productDetail.capacityLPerHour", nonElec.capacityLPerHour)}
+                    {renderRow("productDetail.features", nonElec.features)}
+                    {renderRow("productDetail.material", nonElec.material)}
+                    {renderRow("productDetail.dimensions", nonElec.dimensions)}
+                    {renderRow("productDetail.weightKg", nonElec.weightKg)}
+                    {renderRow("productDetail.brandOrigin", nonElec.brandOrigin)}
+                    {renderRow("productDetail.manufactureOrigin", nonElec.manufactureOrigin)}
+                    {renderRow("productDetail.launchYear", nonElec.launchYear)}
+                    {renderRow("productDetail.warranty", nonElec.warranty)}
+                    {renderRow("productDetail.additionalInfo", nonElec.additionalInfo)}
+                </div>
+            );
+
+        case "PREFILTER_HOUSING":
+            const prefilter = detail as PrefilterHousingDetail;
+            return (
+                <div className="mt-6 p-4 bg-white rounded shadow">
+                    {sectionTitle("productDetail.prefilterSpecs")}
+                    {renderRow("productDetail.cupCount", prefilter.cupCount)}
+                    {renderRow("productDetail.filterMaterials", prefilter.filterMaterials)}
+                    {renderRow("productDetail.housingMaterial", prefilter.housingMaterial)}
+                    {renderRow("productDetail.filterCapacity", prefilter.filterCapacity)}
+                    {renderRow("productDetail.functions", prefilter.functions)}
+                    {renderRow("productDetail.filterLifespan", prefilter.filterLifespan)}
+                    {renderRow("productDetail.dimensions", prefilter.dimensions)}
+                    {renderRow("productDetail.weightKg", prefilter.weightKg)}
+                    {renderRow("productDetail.brandOrigin", prefilter.brandOrigin)}
+                    {renderRow("productDetail.manufactureOrigin", prefilter.manufactureOrigin)}
+                    {renderRow("productDetail.launchYear", prefilter.launchYear)}
+                    {renderRow("productDetail.warranty", prefilter.warranty)}
+                    {renderRow("productDetail.additionalInfo", prefilter.additionalInfo)}
+                </div>
+            );
+
+        default:
+            return <div>{t("productDetail.noData")}</div>;
+    }
 };
 
 export default ProductTypeDetailDisplay;

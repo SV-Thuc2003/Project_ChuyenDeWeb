@@ -4,8 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ProductDetail } from "../../types/ProductDetail";
-import { useCart } from "../../contexts/CartContext"; // ✅
-
+import { useCart } from "../../contexts/CartContext";
 
 interface ProductDetailProps {
     product: ProductDetail;
@@ -22,7 +21,7 @@ const ProductDetailRight: React.FC<ProductDetailProps> = ({ product }) => {
     const decreaseQuantity = () =>
         setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
-    const { refreshCart } = useCart(); // ✅
+    const { refreshCart } = useCart();
 
     const handleAddToCart = () => {
         if (!isLoggedIn) {
@@ -44,15 +43,12 @@ const ProductDetailRight: React.FC<ProductDetailProps> = ({ product }) => {
                 }
             )
             .then(() => {
-                refreshCart(); // ✅ thay vì fetchCartCount
-                alert("Đã thêm vào giỏ hàng!");
+                refreshCart(); // cập nhật lại context giỏ hàng
             })
             .catch((err) => {
                 console.error("Lỗi khi thêm vào giỏ hàng:", err);
-                alert("Không thể thêm sản phẩm vào giỏ hàng.");
             });
     };
-
 
     return (
         <div className="flex-[2] flex flex-col p-6 bg-white">
@@ -109,10 +105,6 @@ const ProductDetailRight: React.FC<ProductDetailProps> = ({ product }) => {
                 <p>
                     <span className="font-semibold">Tình trạng:</span> Còn hàng
                 </p>
-                {/*<p>*/}
-                {/*    <span className="font-semibold">Danh mục:</span>{" "}*/}
-                {/*    {product.category || "Lọc điện giải ion kiềm"}*/}
-                {/*</p>*/}
             </div>
         </div>
     );
