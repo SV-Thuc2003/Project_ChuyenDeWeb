@@ -42,6 +42,7 @@ const Products: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isFiltered, setIsFiltered] = useState(false);
+  const [selectedSort, setSelectedSort] = useState("createdAt,desc");
 
   const mode = useMemo<'search' | 'filtered' | 'category' | 'all'>(() => {
     if (keyword) return 'search';
@@ -133,7 +134,9 @@ const Products: React.FC = () => {
   };
 
   const handleSortChange = async (sort: string) => {
+    setSelectedSort(sort); //  CẬP NHẬT STATE UI
     if (!categoryIdNum) return;
+
     const req = getFilterRequest(currentPage - 1, pageSize, categoryIdNum);
     req.sort = sort;
 
@@ -206,6 +209,7 @@ const Products: React.FC = () => {
                   onPageChange={handlePageChange}
                   onSortChange={handleSortChange}
                   onFavoriteToggle={handleFavoriteToggle}
+                  selectedSort={selectedSort}
                 />
               )}
             </div>

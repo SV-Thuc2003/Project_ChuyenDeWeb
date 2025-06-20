@@ -22,8 +22,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleName = :roleName")
     List<User> findByRoleName(@Param("roleName") RoleName roleName);
 
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleName = 'ADMIN'")
+    List<User> findAllAdmins();
+
+
     @Query("SELECT COUNT(u) FROM User u WHERE u.createAt BETWEEN :start AND :end")
     int countUsersRegisteredBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
 
 }
 

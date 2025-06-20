@@ -6,11 +6,16 @@ import Dropdown from "../../ui/Dropdown";
 import logo from "../../../assets/logo.png";
 import { HiOutlinePhone } from "react-icons/hi2";
 import { MdOutlineEmail } from "react-icons/md";
-import { CiLocationOn, CiHeart, CiShoppingCart } from "react-icons/ci";
+import {
+  CiLocationOn,
+  CiHeart,
+  CiShoppingCart,
+  CiMicrophoneOn,
+} from "react-icons/ci";
 import { IoSearchCircle } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
 import { useCart } from "../../../contexts/CartContext";
-import { useFavorites } from "../../../hooks/useFavorite"; 
+import { useFavorites } from "../../../hooks/useFavorite";
 
 const Header: React.FC = () => {
   const { username, logout } = useAuth();
@@ -22,6 +27,65 @@ const Header: React.FC = () => {
 
   const [searchTerm, setSearchTerm] = React.useState("");
   const { favoriteProductIds = [] } = useFavorites();
+  const [isListening, setIsListening] = React.useState(false);
+
+  const handleVoiceSearchStart = () => {
+  const SpeechRecognition =
+    (window as any).SpeechRecognition ||
+    (window as any).webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert("Trình duyệt của bạn không hỗ trợ nhận dạng giọng nói");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "vi-VN";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.start();
+  setIsListening(true);
+
+  recognition.onaudiostart = () => {
+    console.log(" Micro đã bật (onaudiostart)");
+  };
+
+  recognition.onaudioend = () => {
+    console.log(" Micro đã tắt (onaudioend)");
+  };
+
+  recognition.onspeechstart = () => {
+    console.log(" Phát hiện bắt đầu nói (onspeechstart)");
+  };
+
+  recognition.onspeechend = () => {
+    console.log(" Ngừng nói (onspeechend)");
+  };
+
+  recognition.onresult = (event: any) => {
+    const transcript = event.results[0][0].transcript;
+    console.log("✅ Transcript:", transcript);
+    setSearchTerm(transcript);
+    setIsListening(false);
+    recognition.stop();
+    navigate(`/search?keyword=${encodeURIComponent(transcript)}`);
+  };
+
+  recognition.onerror = (event: any) => {
+    console.error(" Lỗi nhận dạng giọng nói:", event.error);
+    alert("Lỗi: " + event.error);
+    setIsListening(false);
+    recognition.stop();
+  };
+
+  recognition.onend = () => {
+    console.log(" Kết thúc phiên nhận dạng (onend)");
+    setIsListening(false);
+  };
+};
+
+
   const handleSearch = () => {
     if (searchTerm.trim()) {
       navigate(`/search?keyword=${encodeURIComponent(searchTerm.trim())}`);
@@ -39,9 +103,9 @@ const Header: React.FC = () => {
   const navLinks = [
     { path: "/", label: "Trang chủ" },
     { path: "/products", label: "Sản phẩm" },
-    { path: "/forum", label: "Giới Thiệu" },
-    { path: "/posts", label: "Dịch vụ" },
-    { path: "/about", label: "Tin tức" },
+    { path: "/about", label: "Giới Thiệu" },
+    { path: "/services", label: "Dịch vụ" },
+    { path: "/newarticles", label: "Tin tức" },
     { path: "/contact", label: "Liên hệ" },
   ];
 
@@ -133,6 +197,18 @@ const Header: React.FC = () => {
               placeholder="Tìm kiếm sản phẩm..."
               className="bg-[#f8f9fa] rounded-[20px] w-[280px] h-10 pl-4 pr-1"
             />
+            <div
+              className="absolute right-8 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              onClick={handleVoiceSearchStart}
+              title={isListening ? "Đang nghe..." : "Tìm kiếm bằng giọng nói"}
+            >
+              <CiMicrophoneOn
+                className={`w-6 h-6 ${
+                  isListening ? "text-red-500 animate-pulse" : "text-[#5290f3]"
+                }`}
+              />
+            </div>
+
             <div
               className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
               onClick={handleSearch}

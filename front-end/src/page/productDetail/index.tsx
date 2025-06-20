@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/layout/header/header";
 import Footer from "../../components/layout/footer/footer";
+// import Breadcrumb from '../../components/ui/Breadcrumb';
 import { getProductById } from "../../Service/products"; // Đường dẫn tùy theo dự án
 import { ProductDetail } from "../../types/ProductDetail";
 import ProductImages from "./ProductImages";
@@ -9,10 +10,12 @@ import PolicyList from "./PolicyList";
 // import ProductTypeDetailDisplay from "./ProductTypeDetailDisplay";
 import ProductDetailTabs from "./ProductDetailTabs";
 import { useParams } from "react-router-dom";
-
+// import { useProductFilters } from "../../hooks/useProductFilters";
+  
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<ProductDetail | null>(null);
+  // const { categories } = useProductFilters();
 
   useEffect(() => {
     if (id) {
@@ -24,25 +27,26 @@ const ProductDetailPage: React.FC = () => {
         .catch((err) => console.error("Lỗi lấy sản phẩm:", err));
     }
   }, [id]);
-  // const handleReviewSubmit = (rating: number, comment: string) => {
-  //   const review = {
-  //     username: "Nguyen Van A", // hoặc lấy từ context/login info
-  //     rating,
-  //     comment,
-  //     createdAt: new Date().toISOString(),
-  //   };
-
-  //   console.log("Đánh giá mới:", review);
-  //   // TODO: gọi API POST review ở đây
-  // };
-
+  
   if (!product) {
     return <div>Đang tải sản phẩm...</div>;
   }
 
+  // const currentCategory = categories.find(c => c.id === product.categoryId);
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+
+  {/* <Breadcrumb
+  items={[
+    { label: "Trang chủ", path: "/" },
+    { label: product.productType || "Danh mục", path: `/category/${product.productType}` },
+    { label: product.name },
+  ]}
+/> */}
+
+
 
       <main className="flex container mx-auto px-4 py-8 gap-12">
         {/* Left side: ảnh lớn + gallery nhỏ bên dưới */}

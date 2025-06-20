@@ -8,7 +8,7 @@ import { IoTimeOutline } from "react-icons/io5";
 const ContactDetails: React.FC = () => {
   const contactInfo: ContactInfo = {
     address: 'Khu phố 6, Phường Linh Trung, TP.Thủ Đức, TP.HCM',
-    email: 'peshop@gmail.com',
+    email: 'WaterPurifierShop@gmail.com',
     phone: '+84 33 645 709',
     hours: 'thứ 2- thứ 6: 8h-16h',
   };
