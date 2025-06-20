@@ -2,11 +2,16 @@ package com.example.be.service;
 
 import com.example.be.dto.request.ProductFilterRequest;
 import com.example.be.dto.request.ProductRequest;
+import com.example.be.dto.request.admin.ProductCreateRequest;
+import com.example.be.dto.request.admin.ProductUpdateRequest;
 import com.example.be.dto.response.ProductResponse;
 import com.example.be.entity.Category;
 import com.example.be.entity.Product;
 import com.example.be.enums.ProductStatus;
 import com.example.be.enums.ProductType;
+import com.example.be.enums.exception.ErrorCode;
+import com.example.be.exception.AppException;
+import com.example.be.mapper.ProductAdminMapper;
 import com.example.be.mapper.ProductMapper;
 import com.example.be.mapper.detail.FilterCartridgeDetailMapper;
 import com.example.be.mapper.detail.NonElectricPurifierDetailMapper;
@@ -37,6 +42,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
+    private final ProductAdminMapper productAdminMapper;
 
     // inject các mappers chi tiết
     private final WaterPurifierDetailMapper waterMapper;
@@ -192,6 +198,78 @@ public Page<ProductResponse> filterProducts(ProductFilterRequest request) {
         Page<Product> products = productRepository.findAll(spec, pageable);
         return products.map(product -> productMapper.toResponse(
                 product, waterMapper, filterMapper, nonElectricMapper, prefilterMapper));
+    }
+
+
+    // admin
+
+    @Transactional
+    public ProductResponse createProduct(ProductCreateRequest req) {
+        Product product = productMapper.toEntity(req);  // đúng rồi
+        Set<Category> categories = new HashSet<>();
+        if (req.getCategoryIds() != null) {
+            categoryRepository.findAllById(req.getCategoryIds())
+                    .forEach(categories::add);
+        }
+        product.setCategories(categories);
+        categories.forEach(cat -> cat.getProducts().add(product));
+        Product saved = productRepository.save(product);
+        return productAdminMapper.toResponse(saved);  // phải dùng productAdminMapper
+    }
+
+    @Transactional
+    public ProductResponse updateProduct(Integer id, ProductUpdateRequest req) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        productMapper.updateEntity(product, req);  // giả sử bạn có method updateEntity trong adminMapper
+        Set<Category> categories = new HashSet<>();
+        if (req.getCategoryIds() != null) {
+            categoryRepository.findAllById(req.getCategoryIds())
+                    .forEach(categories::add);
+        }
+        product.setCategories(categories);
+        Product saved = productRepository.save(product);
+        return productAdminMapper.toResponse(saved);
+    }
+
+    @Transactional
+    public Page<ProductResponse> getAllForAdmin(int page, int size, String sortStr) {
+        String[] parts = sortStr.split(",");
+        Sort sort = Sort.by(Sort.Direction.fromString(parts[1]), parts[0]);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return productRepository.findAll(pageable)
+                .map(productAdminMapper::toResponse);
+    }
+
+    @Transactional
+    public ProductResponse getProductByIdAdmin(Integer id) {
+        Product p = productRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+        return productAdminMapper.toResponse(p);
+    }
+
+    @Transactional
+    public void toggleProductStatus(Integer id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        ProductStatus currentStatus = product.getStatus();
+        if (currentStatus == ProductStatus.AVAILABLE) {
+            product.setStatus(ProductStatus.OUT_OF_STOCK);
+        } else if (currentStatus == ProductStatus.OUT_OF_STOCK) {
+            product.setStatus(ProductStatus.AVAILABLE);
+        }
+        // Nếu DISCONTINUED thì giữ nguyên hoặc xử lý khác nếu muốn
+
+        productRepository.save(product);
+    }
+
+    @Transactional
+    public void deleteProduct(Integer id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+        productRepository.delete(product); // xóa thật sự khỏi database
     }
 
 }

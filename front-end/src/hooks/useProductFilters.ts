@@ -135,7 +135,8 @@ export const useProductFilters = (categoryId?: number) => {
     (
       page: number = 0,
       size: number = 12,
-      externalCategoryId?: number
+      externalCategoryId?: number,
+      sort: string = 'createdAt,desc'
     ): ProductFilterRequest => {
       const selectedBrandIds = brands.filter(b => b.checked).map(b => b.id);
       const selectedCheckboxCategory = filterCategories.find(fc => fc.checked);
@@ -164,7 +165,7 @@ export const useProductFilters = (categoryId?: number) => {
         minPrice: priceChanged && priceRange ? priceRange.min : undefined,
         maxPrice: priceChanged && priceRange ? priceRange.max : undefined,
         filterPairs: Object.keys(filterPairs).length ? filterPairs : undefined,
-        sort: 'price,asc',
+        sort,
         page,
         size,
       };

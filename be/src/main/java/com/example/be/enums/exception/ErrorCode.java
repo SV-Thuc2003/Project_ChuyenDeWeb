@@ -20,7 +20,11 @@ public enum ErrorCode {
 
     USERNAME_ALREADY_EXISTS(1008, "Tên người dùng đã tồn tại", HttpStatus.CONFLICT),
     EMAIL_ALREADY_EXISTS(1009, "Email đã được đăng ký", HttpStatus.CONFLICT),
+    UNAUTHORIZED_ACTION(1012, "Bạn không có quyền thực hiện hành động này", HttpStatus.FORBIDDEN),
+    PRODUCT_NOT_FOUND(2001, "Không tìm thấy sản phẩm", HttpStatus.NOT_FOUND),
+
     ROLE_NOT_FOUND(1010, "Không tìm thấy vai trò (role)", HttpStatus.NOT_FOUND);
+
 
     int code;
     String message;

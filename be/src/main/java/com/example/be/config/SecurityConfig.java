@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -58,9 +59,11 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/oauth2/**").permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/auth/**", "/api/auth/**", "/oauth2/**").permitAll()
                         .requestMatchers("/api/products/**").permitAll()
                         .requestMatchers("/api/brands/**", "/api/categories/**").permitAll()
+//                                .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/admin/**").permitAll()
 //                        .requestMatchers("/api/customers/**").hasRole("USER")
                         .requestMatchers("/api/favorites/**", "/api/cart/**").authenticated()   //.hasAnyRole("USER", "ADMIN") // cả user và admin

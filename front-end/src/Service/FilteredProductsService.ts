@@ -23,6 +23,17 @@ export interface PagedProducts {
   totalResults: number;
 }
 
+export const getSortedProducts = async (
+  sortBy: string = 'newest',
+  page: number = 0,
+  size: number = 10
+) => {
+  const response = await axios.get(`${BASE_URL}/sorted`, {
+    params: { sortBy, page, size },
+  });
+  return response.data; // xử lý data tuỳ ý ở frontend
+};
+
 export const filterProducts = async (
   filterRequest: ProductFilterRequest
 ): Promise<PagedProducts> => {

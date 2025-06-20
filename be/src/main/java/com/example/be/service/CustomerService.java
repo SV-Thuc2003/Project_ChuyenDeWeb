@@ -32,4 +32,33 @@ public class CustomerService {
         user.setStatus(status);
         userRepository.save(user);
     }
+
+    public void updateCustomerInfo(Integer id, String name,String email, String phone, String address) {
+        User user = getCustomerById(id);
+        user.setName(name);
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setAddress(address);
+        userRepository.save(user);
+    }
+
+
+    // xóa thẳng trong DB
+    public void deleteCustomer(Integer id) {
+        User user = getCustomerById(id);
+        // Check nếu không phải USER thì không cho xóa
+        if (user.getRoles().stream().noneMatch(r -> r.getRoleName() == RoleName.USER)) {
+            throw new AppException(ErrorCode.UNAUTHORIZED_ACTION); // Tự định nghĩa error này
+        }
+        userRepository.delete(user);
+    }
+
+
+    // xóa mềm
+    public void softDeleteCustomer(Integer id) {
+        User user = getCustomerById(id); // Đảm bảo tồn tại và là USER
+        user.setStatus(Status.INACTIVE); // hoặc Status.BANNED
+        userRepository.save(user);
+    }
+
 }

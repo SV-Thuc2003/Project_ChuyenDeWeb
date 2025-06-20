@@ -1,6 +1,8 @@
 package com.example.be.mapper;
 
 import com.example.be.dto.request.ProductRequest;
+import com.example.be.dto.request.admin.ProductCreateRequest;
+import com.example.be.dto.request.admin.ProductUpdateRequest;
 import com.example.be.dto.response.detail.ProductDetailResponse;
 import com.example.be.dto.response.ProductResponse;
 import com.example.be.entity.Category;
@@ -11,10 +13,7 @@ import com.example.be.mapper.detail.FilterCartridgeDetailMapper;
 import com.example.be.mapper.detail.NonElectricPurifierDetailMapper;
 import com.example.be.mapper.detail.PrefilterHousingDetailMapper;
 import com.example.be.mapper.detail.WaterPurifierDetailMapper;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.Context;
+import org.mapstruct.*;
 
 import java.util.List;
 import java.util.Set;
@@ -94,4 +93,7 @@ public interface ProductMapper {
         }
     }
 
+    Product toEntity(ProductCreateRequest request);
+
+    void updateEntity(@MappingTarget Product product, ProductUpdateRequest request);
 }

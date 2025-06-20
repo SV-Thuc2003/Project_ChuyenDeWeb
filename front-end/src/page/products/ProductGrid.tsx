@@ -14,6 +14,7 @@ interface ProductGridProps {
   pageSize: number;
   onPageChange: (page: number) => void;
   onSortChange: (value: string) => void;
+  selectedSort: string;
   onFavoriteToggle: (id: number) => void;
   // userId: number;
 }
@@ -26,14 +27,15 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   pageSize,
   onPageChange,
   onSortChange,
+  selectedSort,
   // onFavoriteToggle,
 }) => {
   const sortOptions = [
-    { value: "newest", label: "Sắp xếp theo mới nhất" },
-    { value: "price-asc", label: "Giá: Thấp đến cao" },
-    { value: "price-desc", label: "Giá: Cao đến thấp" },
-    { value: "name-asc", label: "Tên: A-Z" },
-    { value: "name-desc", label: "Tên: Z-A" },
+    { value: "createdAt,desc", label: "Sắp xếp theo mới nhất" },
+    { value: "price,asc", label: "Giá: Thấp đến cao" },
+    { value: "price,desc", label: "Giá: Cao đến thấp" },
+    { value: "name,asc", label: "Tên: A-Z" },
+    { value: "name,desc", label: "Tên: Z-A" },
   ];
 
   const from = (currentPage - 1) * pageSize + 1;
@@ -49,7 +51,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
         </p>
         <Dropdown
           options={sortOptions}
-          value="newest"
+          value={selectedSort}
           onChange={onSortChange}
           className="w-full md:w-[270px] mt-4 md:mt-0"
           icon={<RiArrowDropDownLine className="w-6 h-6" />}

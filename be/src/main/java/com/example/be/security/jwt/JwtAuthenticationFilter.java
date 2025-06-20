@@ -93,11 +93,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 
-//    @Override
-//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-//        String path = request.getRequestURI();
-//        return path.startsWith("/auth/")
-//                || path.startsWith("/oauth2/")
-//                || path.startsWith("/api/admin/");
-//    }
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        // Bỏ qua OPTIONS (CORS preflight)
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
+
+        String path = request.getRequestURI();
+        return path.startsWith("/auth/")
+                || path.startsWith("/oauth2/")
+                || path.startsWith("/api/admin/");
+    }
+
 }

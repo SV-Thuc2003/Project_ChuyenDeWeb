@@ -4,7 +4,7 @@ import com.example.be.dto.response.CustomerResponse;
 import com.example.be.dto.response.CustomerUpdateRequest;
 import com.example.be.entity.User;
 import com.example.be.enums.Status;
-import com.example.be.service.CustomerService;
+import com.example.be.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,20 +12,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 //@PreAuthorize("hasAuthority('ADMIN')")
 @RestController
-@RequestMapping("/api/admin/customers")
+@RequestMapping("/api/admin/employees")
 @RequiredArgsConstructor
-public class CustomerController {
+//@CrossOrigin("http://localhost:3000")
+public class AdminController {
 
-    private final CustomerService customerService;
+    private final AdminService adminService;
 
-    // Lấy tất cả khách hàng
     @GetMapping
-    public ResponseEntity<List<CustomerResponse>> getAllCustomers() {
-        List<User> customers = customerService.getAllCustomers();
+    public ResponseEntity<List<CustomerResponse>> getAllAdmins() {
+        List<User> admins = adminService.getAllAdmins();
 
-        List<CustomerResponse> responses = customers.stream()
+        List<CustomerResponse> responses = admins.stream()
                 .map(user -> new CustomerResponse(
                         user.getId(),
                         user.getName(),
@@ -39,10 +40,9 @@ public class CustomerController {
         return ResponseEntity.ok(responses);
     }
 
-    // Lấy khách hàng theo id
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerResponse> getCustomerById(@PathVariable Integer id) {
-        User user = customerService.getCustomerById(id);
+    public ResponseEntity<CustomerResponse> getAdminById(@PathVariable Integer id) {
+        User user = adminService.getAdminById(id);
 
         CustomerResponse response = new CustomerResponse(
                 user.getId(),
@@ -57,22 +57,20 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateCustomerInfo(@PathVariable Integer id, @RequestBody CustomerUpdateRequest request) {
-        customerService.updateCustomerInfo(id, request.getName(), request.getEmail(), request.getPhone(), request.getAddress());
+    public ResponseEntity<Void> updateAdminInfo(@PathVariable Integer id, @RequestBody CustomerUpdateRequest request) {
+        adminService.updateAdminInfo(id, request.getName(), request.getEmail(), request.getPhone(), request.getAddress());
         return ResponseEntity.noContent().build();
     }
 
-
-    // Cập nhật trạng thái khách hàng
     @PutMapping("/{id}/status")
-    public ResponseEntity<Void> updateCustomerStatus(@PathVariable Integer id, @RequestParam Status status) {
-        customerService.updateCustomerStatus(id, status);
+    public ResponseEntity<Void> updateAdminStatus(@PathVariable Integer id, @RequestParam Status status) {
+        adminService.updateAdminStatus(id, status);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable Integer id) {
-        customerService.deleteCustomer(id); // hoặc softDeleteCustomer(id)
+    public ResponseEntity<Void> deleteAdmin(@PathVariable Integer id) {
+        adminService.deleteAdmin(id); // hoặc soft delete nếu bạn muốn
         return ResponseEntity.noContent().build();
     }
 }
