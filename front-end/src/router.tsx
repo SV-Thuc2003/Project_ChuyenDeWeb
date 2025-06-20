@@ -6,13 +6,14 @@ import RegisterPage from "./page/register";
 import OAuth2RedirectHandler from './features/auth/login/OAuth2RedirectHandler';
 import HomePage from "./page/home";
 import Products from "./page/products";
-import Forum from "./page/forum";
+import ServicesPage from "./page/services/";
 import Checkout from "./page/checkout";
 import CartPage from "./page/cart"
 import ProductDetailPage from "./page/productDetail";
 import ContactPage from "./page/contact";
 import AboutUs from "./page/about";
 import ProfilePage from "./page/profile";
+import NewsArticles from "./page/newsArticle";
 import Order from "./page/order";
 import FavoriteProductsPage from "./page/favorite/FavoriteProductsPage";
 import CartCheckOut from "./page/cart";
@@ -31,12 +32,13 @@ const AppRoutes: React.FC = () => {
             <Route path="/category/:categoryId" element={<Products />} />
             <Route path="/productdetail/:id" element={<ProductDetailPage />} />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/forum" element={<Forum />} />
+            <Route path="/services" element={<ServicesPage />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/cartpage" element={<CartPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/newarticles" element={<NewsArticles />} />
             <Route path="/orders" element={<Order />} />
             <Route path="/favorites" element={<FavoriteProductsPage />} />
             <Route path="/cart" element={<CartCheckOut />} />

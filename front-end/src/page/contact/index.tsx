@@ -1,7 +1,6 @@
 import React from 'react';
 import Header from '../../components/layout/header/header';
 import Footer from '../../components/layout/footer/footer';
-import HeroSection from '../../components/common/HeroSection';
 import ContactForm from './ContactForm';
 import ContactDetails from './ContactDetails';
 import MapSection from './MapSection';
@@ -11,13 +10,6 @@ const ContactPage: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-       <HeroSection 
-          title="Nếu động vật có thể nói, chúng sẽ nói về chúng ta!"
-          subtitle="NLU Pet Shop"
-          buttonText="Mua ngay"
-          buttonLink="/products"
-        />
-      
       <main className="flex-grow mt-5">  
         <section className="py-16">
           <div className="container mx-auto px-4">
