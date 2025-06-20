@@ -38,6 +38,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+
         // lấy JWT từ cookie
         String token = extractTokenFromRequest(request);
         // Kiểm tra tính hợp lệ của token
@@ -105,5 +107,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 || path.startsWith("/oauth2/")
                 || path.startsWith("/api/admin/");
     }
-
+    
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -19,95 +19,73 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
   Stack,
+  CircularProgress,
 } from "@mui/material";
-import { IconTrash, IconMail } from "@tabler/icons-react";
+import { IconTrash } from "@tabler/icons-react";
 
 interface ContactMessage {
   id: number;
   name: string;
   email: string;
-  phone: string;
-  subject: string;
+  title: string;
   message: string;
-  date: string; // YYYY-MM-DD
-  status: "Chưa đọc" | "Đã đọc";
-  reply?: string;
+  createdAt: string; // ISO format
 }
-
-const initialMessages: ContactMessage[] = Array.from({ length: 25 }).map((_, i) => ({
-  id: i + 1,
-  name: `Người gửi ${i + 1}`,
-  email: `user${i + 1}@example.com`,
-  phone: `09${Math.floor(10000000 + Math.random() * 89999999)}`,
-  subject: `Tiêu đề liên hệ ${i + 1}`,
-  message: `Nội dung tin nhắn mẫu số ${i + 1}. Đây là ví dụ nội dung để bạn dễ dàng phát triển sau này.`,
-  date: new Date(2023, 4, 20).toLocaleDateString("vi-VN"),
-  status: i % 3 === 0 ? "Đã đọc" : "Chưa đọc",
-}));
 
 const ITEMS_PER_PAGE = 10;
 
 const ContactManagement = () => {
-  const [messages, setMessages] = useState<ContactMessage[]>(initialMessages);
+  const [messages, setMessages] = useState<ContactMessage[]>([]);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; idToDelete?: number }>({ open: false });
-  const [replyDialog, setReplyDialog] = useState<{ open: boolean; idToReply?: number }>({ open: false });
 
-  const [replyContent, setReplyContent] = useState("");
-
-  // Đánh dấu đã đọc
-  const markAsRead = (id: number) => {
-    setMessages(prev =>
-        prev.map(m => (m.id === id ? { ...m, status: "Đã đọc" } : m))
-    );
-  };
-
-  // Xóa liên hệ
-  const confirmDelete = (id: number) => {
-    setDeleteDialog({ open: true, idToDelete: id });
-  };
-
-  const handleDelete = () => {
-    if (deleteDialog.idToDelete !== undefined) {
-      setMessages((prev) => prev.filter((m) => m.id !== deleteDialog.idToDelete));
+  const fetchMessages = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:8080/api/contact");
+      if (!res.ok) throw new Error("Failed to fetch contacts");
+      const data = await res.json();
+      setMessages(data);
+    } catch (err) {
+      console.error("Lỗi khi tải dữ liệu:", err);
+      alert("Không thể tải dữ liệu liên hệ.");
+    } finally {
+      setLoading(false);
     }
-    setDeleteDialog({ open: false });
   };
 
-  // Mở popup trả lời
-  const handleOpenReplyDialog = (id: number) => {
-    markAsRead(id);
-    const message = messages.find(m => m.id === id);
-    setReplyContent(message?.reply || "");
-    setReplyDialog({ open: true, idToReply: id });
-  };
-
-  const handleCloseReplyDialog = () => {
-    setReplyDialog({ open: false, idToReply: undefined });
-  };
-
-  // Gửi trả lời (giả lập)
-  const handleSendReply = () => {
-    if (!replyContent.trim()) {
-      alert("Vui lòng nhập nội dung trả lời");
-      return;
-    }
-    setMessages(prev =>
-        prev.map(m =>
-            m.id === replyDialog.idToReply ? { ...m, reply: replyContent, status: "Đã đọc" } : m
-        )
-    );
-    alert("Đã gửi phản hồi");
-    setReplyDialog({ open: false, idToReply: undefined });
-  };
+  useEffect(() => {
+    fetchMessages();
+  }, []);
 
   const pagedMessages = messages.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
+  };
+
+  const confirmDelete = (id: number) => {
+    setDeleteDialog({ open: true, idToDelete: id });
+  };
+
+  const handleDelete = async () => {
+    if (deleteDialog.idToDelete !== undefined) {
+      try {
+        const res = await fetch(`http://localhost:8080/api/contact/${deleteDialog.idToDelete}`, {
+          method: "DELETE",
+        });
+        if (!res.ok) throw new Error("Xoá thất bại");
+        // Cập nhật lại danh sách
+        setMessages((prev) => prev.filter((m) => m.id !== deleteDialog.idToDelete));
+      } catch (err) {
+        console.error("Lỗi khi xoá:", err);
+        alert("Không thể xoá liên hệ.");
+      } finally {
+        setDeleteDialog({ open: false });
+      }
+    }
   };
 
   return (
@@ -117,98 +95,70 @@ const ContactManagement = () => {
             <Typography variant="h6" fontWeight="bold">Quản lý hộp thư liên hệ</Typography>
           </Box>
 
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Mã</TableCell>
-                  <TableCell>Tên người gửi</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Số điện thoại</TableCell>
-                  <TableCell>Tiêu đề</TableCell>
-                  <TableCell>Nội dung</TableCell>
-                  <TableCell>Ngày gửi</TableCell>
-                  <TableCell>Trạng thái</TableCell>
-                  <TableCell align="center">Thao tác</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {pagedMessages.map(({ id, name, email, phone, subject, message, date, status }) => (
-                    <TableRow key={id} hover>
-                      <TableCell>{id}</TableCell>
-                      <TableCell>{name}</TableCell>
-                      <TableCell>{email}</TableCell>
-                      <TableCell>{phone}</TableCell>
-                      <TableCell>{subject}</TableCell>
-                      <TableCell
-                          sx={{
-                            maxWidth: 250,
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                          title={message}
-                      >
-                        {message}
-                      </TableCell>
-                      <TableCell>{date}</TableCell>
-                      <TableCell>{status}</TableCell>
-                      <TableCell align="center">
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            startIcon={<IconMail size={16} />}
-                            sx={{ mr: 1 }}
-                            onClick={() => handleOpenReplyDialog(id)}
-                        >
-                          Trả lời
-                        </Button>
-                        <IconButton color="error" onClick={() => confirmDelete(id)}>
-                          <IconTrash size={20} />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                ))}
-                {pagedMessages.length === 0 && (
-                    <TableRow>
-                      <TableCell colSpan={9} align="center">Chưa có liên hệ nào</TableCell>
-                    </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          {loading ? (
+              <Stack alignItems="center" mt={4}>
+                <CircularProgress />
+              </Stack>
+          ) : (
+              <>
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Mã</TableCell>
+                        <TableCell>Tên người gửi</TableCell>
+                        <TableCell>Email</TableCell>
+                        <TableCell>Tiêu đề</TableCell>
+                        <TableCell>Nội dung</TableCell>
+                        <TableCell>Ngày gửi</TableCell>
+                        <TableCell align="center">Thao tác</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {pagedMessages.map(({ id, name, email, title, message, createdAt }) => (
+                          <TableRow key={id} hover>
+                            <TableCell>{id}</TableCell>
+                            <TableCell>{name}</TableCell>
+                            <TableCell>{email}</TableCell>
+                            <TableCell>{title}</TableCell>
+                            <TableCell
+                                sx={{
+                                  maxWidth: 250,
+                                  whiteSpace: "nowrap",
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                }}
+                                title={message}
+                            >
+                              {message}
+                            </TableCell>
+                            <TableCell>{new Date(createdAt).toLocaleDateString("vi-VN")}</TableCell>
+                            <TableCell align="center">
+                              <IconButton color="error" onClick={() => confirmDelete(id)}>
+                                <IconTrash size={20} />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                      ))}
+                      {pagedMessages.length === 0 && (
+                          <TableRow>
+                            <TableCell colSpan={7} align="center">Chưa có liên hệ nào</TableCell>
+                          </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
 
-          <Stack alignItems="center" mt={2}>
-            <Pagination
-                count={Math.ceil(messages.length / ITEMS_PER_PAGE)}
-                page={page}
-                onChange={handlePageChange}
-                color="primary"
-            />
-          </Stack>
-
-          {/* Dialog trả lời */}
-          <Dialog open={replyDialog.open} onClose={handleCloseReplyDialog} maxWidth="sm" fullWidth>
-            <DialogTitle>Trả lời liên hệ</DialogTitle>
-            <DialogContent>
-              <Typography variant="subtitle2" mb={2}>
-                Địa chỉ email: <b>{replyDialog.idToReply ? messages.find(m => m.id === replyDialog.idToReply)?.email : ""}</b>
-              </Typography>
-              <TextField
-                  label="Nội dung trả lời"
-                  value={replyContent}
-                  onChange={(e) => setReplyContent(e.target.value)}
-                  multiline
-                  rows={6}
-                  fullWidth
-                  autoFocus
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseReplyDialog}>Hủy</Button>
-              <Button onClick={handleSendReply} variant="contained" color="primary">Gửi</Button>
-            </DialogActions>
-          </Dialog>
+                <Stack alignItems="center" mt={2}>
+                  <Pagination
+                      count={Math.ceil(messages.length / ITEMS_PER_PAGE)}
+                      page={page}
+                      onChange={handlePageChange}
+                      color="primary"
+                  />
+                </Stack>
+              </>
+          )}
 
           {/* Dialog xác nhận xóa */}
           <Dialog

@@ -3,6 +3,7 @@ import com.example.be.enums.ProductStatus;
 import com.example.be.enums.ProductType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -84,6 +85,7 @@ public class Product {
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private PrefilterHousingDetail prefilterHousingDetail;
 
+    @BatchSize(size = 10)
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
 }

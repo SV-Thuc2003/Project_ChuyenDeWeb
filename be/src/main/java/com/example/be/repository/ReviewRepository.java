@@ -11,4 +11,6 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 // hiển thị thị review mới nhất lên đầu
     List<Review> findByProductIdOrderByCreatedAtDesc(Integer productId);
 
+    boolean existsByUserIdAndProductId(Integer userId, Integer productId);
+
 }

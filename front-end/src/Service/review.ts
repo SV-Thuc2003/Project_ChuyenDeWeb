@@ -1,8 +1,7 @@
-// import axios from "axios";
-
-// const API = "http://localhost:8080/api/reviews"; // Đổi lại base URL nếu cần
 import axios from './axios';
-const BASE_URL = '/products';
+
+const BASE_URL = '/reviews';
+
 export const createReview = async (userId: number, data: any, token: string) => {
   const response = await axios.post(`${BASE_URL}?userId=${userId}`, data, {
     headers: {

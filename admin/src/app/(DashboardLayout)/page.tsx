@@ -3,7 +3,7 @@ import { Grid, Box } from '@mui/material';
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
 // components
 import SalesOverview from '@/app/(DashboardLayout)/components/dashboard/TheSalesOverview';
-import TopSelling from '@/app/(DashboardLayout)/components/dashboard/TopSelling';
+import TopSellingProducts from '@/app/(DashboardLayout)/components/dashboard/TopSellingProducts';
 import DashboardSummary from '@/app/(DashboardLayout)/components/dashboard/DashboardSummary';
 
 
@@ -20,7 +20,7 @@ const Dashboard = () => {
             <SalesOverview />
           </Grid>
           <Grid item xs={12} lg={4}>
-            <TopSelling />
+            <TopSellingProducts />
           </Grid>
 
 
